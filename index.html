@@ -17,6 +17,7 @@
   <meta property="og:site_name" content="Machinemens" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="nl_NL" />
+  <meta property="og:locale:alternate" content="pt_BR" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Machinemens" />
   <meta name="twitter:description" content="Machinemens - official links: music, videos and socials." />
@@ -65,6 +66,7 @@
     <div class="flex gap-1 text-xs font-semibold tracking-wide" role="group" aria-label="Language selector">
       <button type="button" @click="lang = 'en'" :class="lang === 'en' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">EN</button>
       <button type="button" @click="lang = 'nl'" :class="lang === 'nl' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">NL</button>
+      <button type="button" @click="lang = 'pt'" :class="lang === 'pt' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">PT</button>
     </div>
   </header>
 
@@ -74,9 +76,11 @@
 
     <p class="en text-center text-cream/80 mb-6 md:mb-8 italic md:text-lg">Surrender to the machine.</p>
     <p class="nl text-center text-cream/80 mb-6 md:mb-8 italic md:text-lg">Onderwerp je aan de machine.</p>
+    <p class="pt text-center text-cream/80 mb-6 md:mb-8 italic md:text-lg">Renda-se à máquina.</p>
 
     <h2 class="en sr-only">Official links</h2>
     <h2 class="nl sr-only">Officiele links</h2>
+    <h2 class="pt sr-only">Links oficiais</h2>
 
     <nav class="w-full flex justify-center flex-wrap gap-4 md:gap-5 mb-6 md:mb-8" aria-label="Official links">
       <a href="https://open.spotify.com/artist/4PLOLLNQZMjPZ9bcIpIHtp" target="_blank" rel="noopener noreferrer"
@@ -123,8 +127,9 @@
         </span>
         <span class="link-card-text">
           <span class="link-card-title">Bookings</span>
-          <span class="link-card-subtitle en">Booking inquiries via AMPS</span>
-          <span class="link-card-subtitle nl">Boekingsaanvragen via AMPS</span>
+          <span class="link-card-subtitle en">Inquiries via AMPS (EU/UK only)</span>
+          <span class="link-card-subtitle nl">Boekingsaanvragen via AMPS (alleen EU/UK)</span>
+          <span class="link-card-subtitle pt">Solicitações de shows via AMPS (somente EU/UK)</span>
         </span>
       </a>
 
@@ -135,6 +140,7 @@
         <span class="link-card-text">
           <span class="link-card-title en">Contact</span>
           <span class="link-card-title nl">Contact</span>
+          <span class="link-card-title pt">Contato</span>
           <span class="link-card-subtitle">contact@machinemens.com</span>
         </span>
       </a>
@@ -143,8 +149,10 @@
     <section class="w-full mb-8 md:mb-10" aria-labelledby="featured-heading">
       <p class="en text-gold text-xs font-bold tracking-widest uppercase mb-2">New release</p>
       <p class="nl text-gold text-xs font-bold tracking-widest uppercase mb-2">Nieuwe release</p>
+      <p class="pt text-gold text-xs font-bold tracking-widest uppercase mb-2">Novo lançamento</p>
       <h2 id="featured-heading" class="en text-cream font-semibold mb-3 md:text-lg">A Batalha de Netuno</h2>
       <h2 class="nl text-cream font-semibold mb-3 md:text-lg">A Batalha de Netuno</h2>
+      <h2 class="pt text-cream font-semibold mb-3 md:text-lg">A Batalha de Netuno</h2>
 
       <iframe class="w-full rounded-xl" src="https://open.spotify.com/embed/track/4REutcZF6ZoQlE2m0JpDKm?utm_source=generator&theme=0"
               width="100%" height="152" frameborder="0" allowfullscreen="" loading="lazy"
@@ -154,6 +162,7 @@
     <section class="w-full mb-8 md:mb-10" aria-labelledby="live-sessions-heading">
       <p class="en text-gold text-xs font-bold tracking-widest uppercase mb-2">Live sessions</p>
       <p class="nl text-gold text-xs font-bold tracking-widest uppercase mb-2">Live sessions</p>
+      <p class="pt text-gold text-xs font-bold tracking-widest uppercase mb-2">Sessões ao vivo</p>
       <h2 id="live-sessions-heading" class="sr-only">Live sessions</h2>
 
       <div class="w-full aspect-video mb-4 rounded-xl overflow-hidden">
@@ -171,6 +180,7 @@
 
     <p class="en w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">Previous releases</p>
     <p class="nl w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">Eerdere releases</p>
+    <p class="pt w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">Lançamentos anteriores</p>
     <h2 class="sr-only">Previous releases</h2>
 
     <section class="w-full flex flex-col gap-3 md:gap-4 mb-8 md:mb-10" aria-label="Previous releases">
