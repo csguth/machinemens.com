@@ -1,0 +1,52 @@
+name: Deploy Staging (Cloudflare Pages)
+
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloudflare-staging
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate variables
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: |
+          if [ -z "$SITE_URL" ]; then
+            echo "Missing environment variable: SITE_URL"
+            exit 1
+          fi
+
+      - name: Build site with injected variables
+        run: |
+          mkdir -p site
+          rsync -av --exclude=".git" --exclude=".github" --exclude="site" ./ site/
+
+          for f in site/index.html; do
+            sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" "$f"
+            sed -i "s|__ENV_LABEL__|${{ vars.ENV_LABEL }}|g" "$f"
+          done
+
+          sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" site/robots.txt
+          sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" site/sitemap.xml
+
+      - name: Deploy to Cloudflare Pages (staging project)
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: machinemens-com-staging
+          directory: site
+          branch: ${{ github.ref_name }}

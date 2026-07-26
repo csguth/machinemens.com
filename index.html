@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Machinemens</title>
+  <meta name="description" content="Machinemens - official links: music, videos and socials." />
+  <link rel="canonical" href="__SITE_URL__/" />
+
+  <meta property="og:title" content="Machinemens" />
+  <meta property="og:description" content="Machinemens - official links: music, videos and socials." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="__SITE_URL__/" />
+  <meta property="og:image" content="__SITE_URL__/images/logo.png" />
+  <meta name="twitter:card" content="summary" />
+
+  <link rel="icon" type="image/png" href="images/logo.png" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/tailwind-config.js"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+<body data-env="__ENV_LABEL__" x-data="langToggle()" x-init="init()" class="bg-black text-cream min-h-screen flex flex-col items-center">
+
+  <div id="env-banner" class="w-full text-center text-sm font-semibold py-2 bg-amber-500 text-black">
+    STAGING
+  </div>
+
+  <header class="w-full max-w-md flex justify-end px-4 pt-4">
+    <div class="flex gap-1 text-xs font-semibold tracking-wide" role="group" aria-label="Language selector">
+      <button type="button" @click="lang = 'en'" :class="lang === 'en' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">EN</button>
+      <button type="button" @click="lang = 'nl'" :class="lang === 'nl' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">NL</button>
+    </div>
+  </header>
+
+  <main class="w-full max-w-md flex flex-col items-center px-6 pb-16 pt-4">
+    <img src="images/logo.png" alt="Machinemens" class="w-40 h-40 object-contain mb-6" />
+
+    <p class="en text-center text-cream/80 mb-8 italic">Surrender to the machine.</p>
+    <p class="nl text-center text-cream/80 mb-8 italic">Onderwerp je aan de machine.</p>
+
+    <h2 class="en sr-only">Official links</h2>
+    <h2 class="nl sr-only">Officiele links</h2>
+
+    <nav class="w-full flex flex-col gap-3" aria-label="Official links">
+      <a href="https://open.spotify.com/artist/4PLOLLNQZMjPZ9bcIpIHtp" target="_blank" rel="noopener noreferrer"
+         class="link-btn link-btn-featured">Spotify</a>
+
+      <a href="https://www.youtube.com/@machinemens?sub_confirmation=1" target="_blank" rel="noopener noreferrer"
+         class="link-btn">YouTube</a>
+
+      <a href="https://instagram.com/machinemens" target="_blank" rel="noopener noreferrer"
+         class="link-btn">Instagram</a>
+
+      <a href="https://open.spotify.com/track/4REutcZF6ZoQlE2m0JpDKm" target="_blank" rel="noopener noreferrer"
+         class="link-btn">A Batalha de Netuno (Spotify)</a>
+
+      <a href="https://www.youtube.com/watch?v=u4RU6NkH-KQ" target="_blank" rel="noopener noreferrer"
+         class="link-btn">A Batalha de Netuno (Official Lyric Video)</a>
+
+      <a href="https://open.spotify.com/album/2il7wxaRoBjZAN1o1ry538" target="_blank" rel="noopener noreferrer"
+         class="link-btn">Canvas Dyed Blood - EP (Spotify)</a>
+
+      <a href="https://open.spotify.com/album/45WCiD04pvegHbjenASC2o" target="_blank" rel="noopener noreferrer"
+         class="link-btn">Machinemens - Demo I (Spotify)</a>
+    </nav>
+  </main>
+
+  <footer class="w-full max-w-md text-center text-xs text-cream/40 pb-8">
+    <span>&copy; <span id="year"></span> Machinemens</span>
+  </footer>
+
+  <script src="js/lang-toggle.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
