@@ -7,8 +7,10 @@ function langToggle() {
     lang: localStorage.getItem('machinemens_lang') || (navigator.language.startsWith('nl') ? 'nl' : 'en'),
     init() {
       document.body.classList.toggle('show-nl', this.lang === 'nl');
+      document.documentElement.lang = this.lang;
       this.$watch('lang', val => {
         document.body.classList.toggle('show-nl', val === 'nl');
+        document.documentElement.lang = val;
         localStorage.setItem('machinemens_lang', val);
       });
     }
