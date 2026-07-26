@@ -53,23 +53,19 @@ body[data-lang="pt"] .pt.inline { display: inline; }
   justify-content: center;
   width: 3.25rem;
   height: 3.25rem;
-  border-radius: 9999px;
-  border: 2px solid var(--gold);
   color: var(--cream);
-  overflow: hidden;
-  transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  transition: color 0.15s ease, transform 0.15s ease;
 }
 
 .icon-link svg {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
   fill: currentColor;
 }
 
 .icon-link:hover,
 .icon-link:focus-visible {
-  background-color: var(--gold);
-  color: #000;
+  color: var(--gold);
   transform: translateY(-2px);
 }
 
