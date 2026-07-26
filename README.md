@@ -10,9 +10,9 @@ Official website for **Machinemens** (black/death metal band), replacing the ban
 | Alpine.js CDN | EN/NL bilingual toggle | Free |
 | GitHub Pages | Production hosting + HTTPS | Free |
 | Cloudflare Pages | Staging hosting (`staging.<domain>`) | Free |
-| Domain registrar: Namecheap | Custom domain (not registered yet) | ~€10-15/year |
+| Domain registrar: Namecheap | Custom domain (`machinemens.com`, registered) | ~€10-15/year |
 
-**Monthly cost: €0** (just the domain renewal once a year, once registered)
+**Monthly cost: €0** (just the domain renewal once a year)
 
 This repo intentionally mirrors the setup of [csguth/gatoweb.nl](https://github.com/csguth/gatoweb.nl)
 (branching model, staging/production split, i18n pattern) so both projects are easy to maintain
@@ -45,7 +45,7 @@ robots.txt, sitemap.xml
 | | Production | Staging |
 |---|---|---|
 | Branch | `main` | `staging` |
-| URL | `SITE_URL` var (production domain, TBD) | `SITE_URL` var (e.g. `https://staging.<domain>`) |
+| URL | `SITE_URL` var (`https://machinemens.com`) | `SITE_URL` var (`https://staging.machinemens.com`) |
 | Hosting | GitHub Pages | Cloudflare Pages (project `machinemens-com-staging`) |
 | Workflow | `deploy-pages.yml` | `deploy-staging-cloudflare.yml` |
 | GitHub Environment | `github-pages` | `staging` |
@@ -110,12 +110,11 @@ Changes go live automatically:
 
 ---
 
-## GitHub Pages setup (one-time, once the domain is registered)
+## GitHub Pages setup (one-time)
 
-1. `Settings → Pages`: Source = **GitHub Actions**; set Custom domain once `SITE_URL`'s domain is
-   registered at Namecheap; enable "Enforce HTTPS" after DNS propagates.
-2. Add a `CNAME` file at the repo root with the production domain (not yet added — domain not
-   registered yet).
+1. `Settings → Pages`: Source = **GitHub Actions**; set Custom domain to `machinemens.com`; enable
+   "Enforce HTTPS" after DNS propagates.
+2. `CNAME` file at the repo root holds the production domain (`machinemens.com`).
 3. Namecheap DNS: 4x `A` records to GitHub Pages IPs (`185.199.108-111.153`) for `@`, plus a `www`
    CNAME to `csguth.github.io.` — same pattern as gatoweb.nl.
 
@@ -123,8 +122,8 @@ Changes go live automatically:
 
 1. Create a Cloudflare Pages project named `machinemens-com-staging` (production branch: `staging`)
    in the same Cloudflare account used for gatoweb.nl.
-2. Attach the staging subdomain as a custom domain once the apex domain is registered and its DNS
-   is reachable (CNAME `staging` → `machinemens-com-staging.pages.dev`).
+2. Attach `staging.machinemens.com` as a custom domain (CNAME `staging` →
+   `machinemens-com-staging.pages.dev` at Namecheap).
 3. Create a `CLOUDFLARE_API_TOKEN` (Pages edit permission) and set it as a repo secret; set
    `CLOUDFLARE_ACCOUNT_ID` as a repo variable.
 
