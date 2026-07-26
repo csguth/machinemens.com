@@ -33,34 +33,42 @@ body.show-nl .en { display: none; }
 body.show-nl .nl { display: block; }
 body.show-nl .nl.inline { display: inline; }
 
-.link-btn {
-  display: block;
-  width: 100%;
-  text-align: center;
-  padding: 0.9rem 1.25rem;
+.icon-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
   border-radius: 9999px;
   border: 1px solid var(--gold);
   color: var(--cream);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  overflow: hidden;
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
 }
 
-.link-btn:hover,
-.link-btn:focus-visible {
+.icon-link svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: currentColor;
+}
+
+.icon-link img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.icon-link:hover,
+.icon-link:focus-visible {
   background-color: var(--gold);
   color: #000;
+  transform: translateY(-2px);
 }
 
-.link-btn-featured {
-  background-color: var(--gold);
-  color: #000;
-}
-
-.link-btn-featured:hover,
-.link-btn-featured:focus-visible {
+.icon-link-cover:hover,
+.icon-link-cover:focus-visible {
   background-color: transparent;
-  color: var(--cream);
+  transform: translateY(-2px);
 }
 
 .sr-only {
