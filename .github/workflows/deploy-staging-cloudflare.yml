@@ -3,13 +3,15 @@ name: Deploy Staging (Cloudflare Pages)
 on:
   push:
     branches: [staging]
+  pull_request:
+    branches: [staging]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: cloudflare-staging
+  group: cloudflare-staging-${{ github.event.pull_request.number || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -49,4 +51,4 @@ jobs:
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           projectName: machinemens-com-staging
           directory: site
-          branch: ${{ github.ref_name }}
+          branch: ${{ github.head_ref || github.ref_name }}
