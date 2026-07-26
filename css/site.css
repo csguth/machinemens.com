@@ -38,11 +38,14 @@ footer {
   z-index: 1;
 }
 
-/* EN/NL toggle: default show English, .show-nl flips it */
-.nl { display: none; }
-body.show-nl .en { display: none; }
-body.show-nl .nl { display: block; }
-body.show-nl .nl.inline { display: inline; }
+/* EN/NL/PT toggle: default (no JS) shows English; body[data-lang] overrides it */
+.nl, .pt { display: none; }
+body[data-lang="nl"] .en,
+body[data-lang="pt"] .en { display: none; }
+body[data-lang="nl"] .nl { display: block; }
+body[data-lang="pt"] .pt { display: block; }
+body[data-lang="nl"] .nl.inline,
+body[data-lang="pt"] .pt.inline { display: inline; }
 
 .icon-link {
   display: flex;

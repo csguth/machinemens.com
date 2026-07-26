@@ -7,7 +7,7 @@ Official website for **Machinemens** (black/death metal band), replacing the ban
 | Tool | Purpose | Cost |
 |---|---|---|
 | Plain HTML + Tailwind CDN | Website | Free |
-| Alpine.js CDN | EN/NL bilingual toggle | Free |
+| Alpine.js CDN | EN/NL/PT trilingual toggle | Free |
 | GitHub Pages | Production hosting + HTTPS | Free |
 | Cloudflare Pages | Staging hosting (`staging.<domain>`) | Free |
 | Domain registrar: Namecheap | Custom domain (`machinemens.com`, registered) | ~€10-15/year |
@@ -23,9 +23,9 @@ with the same mental model.
 ## Repository structure
 
 ```
-index.html           Public landing page (bilingual EN/NL) — v1 is a Linktree replacement
-css/site.css          Styles: brand colors, staging banner, EN/NL show/hide rules
-js/lang-toggle.js      Alpine component for the EN/NL toggle (localStorage-persisted)
+index.html           Public landing page (trilingual EN/NL/PT) — v1 is a Linktree replacement
+css/site.css          Styles: brand colors, staging banner, EN/NL/PT show/hide rules
+js/lang-toggle.js      Alpine component for the EN/NL/PT toggle (localStorage-persisted)
 js/tailwind-config.js  Tailwind Play CDN theme extension (brand colors)
 images/logo.png        Band logo (wordmark), also used as favicon
 robots.txt, sitemap.xml
@@ -99,8 +99,8 @@ Before first deploy, add these **repository or environment** variables
   `machinemens-com-staging`.
 
 Notes:
-- Language default: browser language detection (`nl` → Dutch) with fallback to English, or the
-  user's previous manual choice, persisted in `localStorage.machinemens_lang`.
+- Language default: browser language detection (`pt` → Portuguese, `nl` → Dutch) with fallback to
+  English, or the user's previous manual choice, persisted in `localStorage.machinemens_lang`.
 - Placeholders `__SITE_URL__` / `__ENV_LABEL__` in `index.html`, `robots.txt`, `sitemap.xml` are
   substituted with `sed` at deploy time — see each workflow's "Build site with injected variables" step.
 
@@ -142,7 +142,7 @@ simplicity), then implemented via a PR targeting `staging`.
 
 ## Roadmap / open work (post v1)
 
-v1 = Linktree replacement (this repo's initial content: logo + official links, bilingual EN/NL).
+v1 = Linktree replacement (this repo's initial content: logo + official links, trilingual EN/NL/PT).
 
 Planned next (tracked as issues on the board, not yet built):
 - Shop / e-commerce (merch)
