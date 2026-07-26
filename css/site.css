@@ -96,13 +96,6 @@ body.show-nl .nl.inline { display: inline; }
   overflow: hidden;
 }
 
-.link-card-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
 .link-card-cover-icon {
   display: flex;
   align-items: center;
