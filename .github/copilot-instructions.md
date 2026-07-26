@@ -15,9 +15,9 @@ mirroring the setup of `csguth/gatoweb.nl`. Read `README.md` first for the full 
   remove/weaken it without the user's explicit approval.
 - Placeholders `__SITE_URL__` / `__ENV_LABEL__` are substituted at deploy time by the workflows —
   never hardcode a real domain or env label into `index.html`/`robots.txt`/`sitemap.xml`.
-- i18n: every user-facing string needs both an `.en` and `.nl` element (see `index.html` for the
-  pattern), toggled by `js/lang-toggle.js` (`localStorage.machinemens_lang`). Don't introduce a
-  different i18n mechanism.
+- i18n: every user-facing string needs `.en`, `.nl` and `.pt` elements (see `index.html` for the
+  pattern), toggled by `js/lang-toggle.js` via the `data-lang` attribute on `<body>`
+  (`localStorage.machinemens_lang`). Don't introduce a different i18n mechanism.
 
 ## Project board workflow
 Every feature/issue is triaged onto the "Machinemens — Website Roadmap" GitHub Project **first**
