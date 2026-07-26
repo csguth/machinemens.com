@@ -29,24 +29,24 @@
     STAGING
   </div>
 
-  <header class="w-full max-w-md flex justify-end px-4 pt-4">
+  <header class="w-full max-w-md md:max-w-xl lg:max-w-2xl flex justify-end px-4 pt-4">
     <div class="flex gap-1 text-xs font-semibold tracking-wide" role="group" aria-label="Language selector">
       <button type="button" @click="lang = 'en'" :class="lang === 'en' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">EN</button>
       <button type="button" @click="lang = 'nl'" :class="lang === 'nl' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">NL</button>
     </div>
   </header>
 
-  <main class="w-full max-w-md flex flex-col items-center px-6 pb-16 pt-4">
-    <img src="images/logo.png" alt="Machinemens" class="w-40 h-40 object-contain mb-6" />
+  <main class="w-full max-w-md md:max-w-xl lg:max-w-2xl flex flex-col items-center px-6 pb-16 pt-4 md:pt-8">
+    <img src="images/logo.png" alt="Machinemens" class="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 object-contain mb-6 md:mb-8" />
 
-    <p class="en text-center text-cream/80 mb-8 italic">Surrender to the machine.</p>
-    <p class="nl text-center text-cream/80 mb-8 italic">Onderwerp je aan de machine.</p>
+    <p class="en text-center text-cream/80 mb-8 md:mb-10 italic md:text-lg">Surrender to the machine.</p>
+    <p class="nl text-center text-cream/80 mb-8 md:mb-10 italic md:text-lg">Onderwerp je aan de machine.</p>
 
-    <section class="w-full mb-8" aria-labelledby="featured-heading">
+    <section class="w-full mb-8 md:mb-10" aria-labelledby="featured-heading">
       <p class="en text-gold text-xs font-bold tracking-widest uppercase mb-2">New release</p>
       <p class="nl text-gold text-xs font-bold tracking-widest uppercase mb-2">Nieuwe release</p>
-      <h2 id="featured-heading" class="en text-cream font-semibold mb-3">A Batalha de Netuno</h2>
-      <h2 class="nl text-cream font-semibold mb-3">A Batalha de Netuno</h2>
+      <h2 id="featured-heading" class="en text-cream font-semibold mb-3 md:text-lg">A Batalha de Netuno</h2>
+      <h2 class="nl text-cream font-semibold mb-3 md:text-lg">A Batalha de Netuno</h2>
 
       <iframe class="w-full rounded-xl mb-4" src="https://open.spotify.com/embed/track/4REutcZF6ZoQlE2m0JpDKm?utm_source=generator&theme=0"
               width="100%" height="152" frameborder="0" allowfullscreen="" loading="lazy"
@@ -71,7 +71,7 @@
     <h2 class="en sr-only">Official links</h2>
     <h2 class="nl sr-only">Officiele links</h2>
 
-    <nav class="w-full flex flex-col gap-3" aria-label="Official links">
+    <nav class="w-full max-w-sm md:max-w-md flex flex-col gap-3 md:gap-4" aria-label="Official links">
       <a href="https://open.spotify.com/artist/4PLOLLNQZMjPZ9bcIpIHtp" target="_blank" rel="noopener noreferrer"
          class="link-btn link-btn-featured">Spotify</a>
 
@@ -89,7 +89,7 @@
     </nav>
   </main>
 
-  <footer class="w-full max-w-md text-center text-xs text-cream/40 pb-8">
+  <footer class="w-full max-w-md md:max-w-xl lg:max-w-2xl text-center text-xs text-cream/40 pb-8">
     <span>&copy; <span id="year"></span> Machinemens</span>
   </footer>
 
