@@ -1,13 +1,15 @@
 // Alpine component for the /music/ discography page.
 // Fetches data/releases.json and renders each release with a "Listen/Get"
-// toggle that reveals per-album store links (currently Spotify only; more
-// stores are added by extending the "stores" object per release in the JSON).
+// toggle that reveals per-album store links. Store keys are added by
+// extending the "stores" object per release in the JSON.
 function musicPage() {
   const storeLabels = {
     spotify: 'Spotify',
     appleMusic: 'Apple Music',
     youtubeMusic: 'YouTube Music',
     deezer: 'Deezer',
+    amazonMusic: 'Amazon Music',
+    tidal: 'Tidal',
     bandcamp: 'Bandcamp'
   };
 
