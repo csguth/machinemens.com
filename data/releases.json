@@ -13,6 +13,7 @@
     "stores": {
       "spotify": "https://open.spotify.com/album/2quJ7NtS1Y9U65VxK5LQHM",
       "appleMusic": "https://music.apple.com/us/album/a-batalha-de-netuno-single/6782590329",
+      "youtubeMusic": "https://music.youtube.com/playlist?list=OLAK5uy_kKNjjehFlfkuGLGESL2s46ZdP6RFVPhVU",
       "deezer": "https://www.deezer.com/album/1010548551"
     }
   },
@@ -26,6 +27,7 @@
     "stores": {
       "spotify": "https://open.spotify.com/album/2il7wxaRoBjZAN1o1ry538",
       "appleMusic": "https://music.apple.com/us/album/canvas-dyed-blood-demo-ii-ep/1740577270",
+      "youtubeMusic": "https://music.youtube.com/playlist?list=OLAK5uy_miaSMfVSDUYAEFWtV-8gLQr85tJlsYv3E",
       "deezer": "https://www.deezer.com/album/572300281"
     }
   },
@@ -39,6 +41,7 @@
     "stores": {
       "spotify": "https://open.spotify.com/album/45WCiD04pvegHbjenASC2o",
       "appleMusic": "https://music.apple.com/us/album/machinemens-demo-i-ep/1671939016",
+      "youtubeMusic": "https://music.youtube.com/playlist?list=OLAK5uy_mPk78eO_PrIjEmSz7a8av7hbHUD2hnaw4",
       "deezer": "https://www.deezer.com/album/407711427"
     }
   }
