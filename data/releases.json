@@ -1,0 +1,39 @@
+[
+  {
+    "id": "batalha-de-netuno",
+    "title": "A Batalha de Netuno",
+    "type": "Single",
+    "year": 2026,
+    "spotifyEmbed": "https://open.spotify.com/embed/track/4REutcZF6ZoQlE2m0JpDKm?utm_source=generator&theme=0",
+    "spotifyEmbedHeight": 152,
+    "video": {
+      "youtubeId": "u4RU6NkH-KQ",
+      "title": "Machinemens - A Batalha de Netuno (Official Lyric Video)"
+    },
+    "stores": {
+      "spotify": "https://open.spotify.com/track/4REutcZF6ZoQlE2m0JpDKm"
+    }
+  },
+  {
+    "id": "canvas-dyed-blood-demo-ii",
+    "title": "Canvas Dyed Blood - Demo II",
+    "type": "Demo",
+    "year": null,
+    "spotifyEmbed": "https://open.spotify.com/embed/album/2il7wxaRoBjZAN1o1ry538?utm_source=generator&theme=0",
+    "spotifyEmbedHeight": 352,
+    "stores": {
+      "spotify": "https://open.spotify.com/album/2il7wxaRoBjZAN1o1ry538"
+    }
+  },
+  {
+    "id": "demo-i",
+    "title": "Machinemens - Demo I",
+    "type": "Demo",
+    "year": null,
+    "spotifyEmbed": "https://open.spotify.com/embed/album/45WCiD04pvegHbjenASC2o?utm_source=generator&theme=0",
+    "spotifyEmbedHeight": 352,
+    "stores": {
+      "spotify": "https://open.spotify.com/album/45WCiD04pvegHbjenASC2o"
+    }
+  }
+]

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Machinemens — Music</title>
+  <meta name="description" content="Machinemens - full discography, live sessions and lyric videos." />
+  <link rel="canonical" href="__SITE_URL__/music/" />
+
+  <meta property="og:title" content="Machinemens — Music" />
+  <meta property="og:description" content="Machinemens - full discography, live sessions and lyric videos." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="__SITE_URL__/music/" />
+  <meta property="og:image" content="__SITE_URL__/images/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="Machinemens" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="nl_NL" />
+  <meta property="og:locale:alternate" content="pt_BR" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Machinemens — Music" />
+  <meta name="twitter:description" content="Machinemens - full discography, live sessions and lyric videos." />
+  <meta name="twitter:image" content="__SITE_URL__/images/og-image.jpg" />
+
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#000000" />
+
+  <link rel="icon" type="image/png" href="/images/logo.png" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/js/tailwind-config.js"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="/js/music-page.js"></script>
+
+  <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body data-env="__ENV_LABEL__" x-data="langToggle()" x-init="init()" class="bg-black text-cream min-h-screen flex flex-col items-center">
+
+  <div class="hero-bg" aria-hidden="true"></div>
+
+  <div id="env-banner" class="w-full text-center text-sm font-semibold py-2 bg-amber-500 text-black">
+    STAGING
+  </div>
+
+  <header class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex items-center justify-between px-4 pt-4 gap-4">
+    <nav class="flex gap-4 text-sm font-semibold" aria-label="Site navigation">
+      <a href="/" class="site-nav-link">
+        <span class="en">Home</span><span class="nl">Home</span><span class="pt">Início</span>
+      </a>
+      <a href="/music/" class="site-nav-link" aria-current="page">
+        <span class="en">Music</span><span class="nl">Muziek</span><span class="pt">Música</span>
+      </a>
+    </nav>
+    <div class="flex gap-1 text-xs font-semibold tracking-wide" role="group" aria-label="Language selector">
+      <button type="button" @click="lang = 'en'" :class="lang === 'en' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">EN</button>
+      <button type="button" @click="lang = 'nl'" :class="lang === 'nl' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">NL</button>
+      <button type="button" @click="lang = 'pt'" :class="lang === 'pt' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">PT</button>
+    </div>
+  </header>
+
+  <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex flex-col items-center px-6 pb-16 pt-6 md:pt-8" x-data="musicPage()">
+    <h1 class="en sr-only">Music</h1>
+    <h1 class="nl sr-only">Muziek</h1>
+    <h1 class="pt sr-only">Música</h1>
+
+    <p class="en w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Discography</p>
+    <p class="nl w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Discografie</p>
+    <p class="pt w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Discografia</p>
+
+    <section class="w-full flex flex-col gap-6 md:gap-8 mb-10 md:mb-12" aria-label="Discography">
+      <template x-for="release in releases" :key="release.id">
+        <article class="w-full" x-data="{ open: false }">
+          <h2 class="text-cream font-semibold mb-1 md:text-lg" x-text="release.title"></h2>
+          <p class="text-cream/50 text-xs mb-3" x-text="release.year ? release.type + ' · ' + release.year : release.type"></p>
+
+          <iframe class="w-full rounded-xl" :src="release.spotifyEmbed"
+                  width="100%" :height="release.spotifyEmbedHeight" frameborder="0" allowfullscreen="" loading="lazy"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" :title="release.title + ' on Spotify'"></iframe>
+
+          <template x-if="release.video">
+            <div class="w-full aspect-video rounded-xl overflow-hidden mt-3">
+              <iframe class="w-full h-full" :src="'https://www.youtube.com/embed/' + release.video.youtubeId" :title="release.video.title"
+                      frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </template>
+
+          <div class="relative mt-3">
+            <button type="button" @click="open = !open" class="listen-get-btn" :aria-expanded="open">
+              <span class="en">Listen / Get</span>
+              <span class="nl">Beluister / Koop</span>
+              <span class="pt">Ouvir / Obter</span>
+            </button>
+            <div x-show="open" x-cloak class="listen-get-menu">
+              <template x-for="[key, url] in Object.entries(release.stores)" :key="key">
+                <a :href="url" target="_blank" rel="noopener noreferrer" x-text="storeLabel(key)"></a>
+              </template>
+            </div>
+          </div>
+        </article>
+      </template>
+    </section>
+
+    <p class="en w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">Live sessions</p>
+    <p class="nl w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">Live sessions</p>
+    <p class="pt w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">Sessões ao vivo</p>
+    <h2 class="sr-only">Live sessions</h2>
+
+    <section class="w-full flex flex-col gap-4 mb-4" aria-label="Live sessions">
+      <div class="w-full aspect-video rounded-xl overflow-hidden">
+        <iframe class="w-full h-full" src="https://www.youtube.com/embed/wdf72zXkDjw" title="Machinemens - Red Planet (live in Anker Studio)"
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="w-full aspect-video rounded-xl overflow-hidden">
+        <iframe class="w-full h-full" src="https://www.youtube.com/embed/WfT-lLayGcY" title="Machinemens - Mens Agitat Molem (live in Anker Studio)"
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer class="w-full max-w-md md:max-w-2xl lg:max-w-4xl text-center text-xs text-cream/40 pb-8">
+    <span>&copy; <span id="year"></span> Machinemens</span>
+  </footer>
+
+  <script src="/js/lang-toggle.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

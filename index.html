@@ -62,7 +62,15 @@
     STAGING
   </div>
 
-  <header class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex justify-end px-4 pt-4">
+  <header class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex items-center justify-between px-4 pt-4 gap-4">
+    <nav class="flex gap-4 text-sm font-semibold" aria-label="Site navigation">
+      <a href="/" class="site-nav-link" aria-current="page">
+        <span class="en">Home</span><span class="nl">Home</span><span class="pt">Início</span>
+      </a>
+      <a href="/music/" class="site-nav-link">
+        <span class="en">Music</span><span class="nl">Muziek</span><span class="pt">Música</span>
+      </a>
+    </nav>
     <div class="flex gap-1 text-xs font-semibold tracking-wide" role="group" aria-label="Language selector">
       <button type="button" @click="lang = 'en'" :class="lang === 'en' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">EN</button>
       <button type="button" @click="lang = 'nl'" :class="lang === 'nl' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">NL</button>
@@ -158,45 +166,17 @@
               width="100%" height="152" frameborder="0" allowfullscreen="" loading="lazy"
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="A Batalha de Netuno on Spotify"></iframe>
 
-      <div class="w-full aspect-video rounded-xl overflow-hidden">
+      <div class="w-full aspect-video rounded-xl overflow-hidden mb-4">
         <iframe class="w-full h-full" src="https://www.youtube.com/embed/u4RU6NkH-KQ" title="Machinemens - A Batalha de Netuno (Official Lyric Video)"
                 frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
       </div>
-    </section>
 
-    <section class="w-full mb-8 md:mb-10" aria-labelledby="live-sessions-heading">
-      <p class="en text-gold text-xs font-bold tracking-widest uppercase mb-2">Live sessions</p>
-      <p class="nl text-gold text-xs font-bold tracking-widest uppercase mb-2">Live sessions</p>
-      <p class="pt text-gold text-xs font-bold tracking-widest uppercase mb-2">Sessões ao vivo</p>
-      <h2 id="live-sessions-heading" class="sr-only">Live sessions</h2>
-
-      <div class="w-full aspect-video mb-4 rounded-xl overflow-hidden">
-        <iframe class="w-full h-full" src="https://www.youtube.com/embed/wdf72zXkDjw" title="Machinemens - Red Planet (live in Anker Studio)"
-                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
-      </div>
-
-      <div class="w-full aspect-video rounded-xl overflow-hidden">
-        <iframe class="w-full h-full" src="https://www.youtube.com/embed/WfT-lLayGcY" title="Machinemens - Mens Agitat Molem (live in Anker Studio)"
-                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
-      </div>
-    </section>
-
-    <p class="en w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">Previous releases</p>
-    <p class="nl w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">Eerdere releases</p>
-    <p class="pt w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">Lançamentos anteriores</p>
-    <h2 class="sr-only">Previous releases</h2>
-
-    <section class="w-full flex flex-col gap-3 md:gap-4 mb-8 md:mb-10" aria-label="Previous releases">
-      <iframe class="w-full rounded-xl" src="https://open.spotify.com/embed/album/2il7wxaRoBjZAN1o1ry538?utm_source=generator&theme=0"
-              width="100%" height="352" frameborder="0" allowfullscreen="" loading="lazy"
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="Canvas Dyed Blood - Demo II on Spotify"></iframe>
-
-      <iframe class="w-full rounded-xl" src="https://open.spotify.com/embed/album/45WCiD04pvegHbjenASC2o?utm_source=generator&theme=0"
-              width="100%" height="352" frameborder="0" allowfullscreen="" loading="lazy"
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="Machinemens - Demo I on Spotify"></iframe>
+      <a href="/music/" class="listen-get-btn">
+        <span class="en">See full discography</span>
+        <span class="nl">Bekijk volledige discografie</span>
+        <span class="pt">Ver discografia completa</span>
+      </a>
     </section>
 
   </main>
