@@ -94,15 +94,27 @@ Ask the user for Status/Priority/labels if not specified — do not guess a prio
 
 ## Procedure: Post-Merge Board Update (mandatory)
 
-**Whenever a PR is merged into `staging` (or `main`) and its resulting deploy workflow
-succeeds**, immediately update the board for every issue that PR closes/addresses:
-1. Close the issue with a completion comment referencing the PR and the verified deploy
-   (staging/production URL checked): `gh issue close <N> --repo csguth/machinemens.com --reason completed --comment "..."`.
-2. Confirm the project item's Status — closing the issue usually auto-syncs it to `Done`
-   via the project's built-in workflow; verify with `gh project item-list 2 --owner csguth --format json`
-   and only run the manual `item-edit` Status update (Procedure above) if it didn't auto-sync.
-3. Do this before moving on to the next task — don't batch it for later or wait to be asked.
+**Whenever a PR is merged into `staging` or `main` and its resulting deploy workflow
+succeeds**, immediately update the board for every issue that PR closes/addresses — but the
+issue is only **closed** once the change has actually reached **production** (`main`):
 
+- **Merge into `staging` + successful staging deploy** (not yet promoted to `main`):
+  - Keep the issue **open**.
+  - Set/keep board Status = **In Progress** (`47fc9ee4`) — not Done.
+  - Add a comment noting it's live on staging (with the verified staging URL) and still
+    pending promotion to `main`/production.
+- **Promotion PR merged into `main` + successful production deploy**:
+  - **Close** the issue: `gh issue close <N> --repo csguth/machinemens.com --reason completed --comment "..."`
+    referencing the PR(s) and the verified production URL.
+  - Confirm the project item's Status flips to **Done** — closing usually auto-syncs it via
+    the project's built-in workflow; verify with `gh project item-list 2 --owner csguth --format json`
+    and only run the manual `item-edit` Status update if it didn't auto-sync.
+- If an issue is mistakenly closed/marked Done on a staging-only merge, reopen it
+  (`gh issue reopen <N> --repo csguth/machinemens.com --comment "..."`) and manually reset
+  board Status back to **In Progress** — reopening does **not** automatically revert the
+  project Status field, so that step must be done explicitly.
+
+Do this before moving on to the next task — don't batch it for later or wait to be asked.
 This applies to every merge+successful-deploy cycle going forward, not just one-off requests.
 
 ## Procedure: Board Report
