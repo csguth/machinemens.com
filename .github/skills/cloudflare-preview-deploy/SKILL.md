@@ -1,12 +1,15 @@
 ---
 name: cloudflare-preview-deploy
-description: 'Trigger, watch, and report the Cloudflare Pages staging preview deploy for machinemens.com. Use whenever a commit is pushed to a feature branch with an open PR into `staging`, or whenever the user asks to "dispare o preview" / "mande pra staging" / check a deploy.'
+description: 'Trigger, watch, and report the Cloudflare Pages staging preview deploy for machinemens.com. Use whenever a PR is opened targeting `staging`, whenever a commit is pushed to a feature branch with an open PR into `staging`, or whenever the user asks to "dispare o preview" / "mande pra staging" / check a deploy.'
 argument-hint: '[branch name or PR number]'
 ---
 
 # Cloudflare Preview Deploy (machinemens.com)
 
 ## When to Use
+- **Immediately after opening a PR targeting `staging`** (via `gh pr create` or the
+  `create-pr`/`create-draft-pr` skills) — always watch the resulting preview deploy and report
+  the link, without waiting for the user to ask.
 - After pushing new commits to a feature branch that has an open PR targeting `staging`.
 - Whenever the user asks to trigger/check a preview deploy.
 - After merging a PR into `staging` (auto-deploys to `staging.machinemens.com`).
