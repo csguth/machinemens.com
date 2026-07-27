@@ -92,6 +92,19 @@ Ask the user for Status/Priority/labels if not specified — do not guess a prio
 1. Find the item ID: `gh project item-list 2 --owner csguth --format json` and match by issue title/number.
 2. Run the `item-edit` command from step 3 above with the new Status option ID.
 
+## Procedure: Post-Merge Board Update (mandatory)
+
+**Whenever a PR is merged into `staging` (or `main`) and its resulting deploy workflow
+succeeds**, immediately update the board for every issue that PR closes/addresses:
+1. Close the issue with a completion comment referencing the PR and the verified deploy
+   (staging/production URL checked): `gh issue close <N> --repo csguth/machinemens.com --reason completed --comment "..."`.
+2. Confirm the project item's Status — closing the issue usually auto-syncs it to `Done`
+   via the project's built-in workflow; verify with `gh project item-list 2 --owner csguth --format json`
+   and only run the manual `item-edit` Status update (Procedure above) if it didn't auto-sync.
+3. Do this before moving on to the next task — don't batch it for later or wait to be asked.
+
+This applies to every merge+successful-deploy cycle going forward, not just one-off requests.
+
 ## Procedure: Board Report
 
 ```
