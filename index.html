@@ -70,6 +70,9 @@
       <a href="/music/" class="site-nav-link">
         <span class="en">Music</span><span class="nl">Muziek</span><span class="pt">Música</span>
       </a>
+      <a href="/shows/" class="site-nav-link">
+        <span class="en">Shows</span><span class="nl">Shows</span><span class="pt">Shows</span>
+      </a>
     </nav>
     <div class="flex gap-1 text-xs font-semibold tracking-wide" role="group" aria-label="Language selector">
       <button type="button" @click="lang = 'en'" :class="lang === 'en' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">EN</button>
@@ -155,12 +158,41 @@
       </a>
     </section>
 
+    <section class="w-full mb-8 md:mb-10" x-data="showsTeaser()" aria-labelledby="shows-heading">
+      <p class="en text-gold text-xs font-bold tracking-widest uppercase mb-2">Next show</p>
+      <p class="nl text-gold text-xs font-bold tracking-widest uppercase mb-2">Volgende show</p>
+      <p class="pt text-gold text-xs font-bold tracking-widest uppercase mb-2">Próximo show</p>
+      <h2 id="shows-heading" class="sr-only">Next show</h2>
+
+      <template x-if="nextShow">
+        <article class="show-card mb-4">
+          <p class="show-card-date" x-text="formatDate(nextShow.date)"></p>
+          <h3 class="show-card-title" x-text="nextShow.title"></h3>
+          <p class="show-card-venue" x-text="nextShow.venue + ' — ' + nextShow.address"></p>
+        </article>
+      </template>
+      <template x-if="!nextShow">
+        <p class="text-cream/60 text-sm mb-4">
+          <span class="en">No shows scheduled at the moment.</span>
+          <span class="nl">Momenteel geen shows gepland.</span>
+          <span class="pt">Nenhum show agendado no momento.</span>
+        </p>
+      </template>
+
+      <a href="/shows/" class="listen-get-btn">
+        <span class="en">See all shows</span>
+        <span class="nl">Bekijk alle shows</span>
+        <span class="pt">Ver todos os shows</span>
+      </a>
+    </section>
+
   </main>
 
   <footer class="w-full max-w-md md:max-w-2xl lg:max-w-4xl text-center text-xs text-cream/40 pb-8">
     <span>&copy; <span id="year"></span> Machinemens</span>
   </footer>
 
+  <script src="js/shows-teaser.js"></script>
   <script src="js/lang-toggle.js"></script>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
