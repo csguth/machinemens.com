@@ -23,10 +23,17 @@ with the same mental model.
 ## Repository structure
 
 ```
-index.html           Public landing page (trilingual EN/NL/PT) — v1 is a Linktree replacement
-css/site.css          Styles: brand colors, staging banner, EN/NL/PT show/hide rules
+index.html            Homepage (trilingual EN/NL/PT) — hub with social links, bookings/contact,
+                       and a teaser of the latest release (full discography lives at /music/)
+music/index.html       /music/ — full discography (all releases with per-album "Listen/Get"
+                       store links) + live sessions
+data/releases.json     Discography data consumed by music/index.html (Alpine fetch + x-for) —
+                       add a new release here, including its per-store links, when it drops
+css/site.css          Styles: brand colors, staging banner, EN/NL/PT show/hide rules, shared
+                       nav/listen-get button styles
 js/lang-toggle.js      Alpine component for the EN/NL/PT toggle (localStorage-persisted)
 js/tailwind-config.js  Tailwind Play CDN theme extension (brand colors)
+js/music-page.js       Alpine component for /music/ (fetches data/releases.json)
 images/logo.png        Band logo (wordmark), also used as favicon
 robots.txt, sitemap.xml
 .github/workflows/

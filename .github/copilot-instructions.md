@@ -38,8 +38,12 @@ reuses the `staging` GitHub Environment's config, so treat preview data as share
 None of these are stored in the repo; if a workflow fails with "Missing variable", it's a one-time
 GitHub Settings configuration gap, not a code bug — tell the user which one is missing.
 
-## Current state (v1)
-`index.html` is a Linktree replacement: logo + a handful of official links (Spotify, YouTube,
-Instagram) copied from https://linktr.ee/machinemens. Future features (shop, video player, shows
-agenda, contact form) are tracked on the project board, not yet implemented — don't build them
-speculatively without an issue/plan first.
+## Current state (v2 — multi-page restructure in progress)
+The site is moving from a single-page Linktree replacement to a multi-page architecture
+(tracked as epic #47): `/` (home hub with teasers) + dedicated pages `/music/`, `/shows/`,
+`/news/`, `/shop/`. Each new page duplicates the shared header/nav/footer markup (zero-build,
+no includes) and must replicate the i18n (en/nl/pt) pattern. `/music/` is data-driven from
+`data/releases.json` (Alpine `fetch` + `x-for`) so new releases don't require new markup;
+`/shows/` and `/news/` should follow the same data-driven approach when implemented. Remaining
+pages/features are tracked on the project board — don't build them speculatively without an
+issue/plan first.
