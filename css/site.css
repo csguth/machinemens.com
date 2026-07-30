@@ -183,6 +183,38 @@ body[data-lang="pt"] .pt.inline { display: inline; }
   background-color: rgba(201, 162, 75, 0.12);
 }
 
+.show-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 2px solid var(--gold);
+}
+
+.show-card-date {
+  color: var(--gold);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.show-card-title {
+  color: var(--cream);
+  font-weight: 600;
+}
+
+.show-card-venue {
+  color: rgba(245, 239, 227, 0.65);
+  font-size: 0.8125rem;
+}
+
+.show-card.is-past {
+  opacity: 0.55;
+}
+
 [x-cloak] {
   display: none !important;
 }
