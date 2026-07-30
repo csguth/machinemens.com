@@ -5,8 +5,17 @@
   <title>Machinemens</title>
   <meta name="robots" content="noindex" />
   <link rel="canonical" href="{{ .Permalink }}" />
+{{- $segments := split (strings.Trim .Permalink "/") "/" }}
+{{- if gt (len $segments) 1 }}
+  {{/* Legacy pre-i18n section URLs (e.g. /music/, /shows/) — redirect to the
+       English version. Search engines treat a 0-second meta refresh + canonical
+       as a permanent redirect, so the old ranking follows to the new URL. */}}
+  <meta http-equiv="refresh" content="0; url={{ .Permalink }}" />
+{{- else }}
+  {{/* Bare root "/" — pick the visitor's language and send them to /en|nl|pt/. */}}
   <noscript><meta http-equiv="refresh" content="0; url={{ .Permalink }}" /></noscript>
   <script src="/js/root-redirect.js"></script>
+{{- end }}
 </head>
 <body></body>
 </html>
