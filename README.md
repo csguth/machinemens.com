@@ -2,40 +2,72 @@
 
 Official website for **Machinemens** (black/death metal band), replacing the band's Linktree.
 
-## Stack (zero build process, all free/cheap)
+## Stack (Hugo static site + CDN runtime, all free/cheap)
 
 | Tool | Purpose | Cost |
 |---|---|---|
-| Plain HTML + Tailwind CDN | Website | Free |
-| Alpine.js CDN | EN/NL/PT trilingual toggle | Free |
+| Hugo (SSG) | Builds the static HTML from `layouts/` + `content/` + `static/` | Free |
+| Tailwind CDN | Styling (Play CDN, no build step for CSS) | Free |
+| Alpine.js CDN | EN/NL/PT trilingual toggle + data-driven pages | Free |
 | GitHub Pages | Production hosting + HTTPS | Free |
 | Cloudflare Pages | Staging hosting (`staging.<domain>`) | Free |
 | Domain registrar: Namecheap | Custom domain (`machinemens.com`, registered) | ~€10-15/year |
 
 **Monthly cost: €0** (just the domain renewal once a year)
 
-This repo intentionally mirrors the setup of [csguth/gatoweb.nl](https://github.com/csguth/gatoweb.nl)
-(branching model, staging/production split, i18n pattern) so both projects are easy to maintain
-with the same mental model.
+Hugo is used purely as a **build/templating tool** to de-duplicate the shared head/header/footer
+markup: the runtime is still a plain static site with **client-side i18n** (see below). URLs
+(`/`, `/music/`, `/shows/`) and behaviour are unchanged. This repo intentionally mirrors the
+setup of [csguth/gatoweb.nl](https://github.com/csguth/gatoweb.nl) (branching model,
+staging/production split, i18n pattern) so both projects are easy to maintain with the same
+mental model.
+
+---
+
+## Building locally
+
+Install [Hugo extended](https://gohugo.io/installation/), then from the repo root:
+
+```
+hugo          # build the static site into site/ (git-ignored)
+hugo server   # live-preview at http://localhost:1313
+```
+
+The CI workflows install a pinned Hugo version and run `hugo` before substituting the
+`__SITE_URL__` / `__ENV_LABEL__` placeholders with `sed`.
 
 ---
 
 ## Repository structure
 
 ```
-index.html            Homepage (trilingual EN/NL/PT) — hub with social links, bookings/contact,
-                       and a teaser of the latest release (full discography lives at /music/)
-music/index.html       /music/ — full discography (all releases with per-album "Listen/Get"
-                       store links) + live sessions
-data/releases.json     Discography data consumed by music/index.html (Alpine fetch + x-for) —
-                       add a new release here, including its per-store links, when it drops
-css/site.css          Styles: brand colors, staging banner, EN/NL/PT show/hide rules, shared
-                       nav/listen-get button styles
-js/lang-toggle.js      Alpine component for the EN/NL/PT toggle (localStorage-persisted)
-js/tailwind-config.js  Tailwind Play CDN theme extension (brand colors)
-js/music-page.js       Alpine component for /music/ (fetches data/releases.json)
-images/logo.png        Band logo (wordmark), also used as favicon
-robots.txt, sitemap.xml
+hugo.toml              Hugo config (publishDir = site, disables generated sitemap/robots/RSS)
+layouts/
+  _default/baseof.html  Shared page skeleton (head + body + header/footer partials + blocks)
+  partials/head.html    <head> (meta/OG/Twitter/JSON-LD-on-home) — per-page title/description
+  partials/header.html  Staging banner + nav + EN/NL/PT language selector (aria-current dynamic)
+  partials/footer.html  Footer
+  index.html            Home page "main" block (hub: social links, bookings/contact, teasers)
+  music/list.html       /music/ "main" block (full discography + live sessions)
+  shows/list.html       /shows/ "main" block (upcoming + past shows)
+content/
+  _index.md             Home front matter (title/description)
+  music/_index.md       /music/ front matter
+  shows/_index.md       /shows/ front matter
+static/                 Copied verbatim into the build output (served as-is):
+  css/site.css          Styles: brand colors, staging banner, EN/NL/PT show/hide rules, shared
+                        nav/listen-get button styles
+  js/lang-toggle.js     Alpine component for the EN/NL/PT toggle (localStorage-persisted)
+  js/tailwind-config.js Tailwind Play CDN theme extension (brand colors)
+  js/music-page.js      Alpine component for /music/ (fetches data/releases.json)
+  js/shows-page.js      Alpine component for /shows/ (fetches data/shows.json)
+  js/shows-teaser.js    Alpine component for the home "next show" teaser
+  data/releases.json    Discography data consumed by /music/ (Alpine fetch + x-for) — add a new
+                        release here, including its per-store links, when it drops
+  data/shows.json       Shows/agenda data consumed by /shows/ and the home teaser
+  images/logo.png       Band logo (wordmark), also used as favicon
+  robots.txt, sitemap.xml, CNAME
+site/                   Hugo build output (git-ignored; what actually gets deployed)
 .github/workflows/
   deploy-pages.yml               Production deploy -> GitHub Pages (push to main)
   deploy-staging-cloudflare.yml  Staging deploy -> Cloudflare Pages (push to staging)
@@ -112,8 +144,10 @@ Before first deploy, add these **repository or environment** variables
 Notes:
 - Language default: browser language detection (`pt` → Portuguese, `nl` → Dutch) with fallback to
   English, or the user's previous manual choice, persisted in `localStorage.machinemens_lang`.
-- Placeholders `__SITE_URL__` / `__ENV_LABEL__` in `index.html`, `robots.txt`, `sitemap.xml` are
-  substituted with `sed` at deploy time — see each workflow's "Build site with injected variables" step.
+- Placeholders `__SITE_URL__` / `__ENV_LABEL__` (in the Hugo layouts, `static/robots.txt`,
+  `static/sitemap.xml`) are kept verbatim in the generated HTML and substituted with `sed` at
+  deploy time — see each workflow's "Build site with Hugo and inject variables" step, which runs
+  `hugo` first and then the `sed` substitution.
 
 Changes go live automatically:
 - push/merge to `staging` → deploys to the staging Cloudflare Pages URL in ~1-2 minutes

@@ -1,89 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Machinemens</title>
-  <meta name="description" content="Machinemens - official links: music, videos and socials." />
-  <link rel="canonical" href="__SITE_URL__/" />
-
-  <meta property="og:title" content="Machinemens" />
-  <meta property="og:description" content="Machinemens - official links: music, videos and socials." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="__SITE_URL__/" />
-  <meta property="og:image" content="__SITE_URL__/images/og-image.jpg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:site_name" content="Machinemens" />
-  <meta property="og:locale" content="en_US" />
-  <meta property="og:locale:alternate" content="nl_NL" />
-  <meta property="og:locale:alternate" content="pt_BR" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Machinemens" />
-  <meta name="twitter:description" content="Machinemens - official links: music, videos and socials." />
-  <meta name="twitter:image" content="__SITE_URL__/images/og-image.jpg" />
-
-  <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#000000" />
-
-  <link rel="icon" type="image/png" href="images/logo.png" />
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "MusicGroup",
-    "name": "Machinemens",
-    "url": "__SITE_URL__/",
-    "logo": "__SITE_URL__/images/logo.png",
-    "genre": "Black/Death Metal",
-    "sameAs": [
-      "https://open.spotify.com/artist/4PLOLLNQZMjPZ9bcIpIHtp",
-      "https://www.youtube.com/@machinemens",
-      "https://instagram.com/machinemens",
-      "https://music.youtube.com/@machinemens",
-      "https://www.deezer.com/en/artist/201767097",
-      "https://music.apple.com/us/artist/machinemens/1671869315"
-    ]
-  }
-  </script>
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="js/tailwind-config.js"></script>
-
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-  <link rel="stylesheet" href="css/site.css" />
-</head>
-<body data-env="__ENV_LABEL__" x-data="langToggle()" x-init="init()" class="bg-black text-cream min-h-screen flex flex-col items-center">
-
-  <div class="hero-bg" aria-hidden="true"></div>
-
-  <div id="env-banner" class="w-full text-center text-sm font-semibold py-2 bg-amber-500 text-black">
-    STAGING
-  </div>
-
-  <header class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex items-center justify-between px-4 pt-4 gap-4">
-    <nav class="flex gap-4 text-sm font-semibold" aria-label="Site navigation">
-      <a href="/" class="site-nav-link" aria-current="page">
-        <span class="en">Home</span><span class="nl">Home</span><span class="pt">Início</span>
-      </a>
-      <a href="/music/" class="site-nav-link">
-        <span class="en">Music</span><span class="nl">Muziek</span><span class="pt">Música</span>
-      </a>
-      <a href="/shows/" class="site-nav-link">
-        <span class="en">Shows</span><span class="nl">Shows</span><span class="pt">Shows</span>
-      </a>
-    </nav>
-    <div class="flex gap-1 text-xs font-semibold tracking-wide" role="group" aria-label="Language selector">
-      <button type="button" @click="lang = 'en'" :class="lang === 'en' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">EN</button>
-      <button type="button" @click="lang = 'nl'" :class="lang === 'nl' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">NL</button>
-      <button type="button" @click="lang = 'pt'" :class="lang === 'pt' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">PT</button>
-    </div>
-  </header>
-
+{{ define "main" }}
   <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex flex-col items-center px-6 pb-16 pt-4 md:pt-8">
     <h1 class="sr-only">Machinemens</h1>
-    <img src="images/logo.png" alt="Machinemens" class="w-72 md:w-96 lg:w-[28rem] h-auto object-contain mb-6 md:mb-8" />
+    <img src="/images/logo.png" alt="Machinemens" class="w-72 md:w-96 lg:w-[28rem] h-auto object-contain mb-6 md:mb-8" />
 
     <p class="en text-center text-cream/80 mb-6 md:mb-8 italic md:text-lg">Surrender to the machine.</p>
     <p class="nl text-center text-cream/80 mb-6 md:mb-8 italic md:text-lg">Onderwerp je aan de machine.</p>
@@ -187,13 +105,7 @@
     </section>
 
   </main>
-
-  <footer class="w-full max-w-md md:max-w-2xl lg:max-w-4xl text-center text-xs text-cream/40 pb-8">
-    <span>&copy; <span id="year"></span> Machinemens</span>
-  </footer>
-
-  <script src="js/shows-teaser.js"></script>
-  <script src="js/lang-toggle.js"></script>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
-</body>
-</html>
+{{ end }}
+{{ define "scripts" }}
+  <script src="/js/shows-teaser.js"></script>
+{{ end }}

@@ -1,0 +1,22 @@
+  <div id="env-banner" class="w-full text-center text-sm font-semibold py-2 bg-amber-500 text-black">
+    STAGING
+  </div>
+
+  <header class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex items-center justify-between px-4 pt-4 gap-4">
+    <nav class="flex gap-4 text-sm font-semibold" aria-label="Site navigation">
+      <a href="/" class="site-nav-link"{{ if .IsHome }} aria-current="page"{{ end }}>
+        <span class="en">Home</span><span class="nl">Home</span><span class="pt">Início</span>
+      </a>
+      <a href="/music/" class="site-nav-link"{{ if eq .Section "music" }} aria-current="page"{{ end }}>
+        <span class="en">Music</span><span class="nl">Muziek</span><span class="pt">Música</span>
+      </a>
+      <a href="/shows/" class="site-nav-link"{{ if eq .Section "shows" }} aria-current="page"{{ end }}>
+        <span class="en">Shows</span><span class="nl">Shows</span><span class="pt">Shows</span>
+      </a>
+    </nav>
+    <div class="flex gap-1 text-xs font-semibold tracking-wide" role="group" aria-label="Language selector">
+      <button type="button" @click="lang = 'en'" :class="lang === 'en' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">EN</button>
+      <button type="button" @click="lang = 'nl'" :class="lang === 'nl' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">NL</button>
+      <button type="button" @click="lang = 'pt'" :class="lang === 'pt' ? 'text-gold border-gold' : 'text-cream/50 border-transparent'" class="px-2 py-1 border rounded">PT</button>
+    </div>
+  </header>

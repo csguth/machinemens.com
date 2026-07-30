@@ -1,0 +1,24 @@
+# Hugo config. The site is still deployed as plain static files: Hugo is only
+# used as a build/templating tool to de-duplicate the shared head/header/footer
+# markup across pages. Behaviour, URLs and client-side i18n are unchanged.
+#
+# publishDir = "site" so the existing deploy workflows keep deploying `site/`,
+# and the `__SITE_URL__` / `__ENV_LABEL__` placeholders are still substituted
+# with `sed` at deploy time (kept verbatim in the generated HTML).
+baseURL = "/"
+languageCode = "en"
+title = "Machinemens"
+publishDir = "site"
+
+# Keep the generated markup clean / identical to the previous hand-authored
+# pages (no Hugo generator <meta> tag advertised in <head>).
+disableHugoGeneratorInject = true
+
+# We ship our own hand-authored robots.txt and sitemap.xml (with the
+# __SITE_URL__ placeholder) as static files, so disable Hugo's generated ones
+# and the unused kinds to keep the output identical to the previous site.
+enableRobotsTXT = false
+disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
+
+[build]
+  writeStats = false
