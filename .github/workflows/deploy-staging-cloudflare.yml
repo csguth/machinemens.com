@@ -40,7 +40,7 @@ jobs:
 
       - name: Build site with Hugo and inject variables
         run: |
-          hugo --gc
+          hugo --gc --minify
 
           while IFS= read -r -d '' f; do
             sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" "$f"

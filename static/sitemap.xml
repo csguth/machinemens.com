@@ -1,21 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- Home -->
   <url>
-    <loc>__SITE_URL__/</loc>
+    <loc>__SITE_URL__/en/</loc>
     <lastmod>2026-07-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/" />
   </url>
   <url>
-    <loc>__SITE_URL__/music/</loc>
+    <loc>__SITE_URL__/nl/</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/" />
+  </url>
+  <url>
+    <loc>__SITE_URL__/pt/</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/" />
+  </url>
+  <!-- Music -->
+  <url>
+    <loc>__SITE_URL__/en/music/</loc>
     <lastmod>2026-07-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/music/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/music/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/music/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/music/" />
   </url>
   <url>
-    <loc>__SITE_URL__/shows/</loc>
+    <loc>__SITE_URL__/nl/music/</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/music/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/music/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/music/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/music/" />
+  </url>
+  <url>
+    <loc>__SITE_URL__/pt/music/</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/music/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/music/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/music/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/music/" />
+  </url>
+  <!-- Shows -->
+  <url>
+    <loc>__SITE_URL__/en/shows/</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/shows/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/shows/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/shows/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/shows/" />
+  </url>
+  <url>
+    <loc>__SITE_URL__/nl/shows/</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/shows/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/shows/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/shows/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/shows/" />
+  </url>
+  <url>
+    <loc>__SITE_URL__/pt/shows/</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/shows/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/shows/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/shows/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/shows/" />
   </url>
 </urlset>

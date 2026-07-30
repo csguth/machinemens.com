@@ -1,12 +1,8 @@
 {{ define "main" }}
   <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex flex-col items-center px-6 pb-16 pt-6 md:pt-8" x-data="musicPage()">
-    <h1 class="en sr-only">Music</h1>
-    <h1 class="nl sr-only">Muziek</h1>
-    <h1 class="pt sr-only">Música</h1>
+    <h1 class="sr-only">{{ i18n "music_title" }}</h1>
 
-    <p class="en w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Discography</p>
-    <p class="nl w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Discografie</p>
-    <p class="pt w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Discografia</p>
+    <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "discography" }}</p>
 
     <section class="w-full flex flex-col gap-6 md:gap-8 mb-10 md:mb-12" aria-label="Latest release">
       <template x-for="release in releases.slice(0, 1)" :key="release.id">
@@ -27,11 +23,7 @@
           </template>
 
           <div class="relative mt-3">
-            <button type="button" @click="open = !open" class="listen-get-btn" :aria-expanded="open">
-              <span class="en">Listen / Get</span>
-              <span class="nl">Beluister / Koop</span>
-              <span class="pt">Ouvir / Obter</span>
-            </button>
+            <button type="button" @click="open = !open" class="listen-get-btn" :aria-expanded="open">{{ i18n "listen_get" }}</button>
             <div x-show="open" x-cloak class="listen-get-menu">
               <template x-for="[key, url] in Object.entries(release.stores)" :key="key">
                 <a :href="url" target="_blank" rel="noopener noreferrer" x-text="storeLabel(key)"></a>
@@ -42,10 +34,8 @@
       </template>
     </section>
 
-    <p class="en w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">Live sessions</p>
-    <p class="nl w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">Live sessions</p>
-    <p class="pt w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">Sessões ao vivo</p>
-    <h2 class="sr-only">Live sessions</h2>
+    <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "live_sessions" }}</p>
+    <h2 class="sr-only">{{ i18n "live_sessions" }}</h2>
 
     <section class="w-full flex flex-col gap-4 mb-10 md:mb-12" aria-label="Live sessions">
       <div class="w-full aspect-video rounded-xl overflow-hidden">
@@ -61,10 +51,8 @@
       </div>
     </section>
 
-    <p class="en w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Earlier releases</p>
-    <p class="nl w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Eerdere releases</p>
-    <p class="pt w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Lançamentos anteriores</p>
-    <h2 class="sr-only">Earlier releases</h2>
+    <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "earlier_releases" }}</p>
+    <h2 class="sr-only">{{ i18n "earlier_releases" }}</h2>
 
     <section class="w-full flex flex-col gap-6 md:gap-8 mb-4" aria-label="Earlier releases">
       <template x-for="release in releases.slice(1)" :key="release.id">
@@ -85,11 +73,7 @@
           </template>
 
           <div class="relative mt-3">
-            <button type="button" @click="open = !open" class="listen-get-btn" :aria-expanded="open">
-              <span class="en">Listen / Get</span>
-              <span class="nl">Beluister / Koop</span>
-              <span class="pt">Ouvir / Obter</span>
-            </button>
+            <button type="button" @click="open = !open" class="listen-get-btn" :aria-expanded="open">{{ i18n "listen_get" }}</button>
             <div x-show="open" x-cloak class="listen-get-menu">
               <template x-for="[key, url] in Object.entries(release.stores)" :key="key">
                 <a :href="url" target="_blank" rel="noopener noreferrer" x-text="storeLabel(key)"></a>

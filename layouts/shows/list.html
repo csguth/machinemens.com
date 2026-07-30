@@ -1,20 +1,12 @@
 {{ define "main" }}
   <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex flex-col items-center px-6 pb-16 pt-6 md:pt-8" x-data="showsPage()">
-    <h1 class="en sr-only">Shows</h1>
-    <h1 class="nl sr-only">Shows</h1>
-    <h1 class="pt sr-only">Shows</h1>
+    <h1 class="sr-only">{{ i18n "shows_title" }}</h1>
 
-    <p class="en w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Upcoming shows</p>
-    <p class="nl w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Komende shows</p>
-    <p class="pt w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Próximos shows</p>
+    <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "upcoming_shows" }}</p>
 
     <section class="w-full flex flex-col gap-4 mb-10 md:mb-12" aria-label="Upcoming shows">
       <template x-if="upcoming.length === 0">
-        <p class="text-cream/60 text-sm">
-          <span class="en">No shows scheduled at the moment. Check back soon.</span>
-          <span class="nl">Momenteel geen shows gepland. Kom snel terug.</span>
-          <span class="pt">Nenhum show agendado no momento. Volte em breve.</span>
-        </p>
+        <p class="text-cream/60 text-sm">{{ i18n "no_shows_long" }}</p>
       </template>
       <template x-for="show in upcoming" :key="show.id">
         <article class="show-card">
@@ -22,11 +14,7 @@
           <h2 class="show-card-title" x-text="show.title"></h2>
           <p class="show-card-venue" x-text="show.venue + ' — ' + show.address"></p>
           <template x-if="show.ticketUrl">
-            <a :href="show.ticketUrl" target="_blank" rel="noopener noreferrer" class="listen-get-btn mt-1 self-start">
-              <span class="en">Tickets</span>
-              <span class="nl">Tickets</span>
-              <span class="pt">Ingressos</span>
-            </a>
+            <a :href="show.ticketUrl" target="_blank" rel="noopener noreferrer" class="listen-get-btn mt-1 self-start">{{ i18n "tickets" }}</a>
           </template>
         </article>
       </template>
@@ -34,10 +22,8 @@
 
     <template x-if="past.length > 0">
       <div class="w-full">
-        <p class="en w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Past shows</p>
-        <p class="nl w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Eerdere shows</p>
-        <p class="pt w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">Shows anteriores</p>
-        <h2 class="sr-only">Past shows</h2>
+        <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "past_shows" }}</p>
+        <h2 class="sr-only">{{ i18n "past_shows" }}</h2>
 
         <section class="w-full flex flex-col gap-4 mb-4" aria-label="Past shows">
           <template x-for="show in past" :key="show.id">

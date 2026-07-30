@@ -4,6 +4,14 @@
   <meta name="description" content="{{ .Description }}" />
   <link rel="canonical" href="__SITE_URL__{{ .RelPermalink }}" />
 
+{{- $locales := dict "en" "en_US" "nl" "nl_NL" "pt" "pt_BR" }}
+{{- range .AllTranslations }}
+  <link rel="alternate" hreflang="{{ .Language.Lang }}" href="__SITE_URL__{{ .RelPermalink }}" />
+{{- if eq .Language.Lang "en" }}
+  <link rel="alternate" hreflang="x-default" href="__SITE_URL__{{ .RelPermalink }}" />
+{{- end }}
+{{- end }}
+
   <meta property="og:title" content="{{ .Title }}" />
   <meta property="og:description" content="{{ .Description }}" />
   <meta property="og:type" content="website" />
@@ -12,9 +20,10 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:site_name" content="Machinemens" />
-  <meta property="og:locale" content="en_US" />
-  <meta property="og:locale:alternate" content="nl_NL" />
-  <meta property="og:locale:alternate" content="pt_BR" />
+  <meta property="og:locale" content="{{ index $locales .Language.Lang }}" />
+{{- range .Translations }}
+  <meta property="og:locale:alternate" content="{{ index $locales .Language.Lang }}" />
+{{- end }}
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{{ .Title }}" />
   <meta name="twitter:description" content="{{ .Description }}" />

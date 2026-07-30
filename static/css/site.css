@@ -38,15 +38,6 @@ footer {
   z-index: 1;
 }
 
-/* EN/NL/PT toggle: default (no JS) shows English; body[data-lang] overrides it */
-.nl, .pt { display: none; }
-body[data-lang="nl"] .en,
-body[data-lang="pt"] .en { display: none; }
-body[data-lang="nl"] .nl { display: block; }
-body[data-lang="pt"] .pt { display: block; }
-body[data-lang="nl"] .nl.inline,
-body[data-lang="pt"] .pt.inline { display: inline; }
-
 .icon-link {
   display: flex;
   align-items: center;
