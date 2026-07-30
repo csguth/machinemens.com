@@ -39,6 +39,8 @@ robots.txt, sitemap.xml
 .github/workflows/
   deploy-pages.yml               Production deploy -> GitHub Pages (push to main)
   deploy-staging-cloudflare.yml  Staging deploy -> Cloudflare Pages (push to staging)
+  deploy-preview-cloudflare.yml  PR preview -> Cloudflare Pages (pull_request into staging),
+                                  posts a sticky comment with the preview URL on the PR
   guard-main-merges.yml          Enforces the staging -> main promotion order (see below)
 .github/skills/github-project-management/SKILL.md
                         Copilot skill with the exact gh CLI commands/IDs to manage the
@@ -73,6 +75,8 @@ git checkout staging && git pull
 git checkout -b feature/my-change
 # ... work, commit ...
 # Open a PR: feature/my-change -> staging
+#   -> deploy-preview-cloudflare.yml deploys an isolated PR preview and posts
+#      the URL as a sticky comment on the PR automatically
 # Merge -> auto-deploys to staging (Cloudflare Pages)
 # Test manually on staging
 # Open a PR: staging -> main  (use a regular merge, NEVER squash/rebase,
@@ -101,9 +105,9 @@ Before first deploy, add these **repository or environment** variables
 - `ENV_LABEL` — `production` or `staging`, drives the visible staging banner (`data-env` attribute)
 
 ### Internal / infra (staging only)
-- `CLOUDFLARE_ACCOUNT_ID` (repo variable) and `CLOUDFLARE_API_TOKEN` (repo **secret**) — used only
-  by the staging deploy workflow, same Cloudflare account as gatoweb.nl, dedicated Pages project
-  `machinemens-com-staging`.
+- `CLOUDFLARE_ACCOUNT_ID` (repo variable) and `CLOUDFLARE_API_TOKEN` (repo **secret**) — used by
+  the staging deploy and PR preview workflows, same Cloudflare account as gatoweb.nl, dedicated
+  Pages project `machinemens-com-staging`.
 
 Notes:
 - Language default: browser language detection (`pt` → Portuguese, `nl` → Dutch) with fallback to
