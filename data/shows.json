@@ -1,5 +1,15 @@
 [
   {
+    "id": "triple-threat-festival-2027",
+    "title": "Triple Threat Festival",
+    "date": "2027-05-22",
+    "venue": "Zuiderpark",
+    "address": "Zuiderpark, Breda, Netherlands",
+    "city": "Breda",
+    "country": "Netherlands",
+    "ticketUrl": null
+  },
+  {
     "id": "grote-prijs-van-breda-2026",
     "title": "Grote Prijs van Breda",
     "date": "2026-10-17",
