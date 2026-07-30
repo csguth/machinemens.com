@@ -1,0 +1,41 @@
+# Hugo config. The site is deployed as static files; Hugo is the build/templating
+# tool. i18n is now done at COMPILE TIME (one fully-translated page per language)
+# with a URL per language: English under /en/, Dutch under /nl/, Portuguese /pt/.
+#
+# publishDir = "site" so the existing deploy workflows keep deploying `site/`,
+# and the `__SITE_URL__` / `__ENV_LABEL__` placeholders are still substituted
+# with `sed` at deploy time (kept verbatim in the generated HTML).
+baseURL = "/"
+title = "Machinemens"
+publishDir = "site"
+
+# Keep the generated markup clean (no Hugo generator <meta> tag advertised).
+disableHugoGeneratorInject = true
+
+# We ship our own hand-authored robots.txt and sitemap.xml (with the
+# __SITE_URL__ placeholder) as static files, so disable Hugo's generated ones
+# and the unused kinds.
+disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
+
+# Multilingual: every language lives under its own subdirectory, including the
+# default one (so English is /en/, not /). The bare root /index.html is a small
+# JS redirect that honours the client's saved language preference.
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = true
+
+[languages]
+  [languages.en]
+    languageCode = "en-US"
+    languageName = "English"
+    weight = 1
+  [languages.nl]
+    languageCode = "nl-NL"
+    languageName = "Nederlands"
+    weight = 2
+  [languages.pt]
+    languageCode = "pt-BR"
+    languageName = "Português"
+    weight = 3
+
+[build]
+  writeStats = false

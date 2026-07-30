@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="{{ .Language.Lang }}">
+<head>
+{{ partial "head.html" . }}
+</head>
+<body data-env="__ENV_LABEL__" class="bg-black text-cream min-h-screen flex flex-col items-center">
+
+  <div class="hero-bg" aria-hidden="true"></div>
+
+{{ partial "header.html" . }}
+
+{{ block "main" . }}{{ end }}
+
+{{ partial "footer.html" . }}
+
+{{ block "scripts" . }}{{ end }}
+  <script src="/js/lang-persist.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

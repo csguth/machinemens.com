@@ -1,0 +1,63 @@
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ .Title }}</title>
+  <meta name="description" content="{{ .Description }}" />
+  <link rel="canonical" href="__SITE_URL__{{ .RelPermalink }}" />
+
+{{- $locales := dict "en" "en_US" "nl" "nl_NL" "pt" "pt_BR" }}
+{{- range .AllTranslations }}
+  <link rel="alternate" hreflang="{{ .Language.Lang }}" href="__SITE_URL__{{ .RelPermalink }}" />
+{{- if eq .Language.Lang "en" }}
+  <link rel="alternate" hreflang="x-default" href="__SITE_URL__{{ .RelPermalink }}" />
+{{- end }}
+{{- end }}
+
+  <meta property="og:title" content="{{ .Title }}" />
+  <meta property="og:description" content="{{ .Description }}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="__SITE_URL__{{ .RelPermalink }}" />
+  <meta property="og:image" content="__SITE_URL__/images/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="Machinemens" />
+  <meta property="og:locale" content="{{ index $locales .Language.Lang }}" />
+{{- range .Translations }}
+  <meta property="og:locale:alternate" content="{{ index $locales .Language.Lang }}" />
+{{- end }}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ .Title }}" />
+  <meta name="twitter:description" content="{{ .Description }}" />
+  <meta name="twitter:image" content="__SITE_URL__/images/og-image.jpg" />
+
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#000000" />
+
+  <link rel="icon" type="image/png" href="/images/logo.png" />
+{{- if .IsHome }}
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "Machinemens",
+    "url": "__SITE_URL__/",
+    "logo": "__SITE_URL__/images/logo.png",
+    "genre": "Black/Death Metal",
+    "sameAs": [
+      "https://open.spotify.com/artist/4PLOLLNQZMjPZ9bcIpIHtp",
+      "https://www.youtube.com/@machinemens",
+      "https://instagram.com/machinemens",
+      "https://music.youtube.com/@machinemens",
+      "https://www.deezer.com/en/artist/201767097",
+      "https://music.apple.com/us/artist/machinemens/1671869315"
+    ]
+  }
+  </script>
+{{- end }}
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/js/tailwind-config.js"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <link rel="stylesheet" href="/css/site.css" />

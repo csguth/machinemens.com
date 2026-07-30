@@ -1,0 +1,90 @@
+{{ define "main" }}
+  <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex flex-col items-center px-6 pb-16 pt-6 md:pt-8" x-data="musicPage()">
+    <h1 class="sr-only">{{ i18n "music_title" }}</h1>
+
+    <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "discography" }}</p>
+
+    <section class="w-full flex flex-col gap-6 md:gap-8 mb-10 md:mb-12" aria-label="Latest release">
+      <template x-for="release in releases.slice(0, 1)" :key="release.id">
+        <article class="w-full" x-data="{ open: false }">
+          <h2 class="text-cream font-semibold mb-1 md:text-lg" x-text="release.title"></h2>
+          <p class="text-cream/50 text-xs mb-3" x-text="release.year ? release.type + ' · ' + release.year : release.type"></p>
+
+          <iframe class="w-full rounded-xl" :src="release.spotifyEmbed"
+                  width="100%" :height="release.spotifyEmbedHeight" frameborder="0" allowfullscreen="" loading="lazy"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" :title="release.title + ' on Spotify'"></iframe>
+
+          <template x-if="release.video">
+            <div class="w-full aspect-video rounded-xl overflow-hidden mt-3">
+              <iframe class="w-full h-full" :src="'https://www.youtube.com/embed/' + release.video.youtubeId" :title="release.video.title"
+                      frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </template>
+
+          <div class="relative mt-3">
+            <button type="button" @click="open = !open" class="listen-get-btn" :aria-expanded="open">{{ i18n "listen_get" }}</button>
+            <div x-show="open" x-cloak class="listen-get-menu">
+              <template x-for="[key, url] in Object.entries(release.stores)" :key="key">
+                <a :href="url" target="_blank" rel="noopener noreferrer" x-text="storeLabel(key)"></a>
+              </template>
+            </div>
+          </div>
+        </article>
+      </template>
+    </section>
+
+    <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "live_sessions" }}</p>
+    <h2 class="sr-only">{{ i18n "live_sessions" }}</h2>
+
+    <section class="w-full flex flex-col gap-4 mb-10 md:mb-12" aria-label="Live sessions">
+      <div class="w-full aspect-video rounded-xl overflow-hidden">
+        <iframe class="w-full h-full" src="https://www.youtube.com/embed/wdf72zXkDjw" title="Machinemens - Red Planet (live in Anker Studio)"
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="w-full aspect-video rounded-xl overflow-hidden">
+        <iframe class="w-full h-full" src="https://www.youtube.com/embed/WfT-lLayGcY" title="Machinemens - Mens Agitat Molem (live in Anker Studio)"
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </section>
+
+    <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "earlier_releases" }}</p>
+    <h2 class="sr-only">{{ i18n "earlier_releases" }}</h2>
+
+    <section class="w-full flex flex-col gap-6 md:gap-8 mb-4" aria-label="Earlier releases">
+      <template x-for="release in releases.slice(1)" :key="release.id">
+        <article class="w-full" x-data="{ open: false }">
+          <h2 class="text-cream font-semibold mb-1 md:text-lg" x-text="release.title"></h2>
+          <p class="text-cream/50 text-xs mb-3" x-text="release.year ? release.type + ' · ' + release.year : release.type"></p>
+
+          <iframe class="w-full rounded-xl" :src="release.spotifyEmbed"
+                  width="100%" :height="release.spotifyEmbedHeight" frameborder="0" allowfullscreen="" loading="lazy"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" :title="release.title + ' on Spotify'"></iframe>
+
+          <template x-if="release.video">
+            <div class="w-full aspect-video rounded-xl overflow-hidden mt-3">
+              <iframe class="w-full h-full" :src="'https://www.youtube.com/embed/' + release.video.youtubeId" :title="release.video.title"
+                      frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </template>
+
+          <div class="relative mt-3">
+            <button type="button" @click="open = !open" class="listen-get-btn" :aria-expanded="open">{{ i18n "listen_get" }}</button>
+            <div x-show="open" x-cloak class="listen-get-menu">
+              <template x-for="[key, url] in Object.entries(release.stores)" :key="key">
+                <a :href="url" target="_blank" rel="noopener noreferrer" x-text="storeLabel(key)"></a>
+              </template>
+            </div>
+          </div>
+        </article>
+      </template>
+    </section>
+  </main>
+{{ end }}
+{{ define "scripts" }}
+  <script src="/js/music-page.js"></script>
+{{ end }}

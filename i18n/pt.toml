@@ -1,0 +1,31 @@
+# Portuguese UI strings.
+
+nav_home = "Início"
+nav_music = "Música"
+nav_shows = "Shows"
+
+tagline = "Renda-se à máquina."
+official_links = "Links oficiais"
+
+bookings_title = "Bookings"
+bookings_subtitle = "Solicitações de shows via AMPS para EU/UK"
+contact_title = "Contato"
+
+new_release = "Novo lançamento"
+see_full_discography = "Ver discografia completa"
+
+next_show = "Próximo show"
+no_shows_short = "Nenhum show agendado no momento."
+see_all_shows = "Ver todos os shows"
+
+music_title = "Música"
+discography = "Discografia"
+listen_get = "Ouvir / Obter"
+live_sessions = "Sessões ao vivo"
+earlier_releases = "Lançamentos anteriores"
+
+shows_title = "Shows"
+upcoming_shows = "Próximos shows"
+no_shows_long = "Nenhum show agendado no momento. Volte em breve."
+tickets = "Ingressos"
+past_shows = "Shows anteriores"
