@@ -1,9 +1,10 @@
 name: Deploy Staging (Cloudflare Pages)
 
+# Deploys the real `staging` branch to staging.machinemens.com. Per-PR preview
+# deploys are handled separately by deploy-preview-cloudflare.yml, which never
+# touches this branch/URL.
 on:
   push:
-    branches: [staging]
-  pull_request:
     branches: [staging]
   workflow_dispatch:
 
@@ -11,7 +12,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: cloudflare-staging-${{ github.event.pull_request.number || github.ref_name }}
+  group: cloudflare-staging-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -51,4 +52,4 @@ jobs:
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           projectName: machinemens-com-staging
           directory: site
-          branch: ${{ github.head_ref || github.ref_name }}
+          branch: staging
