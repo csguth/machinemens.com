@@ -36,7 +36,10 @@ hugo server   # live-preview at http://localhost:1313
 ```
 
 The CI workflows install a pinned Hugo version and run `hugo --gc --minify` before substituting
-the `__SITE_URL__` / `__ENV_LABEL__` placeholders with `sed`.
+the `__SITE_URL__` / `__ENV_LABEL__` placeholders with `sed`. `hugo --minify` only minifies the
+rendered HTML/CSS; the static JS in `site/js/` (copied verbatim from `static/js/`) is minified
+separately in CI via `npx terser` (no dependency added to the repo — the tool is only ever
+invoked inside the workflow, never locally, so the site stays zero-build).
 
 ---
 
