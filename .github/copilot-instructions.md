@@ -64,4 +64,6 @@ them speculatively without an issue/plan first.
 ## Building locally
 Install Hugo (extended) and run `hugo` from the repo root to generate `site/`, or `hugo server`
 for a live preview. The CI workflows install a pinned Hugo version and run `hugo --gc --minify`
-(minified output) before the `sed` placeholder substitution.
+(minified output) before the `sed` placeholder substitution. `hugo --minify` only covers
+rendered HTML/CSS — static JS in `site/js/` is minified separately in CI with `npx terser`
+(no repo dependency added; never run locally, so the site stays zero-build).
