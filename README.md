@@ -55,13 +55,15 @@ layouts/
   partials/head.html    <head> (meta/OG/Twitter/JSON-LD-on-home + hreflang) — per-page title/description
   partials/header.html  Staging banner + nav + EN/NL/PT language selector (links to each language URL)
   partials/footer.html  Footer
-  index.html            Home page "main" block (hub: social links, bookings/contact, teasers)
+  index.html            Home page "main" block (hub: social links, teasers of latest release/next show)
   music/list.html       /music/ "main" block (full discography + live sessions)
   shows/list.html       /shows/ "main" block (upcoming + past shows)
+  contact/list.html     /contact/ "main" block (bookings + general contact link-cards)
 content/                Per-language front matter (title/description), translated by filename:
   _index.{en,nl,pt}.md        Home
   music/_index.{en,nl,pt}.md  /music/
   shows/_index.{en,nl,pt}.md  /shows/
+  contact/_index.{en,nl,pt}.md  /contact/
 static/                 Copied verbatim into the build output (served as-is):
   css/site.css          Styles: brand colors, staging banner, shared nav/listen-get button styles
   js/lang-persist.js    Saves the current page's language into localStorage on load

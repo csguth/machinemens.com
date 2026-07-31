@@ -94,4 +94,35 @@
     <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/shows/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/shows/" />
   </url>
+  <!-- Contact -->
+  <url>
+    <loc>__SITE_URL__/en/contact/</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/contact/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/contact/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/contact/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/contact/" />
+  </url>
+  <url>
+    <loc>__SITE_URL__/nl/contact/</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/contact/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/contact/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/contact/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/contact/" />
+  </url>
+  <url>
+    <loc>__SITE_URL__/pt/contact/</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/contact/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/contact/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/contact/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/contact/" />
+  </url>
 </urlset>
