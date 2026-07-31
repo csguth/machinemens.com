@@ -3,6 +3,16 @@
   --cream: #f5efe3;
 }
 
+/* Always reserve the vertical scrollbar's gutter, even on pages short
+   enough not to need one. Without this, navigating between a tall page
+   (scrollbar visible) and a short one (no scrollbar) shifts the centered
+   content horizontally, since only .hero-bg is full-bleed/fixed and
+   doesn't move, making the jump between pages feel janky. */
+html {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+
 .text-gold { color: var(--gold); }
 .border-gold { border-color: var(--gold); }
 .text-cream { color: var(--cream); }
