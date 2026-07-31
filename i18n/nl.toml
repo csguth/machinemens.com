@@ -1,0 +1,32 @@
+# Dutch UI strings.
+
+nav_home = "Home"
+nav_music = "Muziek"
+nav_shows = "Shows"
+
+tagline = "Onderwerp je aan de machine."
+official_links = "Officiele links"
+
+bookings_title = "Bookings"
+bookings_subtitle = "Boekingsaanvragen via AMPS voor EU/UK"
+contact_title = "Contact"
+
+new_release = "Nieuwe release"
+see_full_discography = "Bekijk volledige discografie"
+
+next_show = "Volgende show"
+no_shows_short = "Momenteel geen shows gepland."
+see_all_shows = "Bekijk alle shows"
+
+music_title = "Muziek"
+discography = "Discografie"
+listen_get = "Beluister / Koop"
+live_sessions = "Live sessions"
+earlier_releases = "Eerdere releases"
+
+shows_title = "Shows"
+upcoming_shows = "Komende shows"
+no_shows_long = "Momenteel geen shows gepland. Kom snel terug."
+tickets = "Tickets"
+website = "Website"
+past_shows = "Eerdere shows"

@@ -1,0 +1,32 @@
+# English UI strings. See nl.toml / pt.toml for the other languages.
+
+nav_home = "Home"
+nav_music = "Music"
+nav_shows = "Shows"
+
+tagline = "Surrender to the machine."
+official_links = "Official links"
+
+bookings_title = "Bookings"
+bookings_subtitle = "Inquiries via AMPS for EU/UK"
+contact_title = "Contact"
+
+new_release = "New release"
+see_full_discography = "See full discography"
+
+next_show = "Next show"
+no_shows_short = "No shows scheduled at the moment."
+see_all_shows = "See all shows"
+
+music_title = "Music"
+discography = "Discography"
+listen_get = "Listen / Get"
+live_sessions = "Live sessions"
+earlier_releases = "Earlier releases"
+
+shows_title = "Shows"
+upcoming_shows = "Upcoming shows"
+no_shows_long = "No shows scheduled at the moment. Check back soon."
+tickets = "Tickets"
+website = "Website"
+past_shows = "Past shows"

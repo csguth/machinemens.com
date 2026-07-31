@@ -1,2 +1,8 @@
 .DS_Store
 Thumbs.db
+
+# Hugo build output / cache
+/site/
+/public/
+/resources/
+.hugo_build.lock

@@ -42,10 +42,15 @@ jobs:
             exit 1
           fi
 
-      - name: Build site with injected variables
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.148.1'
+          extended: true
+
+      - name: Build site with Hugo and inject variables
         run: |
-          mkdir -p site
-          rsync -av --exclude=".git" --exclude=".github" --exclude="site" ./ site/
+          hugo --gc --minify
 
           while IFS= read -r -d '' f; do
             sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" "$f"
@@ -54,6 +59,15 @@ jobs:
 
           sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" site/robots.txt
           sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" site/sitemap.xml
+
+      - name: Minify static JS
+        # hugo --minify only touches rendered HTML/CSS; static/js/*.js is copied
+        # verbatim. Minify the *build output* only (never static/js/ sources),
+        # via npx so the repo stays zero-build (no package.json/node_modules).
+        run: |
+          for f in site/js/*.js; do
+            npx --yes terser@5 "$f" --compress --mangle -o "$f"
+          done
 
       - name: Deploy to Cloudflare Pages (staging project, PR preview)
         id: deploy

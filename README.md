@@ -2,40 +2,80 @@
 
 Official website for **Machinemens** (black/death metal band), replacing the band's Linktree.
 
-## Stack (zero build process, all free/cheap)
+## Stack (Hugo static site + CDN runtime, all free/cheap)
 
 | Tool | Purpose | Cost |
 |---|---|---|
-| Plain HTML + Tailwind CDN | Website | Free |
-| Alpine.js CDN | EN/NL/PT trilingual toggle | Free |
+| Hugo (SSG) | Builds the static HTML from `layouts/` + `content/` + `static/` | Free |
+| Tailwind CDN | Styling (Play CDN, no build step for CSS) | Free |
+| Alpine.js CDN | EN/NL/PT trilingual toggle + data-driven pages | Free |
 | GitHub Pages | Production hosting + HTTPS | Free |
 | Cloudflare Pages | Staging hosting (`staging.<domain>`) | Free |
 | Domain registrar: Namecheap | Custom domain (`machinemens.com`, registered) | ~€10-15/year |
 
 **Monthly cost: €0** (just the domain renewal once a year)
 
-This repo intentionally mirrors the setup of [csguth/gatoweb.nl](https://github.com/csguth/gatoweb.nl)
-(branching model, staging/production split, i18n pattern) so both projects are easy to maintain
-with the same mental model.
+Hugo builds the site as **multilingual, one page per language**: every UI string lives in
+`i18n/{en,nl,pt}.toml` and the same content is rendered under a language-prefixed URL —
+`/en/…` (English), `/nl/…` (Dutch), `/pt/…` (Portuguese). The bare root `/` is a tiny JS
+redirect that sends each visitor to their saved/detected language. Output is **minified** in CI.
+This repo intentionally mirrors the setup of
+[csguth/gatoweb.nl](https://github.com/csguth/gatoweb.nl) (branching model,
+staging/production split, i18n pattern) so both projects are easy to maintain with the same
+mental model.
+
+---
+
+## Building locally
+
+Install [Hugo extended](https://gohugo.io/installation/), then from the repo root:
+
+```
+hugo          # build the static site into site/ (git-ignored)
+hugo server   # live-preview at http://localhost:1313
+```
+
+The CI workflows install a pinned Hugo version and run `hugo --gc --minify` before substituting
+the `__SITE_URL__` / `__ENV_LABEL__` placeholders with `sed`. `hugo --minify` only minifies the
+rendered HTML/CSS; the static JS in `site/js/` (copied verbatim from `static/js/`) is minified
+separately in CI via `npx terser` (no dependency added to the repo — the tool is only ever
+invoked inside the workflow, never locally, so the site stays zero-build).
 
 ---
 
 ## Repository structure
 
 ```
-index.html            Homepage (trilingual EN/NL/PT) — hub with social links, bookings/contact,
-                       and a teaser of the latest release (full discography lives at /music/)
-music/index.html       /music/ — full discography (all releases with per-album "Listen/Get"
-                       store links) + live sessions
-data/releases.json     Discography data consumed by music/index.html (Alpine fetch + x-for) —
-                       add a new release here, including its per-store links, when it drops
-css/site.css          Styles: brand colors, staging banner, EN/NL/PT show/hide rules, shared
-                       nav/listen-get button styles
-js/lang-toggle.js      Alpine component for the EN/NL/PT toggle (localStorage-persisted)
-js/tailwind-config.js  Tailwind Play CDN theme extension (brand colors)
-js/music-page.js       Alpine component for /music/ (fetches data/releases.json)
-images/logo.png        Band logo (wordmark), also used as favicon
-robots.txt, sitemap.xml
+hugo.toml              Hugo config (multilingual en/nl/pt, publishDir = site, disables generated sitemap/robots/RSS)
+i18n/                  Compile-time UI translations
+  en.toml, nl.toml, pt.toml  All user-facing strings, referenced via {{ i18n "key" }}
+layouts/
+  _default/baseof.html  Shared page skeleton (head + body + header/footer partials + blocks)
+  alias.html            Root "/" redirect template (loads js/root-redirect.js)
+  partials/head.html    <head> (meta/OG/Twitter/JSON-LD-on-home + hreflang) — per-page title/description
+  partials/header.html  Staging banner + nav + EN/NL/PT language selector (links to each language URL)
+  partials/footer.html  Footer
+  index.html            Home page "main" block (hub: social links, bookings/contact, teasers)
+  music/list.html       /music/ "main" block (full discography + live sessions)
+  shows/list.html       /shows/ "main" block (upcoming + past shows)
+content/                Per-language front matter (title/description), translated by filename:
+  _index.{en,nl,pt}.md        Home
+  music/_index.{en,nl,pt}.md  /music/
+  shows/_index.{en,nl,pt}.md  /shows/
+static/                 Copied verbatim into the build output (served as-is):
+  css/site.css          Styles: brand colors, staging banner, shared nav/listen-get button styles
+  js/lang-persist.js    Saves the current page's language into localStorage on load
+  js/root-redirect.js   Root "/" redirect to /en|nl|pt/ based on saved/detected language
+  js/tailwind-config.js Tailwind Play CDN theme extension (brand colors)
+  js/music-page.js      Alpine component for /music/ (fetches data/releases.json)
+  js/shows-page.js      Alpine component for /shows/ (fetches data/shows.json)
+  js/shows-teaser.js    Alpine component for the home "next show" teaser
+  data/releases.json    Discography data consumed by /music/ (Alpine fetch + x-for) — add a new
+                        release here, including its per-store links, when it drops
+  data/shows.json       Shows/agenda data consumed by /shows/ and the home teaser
+  images/logo.png       Band logo (wordmark), also used as favicon
+  robots.txt, sitemap.xml, CNAME
+site/                   Hugo build output (git-ignored; what actually gets deployed)
 .github/workflows/
   deploy-pages.yml               Production deploy -> GitHub Pages (push to main)
   deploy-staging-cloudflare.yml  Staging deploy -> Cloudflare Pages (push to staging)
@@ -110,10 +150,15 @@ Before first deploy, add these **repository or environment** variables
   Pages project `machinemens-com-staging`.
 
 Notes:
-- Language default: browser language detection (`pt` → Portuguese, `nl` → Dutch) with fallback to
-  English, or the user's previous manual choice, persisted in `localStorage.machinemens_lang`.
-- Placeholders `__SITE_URL__` / `__ENV_LABEL__` in `index.html`, `robots.txt`, `sitemap.xml` are
-  substituted with `sed` at deploy time — see each workflow's "Build site with injected variables" step.
+- Language & URL: the site is served per-language under `/en/`, `/nl/` and `/pt/`. The bare root
+  `/` runs `js/root-redirect.js`, which picks the language from the visitor's saved choice
+  (`localStorage.machinemens_lang`), else browser language (`pt`/`nl`), else English. The header
+  language selector is plain links to each language's URL, so the URL always changes with the
+  language; `js/lang-persist.js` re-saves the current page's language on every load.
+- Placeholders `__SITE_URL__` / `__ENV_LABEL__` (in the Hugo layouts, `static/robots.txt`,
+  `static/sitemap.xml`) are kept verbatim in the generated HTML and substituted with `sed` at
+  deploy time — see each workflow's "Build site with Hugo and inject variables" step, which runs
+  `hugo --gc --minify` first and then the `sed` substitution.
 
 Changes go live automatically:
 - push/merge to `staging` → deploys to the staging Cloudflare Pages URL in ~1-2 minutes

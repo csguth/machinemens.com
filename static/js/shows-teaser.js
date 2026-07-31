@@ -14,7 +14,9 @@ function showsTeaser() {
     },
     formatDate(dateStr) {
       const date = new Date(dateStr + 'T00:00:00');
-      return date.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+      const locales = { en: 'en-GB', nl: 'nl-NL', pt: 'pt-BR' };
+      const locale = locales[document.documentElement.lang] || 'en-GB';
+      return date.toLocaleDateString(locale, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
     }
   };
 }
