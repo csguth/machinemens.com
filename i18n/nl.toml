@@ -3,6 +3,7 @@
 nav_home = "Home"
 nav_music = "Muziek"
 nav_shows = "Shows"
+nav_contact = "Contact"
 
 tagline = "Onderwerp je aan de machine."
 official_links = "Officiele links"
@@ -10,6 +11,8 @@ official_links = "Officiele links"
 bookings_title = "Bookings"
 bookings_subtitle = "Boekingsaanvragen via AMPS voor EU/UK"
 contact_title = "Contact"
+contact_page_title = "Contact"
+contact_page_intro = "Neem contact op voor bookings of algemene vragen."
 
 new_release = "Nieuwe release"
 see_full_discography = "Bekijk volledige discografie"

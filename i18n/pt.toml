@@ -3,6 +3,7 @@
 nav_home = "Início"
 nav_music = "Música"
 nav_shows = "Shows"
+nav_contact = "Contato"
 
 tagline = "Renda-se à máquina."
 official_links = "Links oficiais"
@@ -10,6 +11,8 @@ official_links = "Links oficiais"
 bookings_title = "Bookings"
 bookings_subtitle = "Solicitações de shows via AMPS para EU/UK"
 contact_title = "Contato"
+contact_page_title = "Contato"
+contact_page_intro = "Fale conosco para bookings ou dúvidas gerais."
 
 new_release = "Novo lançamento"
 see_full_discography = "Ver discografia completa"
