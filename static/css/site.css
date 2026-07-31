@@ -60,6 +60,16 @@ footer {
   transform: translateY(-2px);
 }
 
+.icon-link-sm {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.icon-link-sm svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 .link-card {
   display: flex;
   align-items: center;
