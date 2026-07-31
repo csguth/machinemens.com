@@ -13,9 +13,14 @@
           <p class="show-card-date" x-text="formatDate(show.date)"></p>
           <h2 class="show-card-title" x-text="show.title"></h2>
           <p class="show-card-venue" x-text="show.venue + ' — ' + show.address"></p>
-          <template x-if="show.ticketUrl">
-            <a :href="show.ticketUrl" target="_blank" rel="noopener noreferrer" class="listen-get-btn mt-1 self-start">{{ i18n "tickets" }}</a>
-          </template>
+          <div class="flex flex-wrap gap-2 mt-1">
+            <template x-if="show.ticketUrl">
+              <a :href="show.ticketUrl" target="_blank" rel="noopener noreferrer" class="listen-get-btn self-start">{{ i18n "tickets" }}</a>
+            </template>
+            <template x-if="show.websiteUrl">
+              <a :href="show.websiteUrl" target="_blank" rel="noopener noreferrer" class="listen-get-btn self-start">{{ i18n "website" }}</a>
+            </template>
+          </div>
         </article>
       </template>
     </section>
