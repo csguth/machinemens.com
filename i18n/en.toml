@@ -3,6 +3,7 @@
 nav_home = "Home"
 nav_music = "Music"
 nav_shows = "Shows"
+nav_contact = "Contact"
 
 tagline = "Surrender to the machine."
 official_links = "Official links"
@@ -10,6 +11,8 @@ official_links = "Official links"
 bookings_title = "Bookings"
 bookings_subtitle = "Inquiries via AMPS for EU/UK"
 contact_title = "Contact"
+contact_page_title = "Contact"
+contact_page_intro = "Get in touch for bookings or general inquiries."
 
 new_release = "New release"
 see_full_discography = "See full discography"
