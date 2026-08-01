@@ -226,6 +226,27 @@ footer {
   opacity: 0.55;
 }
 
+.contact-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(201, 162, 75, 0.35);
+  background-color: rgba(0, 0, 0, 0.35);
+  color: var(--cream);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.contact-input::placeholder {
+  color: rgba(245, 239, 227, 0.35);
+}
+
+.contact-input:focus {
+  border-color: var(--gold);
+}
+
 [x-cloak] {
   display: none !important;
 }
