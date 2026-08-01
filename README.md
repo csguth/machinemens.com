@@ -65,6 +65,8 @@ content/                Per-language front matter (title/description), translate
   shows/_index.{en,nl,pt}.md  /shows/
   contact/_index.{en,nl,pt}.md  /contact/
 static/                 Copied verbatim into the build output (served as-is):
+  favicon.png          Root favicon used by all pages + the bare "/" redirect page
+  apple-touch-icon.png Root Apple touch icon, kept in sync with the favicon asset
   css/site.css          Styles: brand colors, staging banner, shared nav/listen-get button styles
   js/lang-persist.js    Saves the current page's language into localStorage on load
   js/root-redirect.js   Root "/" redirect to /en|nl|pt/ based on saved/detected language
@@ -75,7 +77,8 @@ static/                 Copied verbatim into the build output (served as-is):
   data/releases.json    Discography data consumed by /music/ (Alpine fetch + x-for) — add a new
                         release here, including its per-store links, when it drops
   data/shows.json       Shows/agenda data consumed by /shows/ and the home teaser
-  images/logo.png       Band logo (wordmark), also used as favicon
+  images/logo.png       Band logo (wordmark)
+  images/favicon.png    Source favicon image copied to the root favicon paths above
   robots.txt, sitemap.xml, CNAME
 site/                   Hugo build output (git-ignored; what actually gets deployed)
 .github/workflows/
