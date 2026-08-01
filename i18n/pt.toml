@@ -3,6 +3,7 @@
 nav_home = "Início"
 nav_music = "Música"
 nav_shows = "Shows"
+nav_shop = "Loja"
 nav_contact = "Contato"
 
 tagline = "Renda-se à máquina."
@@ -33,3 +34,8 @@ no_shows_long = "Nenhum show agendado no momento. Volte em breve."
 tickets = "Ingressos"
 website = "Site"
 past_shows = "Shows anteriores"
+
+shop_page_title = "Loja"
+shop_page_intro = "Produtos oficiais Machinemens."
+shop_tshirt_title = "Camiseta com Logo"
+shop_tshirt_subtitle = "Disponível no Bandcamp"

@@ -3,6 +3,7 @@
 nav_home = "Home"
 nav_music = "Muziek"
 nav_shows = "Shows"
+nav_shop = "Winkel"
 nav_contact = "Contact"
 
 tagline = "Onderwerp je aan de machine."
@@ -33,3 +34,8 @@ no_shows_long = "Momenteel geen shows gepland. Kom snel terug."
 tickets = "Tickets"
 website = "Website"
 past_shows = "Eerdere shows"
+
+shop_page_title = "Winkel"
+shop_page_intro = "Officiële Machinemens merch."
+shop_tshirt_title = "Logo T-Shirt"
+shop_tshirt_subtitle = "Verkrijgbaar op Bandcamp"

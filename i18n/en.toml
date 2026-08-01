@@ -3,6 +3,7 @@
 nav_home = "Home"
 nav_music = "Music"
 nav_shows = "Shows"
+nav_shop = "Shop"
 nav_contact = "Contact"
 
 tagline = "Surrender to the machine."
@@ -33,3 +34,8 @@ no_shows_long = "No shows scheduled at the moment. Check back soon."
 tickets = "Tickets"
 website = "Website"
 past_shows = "Past shows"
+
+shop_page_title = "Shop"
+shop_page_intro = "Official Machinemens merch."
+shop_tshirt_title = "Logo T-Shirt"
+shop_tshirt_subtitle = "Available on Bandcamp"

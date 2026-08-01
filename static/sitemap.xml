@@ -94,6 +94,37 @@
     <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/shows/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/shows/" />
   </url>
+  <!-- Shop -->
+  <url>
+    <loc>__SITE_URL__/en/shop/</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/shop/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/shop/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/shop/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/shop/" />
+  </url>
+  <url>
+    <loc>__SITE_URL__/nl/shop/</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/shop/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/shop/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/shop/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/shop/" />
+  </url>
+  <url>
+    <loc>__SITE_URL__/pt/shop/</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="__SITE_URL__/en/shop/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="__SITE_URL__/nl/shop/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="__SITE_URL__/pt/shop/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="__SITE_URL__/en/shop/" />
+  </url>
   <!-- Contact -->
   <url>
     <loc>__SITE_URL__/en/contact/</loc>
