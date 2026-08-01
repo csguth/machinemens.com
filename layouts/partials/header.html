@@ -8,6 +8,7 @@
       <a href="{{ "/music/" | relLangURL }}" class="site-nav-link"{{ if eq .Section "music" }} aria-current="page"{{ end }}>{{ i18n "nav_music" }}</a>
       <a href="{{ "/shows/" | relLangURL }}" class="site-nav-link"{{ if eq .Section "shows" }} aria-current="page"{{ end }}>{{ i18n "nav_shows" }}</a>
       <a href="{{ "/contact/" | relLangURL }}" class="site-nav-link"{{ if eq .Section "contact" }} aria-current="page"{{ end }}>{{ i18n "nav_contact" }}</a>
+      <a href="https://machinemens.bandcamp.com/merch/machinemens-logo-t-shirt" target="_blank" rel="noopener noreferrer" class="site-nav-link">{{ i18n "nav_shop" }}</a>
     </nav>
     <div class="flex gap-1 text-xs font-semibold tracking-wide" role="group" aria-label="Language selector">
 {{- range .AllTranslations }}
