@@ -607,6 +607,19 @@ header {
   font-size: 0.875rem;
 }
 
+/* PayPal's Smart Payment Buttons cap their own rendered width at ~750px
+   (a hard SDK limit, not something we can override via CSS on the button
+   iframe itself). On wide viewports the shop's main content can exceed
+   that, leaving a visible gap between the button and the wider cart
+   items/total above it -- so cap the whole cart column to match instead
+   of fighting the SDK. */
+.shop-cart-col {
+  width: 100%;
+  max-width: 46.875rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 [x-cloak] {
   display: none !important;
 }
