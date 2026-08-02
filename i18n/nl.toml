@@ -3,6 +3,7 @@
 nav_home = "Home"
 nav_music = "Muziek"
 nav_shows = "Shows"
+nav_shop = "Shop"
 nav_contact = "Contact"
 
 tagline = "Onderwerp je aan de machine."
@@ -26,6 +27,9 @@ discography = "Discografie"
 listen_get = "Beluister / Koop"
 live_sessions = "Live sessions"
 earlier_releases = "Eerdere releases"
+
+shop_teaser_title = "Merch"
+shop_teaser_cta = "Shop op Bandcamp"
 
 shows_title = "Shows"
 upcoming_shows = "Komende shows"

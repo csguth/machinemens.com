@@ -40,6 +40,28 @@
       <a href="{{ "/shows/" | relLangURL }}" class="listen-get-btn">{{ i18n "see_all_shows" }}</a>
     </section>
 
+    <section class="w-full mb-8 md:mb-10" aria-labelledby="shop-heading">
+      <p class="text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "shop_teaser_title" }}</p>
+      <h2 id="shop-heading" class="sr-only">{{ i18n "shop_teaser_title" }}</h2>
+
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="shop-photo">
+          <img src="/images/shop/tshirt-black.jpg" alt="Machinemens t-shirt" loading="lazy" width="1024" height="768" />
+        </a>
+        <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="shop-photo">
+          <img src="/images/shop/tshirt-pink.jpg" alt="Machinemens t-shirt" loading="lazy" width="1024" height="768" />
+        </a>
+        <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="shop-photo">
+          <img src="/images/shop/tshirt-black-detail.jpg" alt="Machinemens t-shirt, print detail" loading="lazy" width="1024" height="768" />
+        </a>
+        <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="shop-photo">
+          <img src="/images/shop/tshirt-pink-detail.jpg" alt="Machinemens t-shirt, print detail" loading="lazy" width="1024" height="768" />
+        </a>
+      </div>
+
+      <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="listen-get-btn">{{ i18n "shop_teaser_cta" }}</a>
+    </section>
+
   </main>
 {{ end }}
 {{ define "scripts" }}
