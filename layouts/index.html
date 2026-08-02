@@ -10,11 +10,13 @@
       <h2 id="shop-heading" class="sr-only">{{ i18n "shop_teaser_title" }}</h2>
 
       <!-- Photo carousel: each slide pairs one black + one pink t-shirt photo
-           side by side, photo as background with name + price overlaid,
-           linking straight to Bandcamp. Mirrors the "About" carousel pattern
-           from gatoweb.nl (native CSS scroll-snap for swipe/scroll;
-           js/shop-carousel.js only syncs the dot indicators and wires the
-           prev/next buttons + arrow keys). -->
+           side by side, the photo itself IS the link to Bandcamp (no caption/
+           CTA button clutter, kept minimal). On pointer devices a hover
+           darkens the photo and reveals a "Shop on Bandcamp" pill so desktop
+           users get an explicit buy affordance; touch devices just tap the
+           photo. Mirrors the "About" carousel pattern from gatoweb.nl (native
+           CSS scroll-snap for swipe/scroll; js/shop-carousel.js only syncs
+           the dot indicators and wires the prev/next buttons + arrow keys). -->
       <div class="relative rounded-2xl overflow-hidden mb-4 border-2 border-gold">
         <div class="grid grid-flow-col auto-cols-[100%] overflow-x-auto snap-x snap-mandatory no-scrollbar" id="shop-carousel-track" tabindex="0">
           <!-- Column widths use grid-cols-[<w1>fr_<w2>fr] matching each cropped photo's
@@ -22,46 +24,30 @@
                aspect-[totalW/768] keeps the row height in exact proportion — so
                object-cover never re-crops the photos beyond the intentional edit. -->
           <div class="snap-start [scroll-snap-stop:always] min-w-0 grid grid-cols-[560fr_930fr] gap-0.5 aspect-[1490/768]">
-            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="relative block h-full">
-              <div class="relative w-full h-full">
-                <img src="/images/shop/tshirt-black.jpg" alt="Machinemens T-Shirt, black" class="absolute inset-0 w-full h-full object-cover" loading="eager" width="560" height="768" />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
-                <div class="absolute inset-x-0 bottom-0 px-3 pb-3">
-                  <p class="text-cream font-semibold text-sm">{{ i18n "shop_product_tshirt_black" }}</p>
-                  <p class="text-gold text-sm font-bold">{{ i18n "shop_price" }}</p>
-                </div>
+            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="group relative block h-full" aria-label="{{ i18n "shop_product_tshirt_black" }} — {{ i18n "shop_teaser_cta" }}">
+              <img src="/images/shop/tshirt-black.jpg" alt="Machinemens T-Shirt, black" class="absolute inset-0 w-full h-full object-cover" loading="eager" width="560" height="768" />
+              <div class="absolute inset-0 bg-black/0 md:group-hover:bg-black/60 transition-colors duration-300 flex items-center justify-center">
+                <span class="opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 border border-gold text-gold text-xs font-bold tracking-wide uppercase px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm">{{ i18n "shop_teaser_cta" }}</span>
               </div>
             </a>
-            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="relative block h-full">
-              <div class="relative w-full h-full">
-                <img src="/images/shop/tshirt-pink.jpg" alt="Machinemens T-Shirt, pink" class="absolute inset-0 w-full h-full object-cover" loading="eager" width="930" height="768" />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
-                <div class="absolute inset-x-0 bottom-0 px-3 pb-3">
-                  <p class="text-cream font-semibold text-sm">{{ i18n "shop_product_tshirt_pink" }}</p>
-                  <p class="text-gold text-sm font-bold">{{ i18n "shop_price" }}</p>
-                </div>
+            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="group relative block h-full" aria-label="{{ i18n "shop_product_tshirt_pink" }} — {{ i18n "shop_teaser_cta" }}">
+              <img src="/images/shop/tshirt-pink.jpg" alt="Machinemens T-Shirt, pink" class="absolute inset-0 w-full h-full object-cover" loading="eager" width="930" height="768" />
+              <div class="absolute inset-0 bg-black/0 md:group-hover:bg-black/60 transition-colors duration-300 flex items-center justify-center">
+                <span class="opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 border border-gold text-gold text-xs font-bold tracking-wide uppercase px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm">{{ i18n "shop_teaser_cta" }}</span>
               </div>
             </a>
           </div>
           <div class="snap-start [scroll-snap-stop:always] min-w-0 grid grid-cols-[620fr_984fr] gap-0.5 aspect-[1604/768]">
-            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="relative block h-full">
-              <div class="relative w-full h-full">
-                <img src="/images/shop/tshirt-black-detail.jpg" alt="Machinemens T-Shirt, black, print detail" class="absolute inset-0 w-full h-full object-cover" loading="lazy" width="620" height="768" />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
-                <div class="absolute inset-x-0 bottom-0 px-3 pb-3">
-                  <p class="text-cream font-semibold text-sm">{{ i18n "shop_product_tshirt_black" }}</p>
-                  <p class="text-gold text-sm font-bold">{{ i18n "shop_price" }}</p>
-                </div>
+            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="group relative block h-full" aria-label="{{ i18n "shop_product_tshirt_black" }} — {{ i18n "shop_teaser_cta" }}">
+              <img src="/images/shop/tshirt-black-detail.jpg" alt="Machinemens T-Shirt, black, print detail" class="absolute inset-0 w-full h-full object-cover" loading="lazy" width="620" height="768" />
+              <div class="absolute inset-0 bg-black/0 md:group-hover:bg-black/60 transition-colors duration-300 flex items-center justify-center">
+                <span class="opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 border border-gold text-gold text-xs font-bold tracking-wide uppercase px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm">{{ i18n "shop_teaser_cta" }}</span>
               </div>
             </a>
-            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="relative block h-full">
-              <div class="relative w-full h-full">
-                <img src="/images/shop/tshirt-pink-detail.jpg" alt="Machinemens T-Shirt, pink, print detail" class="absolute inset-0 w-full h-full object-cover" loading="lazy" width="984" height="768" />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
-                <div class="absolute inset-x-0 bottom-0 px-3 pb-3">
-                  <p class="text-cream font-semibold text-sm">{{ i18n "shop_product_tshirt_pink" }}</p>
-                  <p class="text-gold text-sm font-bold">{{ i18n "shop_price" }}</p>
-                </div>
+            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="group relative block h-full" aria-label="{{ i18n "shop_product_tshirt_pink" }} — {{ i18n "shop_teaser_cta" }}">
+              <img src="/images/shop/tshirt-pink-detail.jpg" alt="Machinemens T-Shirt, pink, print detail" class="absolute inset-0 w-full h-full object-cover" loading="lazy" width="984" height="768" />
+              <div class="absolute inset-0 bg-black/0 md:group-hover:bg-black/60 transition-colors duration-300 flex items-center justify-center">
+                <span class="opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 border border-gold text-gold text-xs font-bold tracking-wide uppercase px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm">{{ i18n "shop_teaser_cta" }}</span>
               </div>
             </a>
           </div>
@@ -70,8 +56,6 @@
         <button type="button" id="shop-carousel-next" aria-label="Next" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 text-cream text-lg flex items-center justify-center backdrop-blur-sm transition">›</button>
         <div class="absolute inset-x-0 bottom-2 flex items-center justify-center gap-1.5" id="shop-carousel-dots" role="tablist"></div>
       </div>
-
-      <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="listen-get-btn">{{ i18n "shop_teaser_cta" }}</a>
     </section>
 
     <section class="w-full mb-8 md:mb-10" aria-labelledby="featured-heading">
