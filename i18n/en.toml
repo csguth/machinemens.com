@@ -30,7 +30,8 @@ earlier_releases = "Earlier releases"
 
 shop_teaser_title = "Merch"
 shop_teaser_cta = "Shop on Bandcamp"
-shop_product_tshirt = "Machinemens T-Shirt"
+shop_product_tshirt_black = "Machinemens T-Shirt, black"
+shop_product_tshirt_pink = "Machinemens T-Shirt, pink"
 shop_price = "€15"
 
 shows_title = "Shows"
