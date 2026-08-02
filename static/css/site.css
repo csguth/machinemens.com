@@ -237,6 +237,28 @@ header {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
+.yt-poster--loading .yt-poster-play {
+  /* Slightly dimmer + non-interactive look while the muted video plays
+     behind the poster waiting for YouTube's branding overlay to fade. */
+  background-color: rgba(0, 0, 0, 0.45);
+  cursor: default;
+}
+
+.yt-poster-spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border: 3px solid rgba(245, 240, 230, 0.35);
+  border-top-color: var(--cream);
+  animation: yt-poster-spin 0.8s linear infinite;
+}
+
+@keyframes yt-poster-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .yt-poster-play svg {
   width: 3.5rem;
   height: 3.5rem;
