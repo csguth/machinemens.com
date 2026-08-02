@@ -13,7 +13,7 @@
 <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black yt-player"
      x-data="ytPlayer({{ .videoIdExpr }}, {{ .titleExpr }}, { play: {{ i18n `yt_play` | jsonify }}, pause: {{ i18n `yt_pause` | jsonify }}, fullscreen: {{ i18n `yt_fullscreen` | jsonify }} })"
      x-ref="wrapper">
-  <div class="absolute inset-0" x-ref="mount" x-show="started" x-cloak></div>
+  <div class="absolute inset-0" :id="mountId" x-ref="mount" x-show="started" x-cloak></div>
 
   <template x-if="!started">
     <button type="button" class="yt-poster" @click="start()" :aria-label="playLabel + ': ' + title">

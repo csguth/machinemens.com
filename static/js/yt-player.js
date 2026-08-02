@@ -28,6 +28,8 @@ function loadYouTubeIframeApi() {
   return ytIframeApiPromise;
 }
 
+let ytPlayerMountCounter = 0;
+
 function ytPlayer(videoId, title, labels) {
   labels = labels || {};
 
@@ -37,6 +39,9 @@ function ytPlayer(videoId, title, labels) {
     playLabel: labels.play || 'Play',
     pauseLabel: labels.pause || 'Pause',
     fullscreenLabel: labels.fullscreen || 'Fullscreen',
+    // The IFrame Player API requires an element id (string), not a DOM node,
+    // so each instance gets a unique id to target with new YT.Player(id, ...).
+    mountId: `yt-player-mount-${++ytPlayerMountCounter}`,
     player: null,
     started: false,
     playing: false,
@@ -54,7 +59,7 @@ function ytPlayer(videoId, title, labels) {
     async start() {
       this.started = true;
       const YT = await loadYouTubeIframeApi();
-      this.player = new YT.Player(this.$refs.mount, {
+      this.player = new YT.Player(this.mountId, {
         videoId: this.videoId,
         playerVars: {
           controls: 0,
