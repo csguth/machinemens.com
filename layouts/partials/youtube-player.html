@@ -1,0 +1,42 @@
+{{/*
+  Custom-chrome YouTube player. Replaces the native embed's controls with our
+  own play/pause button, progress bar and fullscreen toggle, driven by the
+  YouTube IFrame Player API (see static/js/yt-player.js). The native iframe
+  is only created after the visitor presses play.
+
+  Params:
+    videoIdExpr - JS expression evaluating to the YouTube video id, e.g.
+                  "'wdf72zXkDjw'" or "release.video.youtubeId"
+    titleExpr   - JS expression evaluating to the accessible title, e.g.
+                  "'My video title'" or "release.video.title"
+*/}}
+<div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black yt-player"
+     x-data="ytPlayer({{ .videoIdExpr }}, {{ .titleExpr }}, { play: {{ i18n `yt_play` | jsonify }}, pause: {{ i18n `yt_pause` | jsonify }}, fullscreen: {{ i18n `yt_fullscreen` | jsonify }} })"
+     x-ref="wrapper">
+  <div class="absolute inset-0" x-ref="mount" x-show="started" x-cloak></div>
+
+  <template x-if="!started">
+    <button type="button" class="yt-poster" @click="start()" :aria-label="playLabel + ': ' + title">
+      <img :src="posterUrl" :alt="title" class="w-full h-full object-cover" loading="lazy" />
+      <span class="yt-poster-play" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </span>
+    </button>
+  </template>
+
+  <div class="yt-controls" x-show="started" x-cloak @click.stop>
+    <div class="yt-progress" @click="seek($event)">
+      <div class="yt-progress-fill" :style="'width:' + progressPct + '%'"></div>
+    </div>
+    <div class="yt-controls-row">
+      <button type="button" class="yt-control-btn" @click="togglePlay()" :aria-label="playing ? pauseLabel : playLabel">
+        <svg x-show="!playing" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        <svg x-show="playing" x-cloak viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+      </button>
+      <span class="yt-time" x-text="formatTime(currentTime) + ' / ' + formatTime(duration)"></span>
+      <button type="button" class="yt-control-btn yt-control-btn--end" @click="toggleFullscreen()" :aria-label="fullscreenLabel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7zM5 10h2V7h3V5H5zm12 9h-3v2h5v-5h-2zM14 5v2h3v3h2V5z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
