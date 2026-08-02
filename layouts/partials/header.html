@@ -10,7 +10,7 @@
       <a href="https://machinemens.bandcamp.com/" class="site-nav-link" target="_blank" rel="noopener noreferrer">{{ i18n "nav_shop" }}</a>
       <a href="{{ "/contact/" | relLangURL }}" class="site-nav-link"{{ if eq .Section "contact" }} aria-current="page"{{ end }}>{{ i18n "nav_contact" }}</a>
     </nav>
-    {{- $flags := dict "en" "🇺🇸" "nl" "🇳🇱" "pt" "🇧🇷" }}
+    {{- $flags := dict "en" "🇬🇧" "nl" "🇳🇱" "pt" "🇧🇷" }}
     <div class="relative" x-data="{ open: false }" @click.outside="open = false" @keydown.escape.window="open = false">
       <button type="button" @click="open = !open" :aria-expanded="open.toString()" aria-haspopup="listbox" class="lang-switcher-btn" aria-label="{{ i18n "language_selector" }}">
         <span aria-hidden="true">{{ index $flags .Language.Lang }}</span>
