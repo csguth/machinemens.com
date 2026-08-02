@@ -5,6 +5,8 @@
   <title>Machinemens</title>
   <meta name="robots" content="noindex" />
   <link rel="canonical" href="{{ .Permalink }}" />
+  <link rel="icon" type="image/png" sizes="100x100" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 {{- $segments := split (strings.Trim .Permalink "/") "/" }}
 {{- if gt (len $segments) 1 }}
   {{/* Legacy pre-i18n section URLs (e.g. /music/, /shows/) — redirect to the
