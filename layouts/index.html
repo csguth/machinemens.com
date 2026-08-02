@@ -5,11 +5,15 @@
 
     <p class="text-center text-cream/80 mb-8 md:mb-10 italic md:text-lg">{{ i18n "tagline" }}</p>
 
-    <!-- Desktop grid: shop/release/show teasers sit side by side from lg: up
-         (12-col grid, one 4-col span each); below lg: they stay stacked, as
-         before. Each <section> keeps its own heading/labelledby for a11y. -->
-    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 mb-8 md:mb-10">
-    <section class="w-full lg:col-span-4" aria-labelledby="shop-heading">
+    <!-- Desktop tile grid: merch + the featured release are the primary
+         tiles (bigger, top row, 7/5 split); the next-show teaser is
+         secondary content, so it gets a narrower tile below and the grid
+         is left to breathe with empty space to its right rather than
+         stretching it to fill the row -- keeps the hierarchy readable at
+         a glance instead of three equally-weighted boxes. Below lg: all
+         three stay stacked full-width as before. -->
+    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 mb-8 md:mb-10 lg:items-start">
+    <section class="w-full lg:col-span-7" aria-labelledby="shop-heading">
       <p class="text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "shop_teaser_title" }}</p>
       <h2 id="shop-heading" class="sr-only">{{ i18n "shop_teaser_title" }}</h2>
 
@@ -55,7 +59,7 @@
       </div>
     </section>
 
-    <section class="w-full lg:col-span-4" aria-labelledby="featured-heading">
+    <section class="w-full lg:col-span-5" aria-labelledby="featured-heading">
       <p class="text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "new_release" }}</p>
       <h2 id="featured-heading" class="text-cream font-semibold mb-3 md:text-lg">A Batalha de Netuno</h2>
 
@@ -72,7 +76,7 @@
       <a href="{{ "/music/" | relLangURL }}" class="listen-get-btn">{{ i18n "see_full_discography" }}</a>
     </section>
 
-    <section class="w-full lg:col-span-4" x-data="showsTeaser()" aria-labelledby="shows-heading">
+    <section class="w-full lg:col-span-5" x-data="showsTeaser()" aria-labelledby="shows-heading">
       <p class="text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "next_show" }}</p>
       <h2 id="shows-heading" class="sr-only">{{ i18n "next_show" }}</h2>
 
