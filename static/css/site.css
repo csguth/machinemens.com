@@ -319,6 +319,61 @@ footer {
   font-variant-numeric: tabular-nums;
 }
 
+.lang-switcher-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 162, 75, 0.35);
+  color: var(--cream);
+  font-size: 1rem;
+  line-height: 1;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.lang-switcher-btn:hover,
+.lang-switcher-btn:focus-visible {
+  border-color: var(--gold);
+  background-color: rgba(201, 162, 75, 0.12);
+}
+
+.lang-switcher-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 8.5rem;
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(201, 162, 75, 0.35);
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.lang-switcher-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.5rem;
+  color: var(--cream);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: background-color 0.15s ease;
+}
+
+.lang-switcher-item:hover,
+.lang-switcher-item:focus-visible {
+  background-color: rgba(201, 162, 75, 0.12);
+}
+
+.lang-switcher-item.is-active {
+  color: var(--gold);
+}
+
 .show-card {
   display: flex;
   flex-direction: column;

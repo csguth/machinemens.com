@@ -8,6 +8,7 @@ nav_contact = "Contato"
 
 tagline = "Renda-se à máquina."
 official_links = "Links oficiais"
+language_selector = "Seletor de idioma"
 
 bookings_title = "Bookings"
 bookings_subtitle = "Solicitações de shows via AMPS para EU/UK"
