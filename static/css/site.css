@@ -226,6 +226,12 @@ footer {
   opacity: 0.55;
 }
 
+/* Shop carousel — hides the native scroll bar so the CSS scroll-snap track
+   (js/shop-carousel.js) reads as a carousel, not a plain overflowing div.
+   Scrolling/swiping itself needs no JS at all. */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
 [x-cloak] {
   display: none !important;
 }

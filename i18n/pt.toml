@@ -3,6 +3,7 @@
 nav_home = "Início"
 nav_music = "Música"
 nav_shows = "Shows"
+nav_shop = "Shop"
 nav_contact = "Contato"
 
 tagline = "Renda-se à máquina."
@@ -26,6 +27,11 @@ discography = "Discografia"
 listen_get = "Ouvir / Obter"
 live_sessions = "Sessões ao vivo"
 earlier_releases = "Lançamentos anteriores"
+
+shop_teaser_title = "Produtos"
+shop_teaser_cta = "Comprar no Bandcamp"
+shop_product_tshirt = "Camiseta Machinemens"
+shop_price = "€15"
 
 shows_title = "Shows"
 upcoming_shows = "Próximos shows"
