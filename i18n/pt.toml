@@ -55,6 +55,7 @@ international_shipping_message = "No momento, o checkout online só está dispon
 contact_via_email = "Fale por e-mail"
 contact_via_whatsapp = "Fale pelo WhatsApp"
 checkout_note = "Checkout seguro via PayPal."
+checkout_country_error = "Só enviamos dentro da Holanda, então este pedido não pode ser concluído com um endereço de entrega fora da Holanda. Nenhum pagamento foi cobrado. Use um endereço na Holanda ou entre em contato para pedidos internacionais."
 order_complete_title = "Obrigado pelo seu pedido!"
 order_complete_message = "Entraremos em contato em breve com os detalhes de envio."
 

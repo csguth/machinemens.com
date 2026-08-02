@@ -55,6 +55,7 @@ international_shipping_message = "Online afrekenen is momenteel alleen mogelijk 
 contact_via_email = "Mail ons"
 contact_via_whatsapp = "WhatsApp ons"
 checkout_note = "Veilig afrekenen via PayPal."
+checkout_country_error = "We verzenden alleen binnen Nederland, dus deze bestelling kan niet worden voltooid met een afleveradres buiten Nederland. Er is geen betaling gedaan. Gebruik een Nederlands adres of neem contact met ons op voor internationale bestellingen."
 order_complete_title = "Bedankt voor je bestelling!"
 order_complete_message = "We nemen binnenkort contact op met verzendgegevens."
 

@@ -29,11 +29,22 @@ const SHIPPING_FEE = 4.95;
 const WHATSAPP_NUMBER = '';
 const CONTACT_EMAIL = 'contact@machinemens.com';
 
+// ISO 3166-1 alpha-2 code of the only country we ship to / accept orders for.
+// Used to hard-validate the buyer's PayPal delivery address so an order can
+// only be paid/captured when it ships within the Netherlands -- the shipping
+// selector above is just an intent hint the buyer picks themselves; this is
+// the actual guard against a non-NL address slipping through the PayPal flow.
+const ALLOWED_COUNTRY = 'NL';
+
 function shopPage(productNames) {
   return {
     products: [],
     cart: {},
     checkoutComplete: false,
+    // Set true when a buyer approves a PayPal order whose delivery address is
+    // outside ALLOWED_COUNTRY. The template surfaces a message and we skip the
+    // capture() call, so no money is ever taken for a non-NL address.
+    checkoutCountryError: false,
     selectedSize: {},
     shippingFee: SHIPPING_FEE,
     // Checkout via PayPal is only offered for shipments within the
@@ -60,6 +71,9 @@ function shopPage(productNames) {
       this.paypalRendered = false;
       window.addEventListener('cart:updated', (event) => {
         this.cart = event.detail;
+        // Any cart edit starts a fresh checkout attempt, so clear a stale
+        // "wrong country" error from a previous attempt.
+        this.checkoutCountryError = false;
         // After a completed order the cart is cleared and the success
         // message takes over the cart section. If the buyer then adds new
         // items (starting a new order), bring the cart/checkout UI back
@@ -72,7 +86,10 @@ function shopPage(productNames) {
       });
       // Switching the shipping-country selector doesn't fire cart:updated,
       // so it needs its own watcher to show/hide the PayPal buttons.
-      this.$watch('shippingCountry', () => this.maybeRenderPaypalButtons());
+      this.$watch('shippingCountry', () => {
+        this.checkoutCountryError = false;
+        this.maybeRenderPaypalButtons();
+      });
       this.maybeRenderPaypalButtons();
     },
     // Builds the cart-store key for a product+size combination. Products
@@ -111,7 +128,15 @@ function shopPage(productNames) {
       return this.cartItems.length > 0 && this.shippingCountry === 'nl';
     },
     formatPrice(value) {
-      return '€' + value.toFixed(2).replace(/\.00$/, '');
+      return '\u20ac' + value.toFixed(2).replace(/\.00$/, '');
+    },
+    // Reads the buyer's delivery (or, as a fallback, billing) country from a
+    // PayPal order/details payload. Returns an uppercase alpha-2 code or ''.
+    orderCountryCode(details) {
+      const unit = details && details.purchase_units && details.purchase_units[0];
+      const shipCc = unit && unit.shipping && unit.shipping.address && unit.shipping.address.country_code;
+      const payerCc = details && details.payer && details.payer.address && details.payer.address.country_code;
+      return String(shipCc || payerCc || '').toUpperCase();
     },
     // Two async gaps must both close before we can render: (1) the PayPal SDK
     // script (loaded with `defer`) may not have executed yet, and (2) the
@@ -157,11 +182,17 @@ function shopPage(productNames) {
       window.paypal.Buttons({
         style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'paypal' },
         createOrder: (data, actions) => {
+          // Fresh attempt: drop any prior wrong-country error.
+          this.checkoutCountryError = false;
           const items = this.cartItems;
           const subtotal = this.cartTotal;
           const shipping = this.shippingFee;
           const total = subtotal + shipping;
           return actions.order.create({
+            // Force PayPal to collect/show a shipping address (rather than
+            // letting the buyer skip it) so onShippingChange and the
+            // pre-capture check below always have a country to validate.
+            application_context: { shipping_preference: 'GET_FROM_FILE' },
             purchase_units: [{
               amount: {
                 value: total.toFixed(2),
@@ -179,11 +210,40 @@ function shopPage(productNames) {
             }]
           });
         },
+        // First line of defence: reject a non-NL delivery address while the
+        // buyer is still choosing it inside the PayPal/card popup, before any
+        // authorization happens. PayPal then shows its own "can't ship here"
+        // notice and blocks the Pay button.
+        onShippingChange: (data, actions) => {
+          const cc = data && data.shipping_address && data.shipping_address.country_code;
+          if (cc && String(cc).toUpperCase() !== ALLOWED_COUNTRY) {
+            return actions.reject();
+          }
+          return actions.resolve();
+        },
         onApprove: (data, actions) => {
-          return actions.order.capture().then(() => {
-            window.MachinemensCart.clear();
-            this.checkoutComplete = true;
+          // Second line of defence (in case onShippingChange didn't fire for
+          // this funding source): re-read the approved order and only capture
+          // -- i.e. actually charge the buyer -- when it ships to NL.
+          return actions.order.get().then((details) => {
+            if (this.orderCountryCode(details) !== ALLOWED_COUNTRY) {
+              this.checkoutCountryError = true;
+              // Returning without capturing leaves the order uncaptured, so no
+              // funds are taken; PayPal voids the approval automatically.
+              return;
+            }
+            return actions.order.capture().then(() => {
+              window.MachinemensCart.clear();
+              this.checkoutComplete = true;
+            });
           });
+        },
+        // Buyer closed the popup without paying -- nothing to do, keep the cart.
+        onCancel: () => {},
+        onError: (err) => {
+          // Surface unexpected SDK/network errors in the console; the cart is
+          // left intact so the buyer can retry.
+          console.error('PayPal checkout error', err);
         }
       }).render('#paypal-buttons');
     }

@@ -101,6 +101,11 @@
 
           <div id="paypal-buttons" class="w-full"></div>
           <p class="text-cream/50 text-xs text-center">{{ i18n "checkout_note" }}</p>
+          <template x-if="checkoutCountryError">
+            <div class="cart-international-note" role="alert">
+              <p>{{ i18n "checkout_country_error" }}</p>
+            </div>
+          </template>
         </div>
       </template>
     </section>

@@ -55,6 +55,7 @@ international_shipping_message = "Online checkout currently only supports shippi
 contact_via_email = "Email us"
 contact_via_whatsapp = "WhatsApp us"
 checkout_note = "Secure checkout via PayPal."
+checkout_country_error = "We can only ship within the Netherlands, so this order can't be completed with a non-Dutch delivery address. No payment was taken. Please use a Netherlands address, or contact us for international orders."
 order_complete_title = "Thank you for your order!"
 order_complete_message = "We'll be in touch with shipping details soon."
 
