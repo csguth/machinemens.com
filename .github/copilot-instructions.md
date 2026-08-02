@@ -46,6 +46,11 @@ reuses the `staging` GitHub Environment's config, so treat preview data as share
 
 ## Secrets/vars this repo depends on (all one-time setup, see README "Deploy configuration")
 - Repo/environment variables: `SITE_URL`, `ENV_LABEL`
+- `PAYPAL_CLIENT_ID` (var, both environments) — PayPal REST app **Client ID** (public/publishable,
+  safe to embed client-side; never the Secret) used by the PayPal JS SDK Smart Buttons on `/shop/`.
+  Sandbox app's Client ID for `staging`/previews, Live app's for `github-pages` (production). No
+  PayPal secret/webhook is needed — checkout is client-side only (`createOrder`/`onApprove` via
+  the SDK), no backend calls the PayPal REST API server-to-server.
 - Staging-only: `CLOUDFLARE_ACCOUNT_ID` (var), `CLOUDFLARE_API_TOKEN` (secret)
 None of these are stored in the repo; if a workflow fails with "Missing variable", it's a one-time
 GitHub Settings configuration gap, not a code bug — tell the user which one is missing.
