@@ -58,11 +58,13 @@ layouts/
   index.html            Home page "main" block (hub: social links, teasers of latest release/next show)
   music/list.html       /music/ "main" block (full discography + live sessions)
   shows/list.html       /shows/ "main" block (upcoming + past shows)
+  shop/list.html        /shop/ "main" block (product grid + cart + PayPal Smart Buttons checkout)
   contact/list.html     /contact/ "main" block (bookings + general contact link-cards)
 content/                Per-language front matter (title/description), translated by filename:
   _index.{en,nl,pt}.md        Home
   music/_index.{en,nl,pt}.md  /music/
   shows/_index.{en,nl,pt}.md  /shows/
+  shop/_index.{en,nl,pt}.md   /shop/
   contact/_index.{en,nl,pt}.md  /contact/
 static/                 Copied verbatim into the build output (served as-is):
   favicon.png          Root favicon used by all pages + the bare "/" redirect page
@@ -74,9 +76,17 @@ static/                 Copied verbatim into the build output (served as-is):
   js/music-page.js      Alpine component for /music/ (fetches data/releases.json)
   js/shows-page.js      Alpine component for /shows/ (fetches data/shows.json)
   js/shows-teaser.js    Alpine component for the home "next show" teaser
+  js/cart-store.js      Shared localStorage cart (add/setQty/remove/clear), used by cart-badge.js
+                        and shop-page.js so the header badge and /shop/ page stay in sync
+  js/cart-badge.js      Alpine component for the header cart-count badge (loaded on every page)
+  js/shop-page.js       Alpine component for /shop/ (fetches data/products.json, renders the
+                        cart, and mounts PayPal JS SDK Smart Buttons client-side -- no backend)
   data/releases.json    Discography data consumed by /music/ (Alpine fetch + x-for) — add a new
                         release here, including its per-store links, when it drops
   data/shows.json       Shows/agenda data consumed by /shows/ and the home teaser
+  data/products.json    Product catalog consumed by /shop/ (id/price/image) -- product display
+                        names are translated i18n keys (shop_product_<id>), resolved server-side
+                        in layouts/shop/list.html and passed into the Alpine component
   images/logo.png       Band logo (wordmark)
   images/favicon.png    Source favicon image copied to the root favicon paths above
   robots.txt, sitemap.xml, CNAME
@@ -148,6 +158,7 @@ Before first deploy, add these **repository or environment** variables
 ### Required (both environments)
 - `SITE_URL` — e.g. `https://machinemens.com` (production) / `https://staging.machinemens.com` (staging)
 - `ENV_LABEL` — `production` or `staging`, drives the visible staging banner (`data-env` attribute)
+- PAYPAL_CLIENT_ID — PayPal REST app **Client ID** (the public/publishable one, safe to embed client-side; never the Secret) used by the PayPal JS SDK Smart Buttons on /shop/. Use a Sandbox app's Client ID for staging/previews and a Live app's for production.
 
 ### Internal / infra (staging only)
 - `CLOUDFLARE_ACCOUNT_ID` (repo variable) and `CLOUDFLARE_API_TOKEN` (repo **secret**) — used by
@@ -160,7 +171,7 @@ Notes:
   (`localStorage.machinemens_lang`), else browser language (`pt`/`nl`), else English. The header
   language selector is plain links to each language's URL, so the URL always changes with the
   language; `js/lang-persist.js` re-saves the current page's language on every load.
-- Placeholders `__SITE_URL__` / `__ENV_LABEL__` (in the Hugo layouts, `static/robots.txt`,
+- Placeholders `__SITE_URL__` / `__ENV_LABEL__` / `__PAYPAL_CLIENT_ID__` (in the Hugo layouts, `static/robots.txt`,
   `static/sitemap.xml`) are kept verbatim in the generated HTML and substituted with `sed` at
   deploy time — see each workflow's "Build site with Hugo and inject variables" step, which runs
   `hugo --gc --minify` first and then the `sed` substitution.
@@ -206,7 +217,6 @@ simplicity), then implemented via a PR targeting `staging`.
 v1 = Linktree replacement (this repo's initial content: logo + official links, trilingual EN/NL/PT).
 
 Planned next (tracked as issues on the board, not yet built):
-- Shop / e-commerce (merch)
 - Video player / embedded media section
 - Shows / tour dates (agenda)
 - Contact form

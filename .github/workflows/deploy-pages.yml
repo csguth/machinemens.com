@@ -25,9 +25,14 @@ jobs:
       - name: Validate variables
         env:
           SITE_URL: ${{ vars.SITE_URL }}
+          PAYPAL_CLIENT_ID: ${{ vars.PAYPAL_CLIENT_ID }}
         run: |
           if [ -z "$SITE_URL" ]; then
             echo "Missing repository/environment variable: SITE_URL"
+            exit 1
+          fi
+          if [ -z "$PAYPAL_CLIENT_ID" ]; then
+            echo "Missing repository/environment variable: PAYPAL_CLIENT_ID"
             exit 1
           fi
 
@@ -44,6 +49,7 @@ jobs:
           while IFS= read -r -d '' f; do
             sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" "$f"
             sed -i "s|__ENV_LABEL__|${{ vars.ENV_LABEL }}|g" "$f"
+            sed -i "s|__PAYPAL_CLIENT_ID__|${{ vars.PAYPAL_CLIENT_ID }}|g" "$f"
           done < <(find site -name "*.html" -print0)
 
           sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" site/robots.txt
