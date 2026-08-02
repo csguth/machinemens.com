@@ -43,6 +43,28 @@
       </template>
 
       <template x-if="!checkoutComplete && cartItems.length > 0">
+        <div class="w-full mb-4">
+          <label class="sr-only" for="shipping-country">{{ i18n "shipping_country_label" }}</label>
+          <select id="shipping-country" class="size-select" x-model="shippingCountry">
+            <option value="nl">{{ i18n "shipping_country_nl" }}</option>
+            <option value="other">{{ i18n "shipping_country_other" }}</option>
+          </select>
+        </div>
+      </template>
+
+      <template x-if="!checkoutComplete && cartItems.length > 0 && shippingCountry !== 'nl'">
+        <div class="cart-international-note">
+          <p>{{ i18n "international_shipping_message" }}</p>
+          <p class="cart-international-links">
+            <a :href="'mailto:' + contactEmail">{{ i18n "contact_via_email" }}</a>
+            <template x-if="whatsappLink">
+              <a :href="whatsappLink" target="_blank" rel="noopener">{{ i18n "contact_via_whatsapp" }}</a>
+            </template>
+          </p>
+        </div>
+      </template>
+
+      <template x-if="!checkoutComplete && cartItems.length > 0 && shippingCountry === 'nl'">
         <div class="w-full flex flex-col gap-3 mb-4">
           <template x-for="item in cartItems" :key="item.cartKey">
             <div class="cart-item">

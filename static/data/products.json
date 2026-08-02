@@ -1,7 +1,7 @@
 [
   {
     "id": "tshirt-black",
-    "price": 15,
+    "price": 20,
     "currency": "EUR",
     "image": "/images/shop/tshirt-black.jpg",
     "detailImage": "/images/shop/tshirt-black-detail.jpg",
@@ -9,7 +9,7 @@
   },
   {
     "id": "tshirt-pink",
-    "price": 15,
+    "price": 20,
     "currency": "EUR",
     "image": "/images/shop/tshirt-pink.jpg",
     "detailImage": "/images/shop/tshirt-pink-detail.jpg",

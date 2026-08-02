@@ -12,16 +12,22 @@
 // is stored under a composite key (`${productId}::${size}`), keeping the
 // same product available in multiple sizes as separate cart lines.
 //
-// SHIPPING_FEE is a flat rate added to every order (regardless of destination
-// or item count) -- kept intentionally simple/static rather than a per-country
-// rate table, since a dynamic rate would need PayPal's onShippingChange +
-// actions.order.patch() flow (recalculating the order after the buyer picks
-// their address inside the PayPal popup), which is harder to verify without
-// live/manual testing of the checkout popup. Adjust this constant (and the
-// shipping_label i18n string if the wording needs to change) as the band's
-// actual shipping costs become clearer; swap to a country-based table later
-// if needed.
+// SHIPPING_FEE is a flat rate added to every order -- it only covers shipping
+// within the Netherlands (see shippingCountry below). International/Brazil
+// shipping is currently priced/handled manually (no backend to calculate a
+// per-country rate table or collect/validate a real address), so those
+// orders are routed to a manual contact instead of the PayPal checkout.
+// Adjust this constant (and the shipping_label i18n string if the wording
+// needs to change) as the band's actual NL shipping cost becomes clearer.
 const SHIPPING_FEE = 4.95;
+
+// Set this to a WhatsApp number (digits only, with country code, e.g.
+// "31612345678") to show a WhatsApp link for international/Brazil orders
+// alongside the contact email below. Left empty until a number is provided --
+// the template only renders the WhatsApp link when this is non-empty, so it
+// never shows a broken/placeholder link.
+const WHATSAPP_NUMBER = '';
+const CONTACT_EMAIL = 'contact@machinemens.com';
 
 function shopPage(productNames) {
   return {
@@ -30,6 +36,14 @@ function shopPage(productNames) {
     checkoutComplete: false,
     selectedSize: {},
     shippingFee: SHIPPING_FEE,
+    // Checkout via PayPal is only offered for shipments within the
+    // Netherlands (matches SHIPPING_FEE, which is an NL-only flat rate).
+    // Buyers elsewhere are shown a manual-contact message instead, since
+    // pricing/collecting a real international/Brazil shipping rate would
+    // need either a backend or PayPal's onShippingChange flow.
+    shippingCountry: 'nl',
+    contactEmail: CONTACT_EMAIL,
+    whatsappLink: WHATSAPP_NUMBER ? 'https://wa.me/' + WHATSAPP_NUMBER : null,
     async init() {
       const res = await fetch('/data/products.json');
       const data = await res.json();
@@ -46,8 +60,19 @@ function shopPage(productNames) {
       this.paypalRendered = false;
       window.addEventListener('cart:updated', (event) => {
         this.cart = event.detail;
+        // After a completed order the cart is cleared and the success
+        // message takes over the cart section. If the buyer then adds new
+        // items (starting a new order), bring the cart/checkout UI back
+        // instead of leaving the order-complete message stuck on screen
+        // forever until a full page reload.
+        if (this.checkoutComplete && Object.keys(this.cart).length > 0) {
+          this.checkoutComplete = false;
+        }
         this.maybeRenderPaypalButtons();
       });
+      // Switching the shipping-country selector doesn't fire cart:updated,
+      // so it needs its own watcher to show/hide the PayPal buttons.
+      this.$watch('shippingCountry', () => this.maybeRenderPaypalButtons());
       this.maybeRenderPaypalButtons();
     },
     // Builds the cart-store key for a product+size combination. Products
@@ -80,13 +105,18 @@ function shopPage(productNames) {
     get orderTotal() {
       return this.cartTotal + this.shippingFee;
     },
+    // Whether PayPal checkout should be offered at all: needs items in the
+    // cart AND the buyer confirming NL shipping (see shippingCountry above).
+    get canCheckout() {
+      return this.cartItems.length > 0 && this.shippingCountry === 'nl';
+    },
     formatPrice(value) {
       return '€' + value.toFixed(2).replace(/\.00$/, '');
     },
     // Two async gaps must both close before we can render: (1) the PayPal SDK
     // script (loaded with `defer`) may not have executed yet, and (2) the
     // #paypal-buttons element only exists once Alpine's x-if has patched the
-    // DOM for `cartItems.length > 0` -- and Alpine flushes that DOM patch on
+    // DOM for `canCheckout` -- and Alpine flushes that DOM patch on
     // a microtask, *after* this event listener finishes running, so looking
     // it up with document.getElementById() immediately after `this.cart = ...`
     // returns null on the very first item added. That is why the button used
@@ -109,7 +139,7 @@ function shopPage(productNames) {
     // render is still settling causes a race (the SDK errors when a container is
     // rendered twice), so re-renders are guarded by paypalRendered too.
     maybeRenderPaypalButtons() {
-      if (this.cartItems.length === 0) {
+      if (!this.canCheckout) {
         this.paypalRendered = false;
         const container = document.getElementById('paypal-buttons');
         if (container) container.innerHTML = '';
@@ -121,7 +151,7 @@ function shopPage(productNames) {
     renderPaypalButtons() {
       const container = document.getElementById('paypal-buttons');
       if (!container || typeof window.paypal === 'undefined' || this.paypalRendered) return;
-      if (this.cartItems.length === 0) return;
+      if (!this.canCheckout) return;
       this.paypalRendered = true;
 
       window.paypal.Buttons({
