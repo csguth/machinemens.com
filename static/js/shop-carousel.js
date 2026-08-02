@@ -1,13 +1,18 @@
 // Minimal, dependency-free carousel for the homepage "Merch" teaser
 // (index.html #shop-carousel-track). Native CSS scroll-snap already gives
-// swipe/scroll support for free — this script only keeps the dot indicators
-// in sync and wires up the prev/next buttons + arrow-key navigation.
+// swipe/scroll support for free — this script keeps the dot indicators in
+// sync, wires up the prev/next buttons + arrow-key navigation, and
+// auto-advances the slides on a timer (pausing while the user is
+// hovering/touching/focusing the carousel, or has reduced-motion set).
 (function () {
   const track = document.getElementById('shop-carousel-track');
   const dotsContainer = document.getElementById('shop-carousel-dots');
   const prevBtn = document.getElementById('shop-carousel-prev');
   const nextBtn = document.getElementById('shop-carousel-next');
   if (!track || !dotsContainer) return;
+
+  const AUTOPLAY_DELAY_MS = 5000;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const slides = Array.from(track.children);
   if (slides.length === 0) return;
@@ -63,18 +68,54 @@
   );
   slides.forEach((slide) => observer.observe(slide));
 
-  if (prevBtn) prevBtn.addEventListener('click', () => scrollToSlide(currentActiveIndex() - 1));
-  if (nextBtn) nextBtn.addEventListener('click', () => scrollToSlide(currentActiveIndex() + 1));
+  if (prevBtn) prevBtn.addEventListener('click', () => { scrollToSlide(currentActiveIndex() - 1); restartAutoplay(); });
+  if (nextBtn) nextBtn.addEventListener('click', () => { scrollToSlide(currentActiveIndex() + 1); restartAutoplay(); });
 
   track.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowRight') {
       event.preventDefault();
       scrollToSlide(currentActiveIndex() + 1);
+      restartAutoplay();
     } else if (event.key === 'ArrowLeft') {
       event.preventDefault();
       scrollToSlide(currentActiveIndex() - 1);
+      restartAutoplay();
     }
   });
 
+  // Autoplay: advance one slide at a time, looping back to the start after
+  // the last one. Paused (not just reset) while the pointer/keyboard focus
+  // is on the carousel so it never fights a user mid-swipe, and disabled
+  // entirely for prefers-reduced-motion.
+  let autoplayTimer = null;
+
+  function stopAutoplay() {
+    if (autoplayTimer) {
+      clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+  }
+
+  function startAutoplay() {
+    if (prefersReducedMotion || slides.length < 2) return;
+    stopAutoplay();
+    autoplayTimer = setInterval(() => {
+      const next = (currentActiveIndex() + 1) % slides.length;
+      scrollToSlide(next);
+    }, AUTOPLAY_DELAY_MS);
+  }
+
+  function restartAutoplay() {
+    startAutoplay();
+  }
+
+  ['pointerenter', 'focusin'].forEach((evt) => track.addEventListener(evt, stopAutoplay));
+  ['pointerleave', 'focusout'].forEach((evt) => track.addEventListener(evt, startAutoplay));
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopAutoplay();
+    else startAutoplay();
+  });
+
   setActiveDot(0);
+  startAutoplay();
 })();
