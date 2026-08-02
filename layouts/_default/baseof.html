@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ .Language.Lang }}">
 <head>
 {{ partial "head.html" . }}
@@ -6,6 +6,9 @@
 <body data-env="__ENV_LABEL__" class="bg-black text-cream min-h-screen flex flex-col items-center">
 
   <div class="hero-bg" aria-hidden="true"></div>
+
+<script src="/js/cart-store.js"></script>
+<script src="/js/cart-badge.js"></script>
 
 {{ partial "header.html" . }}
 
