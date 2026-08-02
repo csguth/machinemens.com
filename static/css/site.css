@@ -41,11 +41,19 @@ body:not([data-env]) #env-banner { display: none; }
    z-index, so .hero-bg sits at z-index: 0 and the actual page content is
    raised above it instead of pushing the background behind everything. */
 #env-banner,
-header,
 main,
 footer {
   position: relative;
   z-index: 1;
+}
+
+/* header needs to sit above main/footer (not just above .hero-bg), since
+   header creates its own stacking context (position:relative + z-index) and
+   the language switcher dropdown overflows the header's box — with equal
+   z-index, main (later in DOM) would otherwise paint over that dropdown. */
+header {
+  position: relative;
+  z-index: 2;
 }
 
 .icon-link {
