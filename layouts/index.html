@@ -1,11 +1,15 @@
 {{ define "main" }}
-  <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex flex-col items-center px-6 pb-16 pt-4 md:pt-8">
+  <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-6xl flex flex-col items-center px-6 pb-16 pt-4 md:pt-8">
     <h1 class="sr-only">Machinemens</h1>
     <img src="/images/logo.png" alt="Machinemens" class="w-72 md:w-96 lg:w-[28rem] h-auto object-contain mb-6 md:mb-8" />
 
     <p class="text-center text-cream/80 mb-8 md:mb-10 italic md:text-lg">{{ i18n "tagline" }}</p>
 
-    <section class="w-full mb-8 md:mb-10" aria-labelledby="shop-heading">
+    <!-- Desktop grid: shop/release/show teasers sit side by side from lg: up
+         (12-col grid, one 4-col span each); below lg: they stay stacked, as
+         before. Each <section> keeps its own heading/labelledby for a11y. -->
+    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 mb-8 md:mb-10">
+    <section class="w-full lg:col-span-4" aria-labelledby="shop-heading">
       <p class="text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "shop_teaser_title" }}</p>
       <h2 id="shop-heading" class="sr-only">{{ i18n "shop_teaser_title" }}</h2>
 
@@ -51,7 +55,7 @@
       </div>
     </section>
 
-    <section class="w-full mb-8 md:mb-10" aria-labelledby="featured-heading">
+    <section class="w-full lg:col-span-4" aria-labelledby="featured-heading">
       <p class="text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "new_release" }}</p>
       <h2 id="featured-heading" class="text-cream font-semibold mb-3 md:text-lg">A Batalha de Netuno</h2>
 
@@ -68,7 +72,7 @@
       <a href="{{ "/music/" | relLangURL }}" class="listen-get-btn">{{ i18n "see_full_discography" }}</a>
     </section>
 
-    <section class="w-full mb-8 md:mb-10" x-data="showsTeaser()" aria-labelledby="shows-heading">
+    <section class="w-full lg:col-span-4" x-data="showsTeaser()" aria-labelledby="shows-heading">
       <p class="text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "next_show" }}</p>
       <h2 id="shows-heading" class="sr-only">{{ i18n "next_show" }}</h2>
 
@@ -85,6 +89,7 @@
 
       <a href="{{ "/shows/" | relLangURL }}" class="listen-get-btn">{{ i18n "see_all_shows" }}</a>
     </section>
+    </div>
 
   </main>
 {{ end }}

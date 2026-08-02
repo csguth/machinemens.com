@@ -1,10 +1,13 @@
 {{ define "main" }}
-  <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex flex-col items-center px-6 pb-16 pt-6 md:pt-8" x-data="musicPage()">
+  <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-6xl flex flex-col items-center px-6 pb-16 pt-6 md:pt-8" x-data="musicPage()">
     <h1 class="sr-only">{{ i18n "music_title" }}</h1>
 
     <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "discography" }}</p>
 
-    <section class="w-full flex flex-col gap-6 md:gap-8 mb-10 md:mb-12" aria-label="Latest release">
+    <!-- Desktop grid: latest release + live sessions sit side by side from
+         lg: up (7/5 split); below lg: they stay stacked as before. -->
+    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 mb-10 md:mb-12 items-start">
+    <section class="w-full flex flex-col gap-6 md:gap-8 lg:col-span-7" aria-label="Latest release">
       <template x-for="release in releases.slice(0, 1)" :key="release.id">
         <article class="w-full" x-data="{ open: false }">
           <h2 class="text-cream font-semibold mb-1 md:text-lg" x-text="release.title"></h2>
@@ -32,19 +35,22 @@
       </template>
     </section>
 
-    <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "live_sessions" }}</p>
-    <h2 class="sr-only">{{ i18n "live_sessions" }}</h2>
+    <div class="w-full lg:col-span-5">
+      <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "live_sessions" }}</p>
+      <h2 class="sr-only">{{ i18n "live_sessions" }}</h2>
 
-    <section class="w-full flex flex-col gap-4 mb-10 md:mb-12" aria-label="Live sessions">
-      {{ partial "youtube-player.html" (dict "videoIdExpr" "'wdf72zXkDjw'" "titleExpr" "'Machinemens - Red Planet (live in Anker Studio)'") }}
+      <section class="w-full flex flex-col gap-4" aria-label="Live sessions">
+        {{ partial "youtube-player.html" (dict "videoIdExpr" "'wdf72zXkDjw'" "titleExpr" "'Machinemens - Red Planet (live in Anker Studio)'") }}
 
-      {{ partial "youtube-player.html" (dict "videoIdExpr" "'WfT-lLayGcY'" "titleExpr" "'Machinemens - Mens Agitat Molem (live in Anker Studio)'") }}
-    </section>
+        {{ partial "youtube-player.html" (dict "videoIdExpr" "'WfT-lLayGcY'" "titleExpr" "'Machinemens - Mens Agitat Molem (live in Anker Studio)'") }}
+      </section>
+    </div>
+    </div>
 
     <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "earlier_releases" }}</p>
     <h2 class="sr-only">{{ i18n "earlier_releases" }}</h2>
 
-    <section class="w-full flex flex-col gap-6 md:gap-8 mb-4" aria-label="Earlier releases">
+    <section class="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-x-8 mb-4" aria-label="Earlier releases">
       <template x-for="release in releases.slice(1)" :key="release.id">
         <article class="w-full" x-data="{ open: false }">
           <h2 class="text-cream font-semibold mb-1 md:text-lg" x-text="release.title"></h2>
