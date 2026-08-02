@@ -24,6 +24,15 @@
     </button>
   </template>
 
+  {{/* Transparent hit layer over the iframe. Without it, the mouse reaches
+       the iframe directly and YouTube's own hover/pause overlay (title bar,
+       big pause icon, share/watch later/related videos row) shows up on top
+       of our custom controls — controls=0 only hides the bottom control bar,
+       not this overlay. Capturing all pointer events here keeps the visitor
+       interacting with our UI only. */}}
+  <button type="button" class="yt-hit-layer" x-show="started" x-cloak
+          @click="togglePlay()" :aria-label="playing ? pauseLabel : playLabel"></button>
+
   <div class="yt-controls" x-show="started" x-cloak @click.stop>
     <div class="yt-progress" @click="seek($event)">
       <div class="yt-progress-fill" :style="'width:' + progressPct + '%'"></div>
