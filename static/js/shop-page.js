@@ -11,12 +11,25 @@
 // stores arbitrary string keys -> quantity, so each product+size combination
 // is stored under a composite key (`${productId}::${size}`), keeping the
 // same product available in multiple sizes as separate cart lines.
+//
+// SHIPPING_FEE is a flat rate added to every order (regardless of destination
+// or item count) -- kept intentionally simple/static rather than a per-country
+// rate table, since a dynamic rate would need PayPal's onShippingChange +
+// actions.order.patch() flow (recalculating the order after the buyer picks
+// their address inside the PayPal popup), which is harder to verify without
+// live/manual testing of the checkout popup. Adjust this constant (and the
+// shipping_label i18n string if the wording needs to change) as the band's
+// actual shipping costs become clearer; swap to a country-based table later
+// if needed.
+const SHIPPING_FEE = 4.95;
+
 function shopPage(productNames) {
   return {
     products: [],
     cart: {},
     checkoutComplete: false,
     selectedSize: {},
+    shippingFee: SHIPPING_FEE,
     async init() {
       const res = await fetch('/data/products.json');
       const data = await res.json();
@@ -63,6 +76,9 @@ function shopPage(productNames) {
     },
     get cartTotal() {
       return this.cartItems.reduce((sum, item) => sum + item.qty * item.price, 0);
+    },
+    get orderTotal() {
+      return this.cartTotal + this.shippingFee;
     },
     formatPrice(value) {
       return '€' + value.toFixed(2).replace(/\.00$/, '');
@@ -112,14 +128,17 @@ function shopPage(productNames) {
         style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'paypal' },
         createOrder: (data, actions) => {
           const items = this.cartItems;
-          const total = this.cartTotal;
+          const subtotal = this.cartTotal;
+          const shipping = this.shippingFee;
+          const total = subtotal + shipping;
           return actions.order.create({
             purchase_units: [{
               amount: {
                 value: total.toFixed(2),
                 currency_code: 'EUR',
                 breakdown: {
-                  item_total: { value: total.toFixed(2), currency_code: 'EUR' }
+                  item_total: { value: subtotal.toFixed(2), currency_code: 'EUR' },
+                  shipping: { value: shipping.toFixed(2), currency_code: 'EUR' }
                 }
               },
               items: items.map((item) => ({

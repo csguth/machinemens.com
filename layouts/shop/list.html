@@ -64,9 +64,17 @@
             </div>
           </template>
 
+          <div class="cart-subtotal-row">
+            <span>{{ i18n "subtotal_label" }}</span>
+            <span x-text="formatPrice(cartTotal)"></span>
+          </div>
+          <div class="cart-subtotal-row">
+            <span>{{ i18n "shipping_label" }}</span>
+            <span x-text="formatPrice(shippingFee)"></span>
+          </div>
           <div class="cart-total">
             <span>{{ i18n "total_label" }}</span>
-            <span x-text="formatPrice(cartTotal)"></span>
+            <span x-text="formatPrice(orderTotal)"></span>
           </div>
 
           <div id="paypal-buttons" class="w-full"></div>
