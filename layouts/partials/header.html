@@ -13,19 +13,4 @@
       </a>
       <a href="{{ "/contact/" | relLangURL }}" class="site-nav-link"{{ if eq .Section "contact" }} aria-current="page"{{ end }}>{{ i18n "nav_contact" }}</a>
     </nav>
-    {{- $flags := dict "en" "🇬🇧" "nl" "🇳🇱" "pt" "🇧🇷" }}
-    <div class="relative" x-data="{ open: false }" @click.outside="open = false" @keydown.escape.window="open = false">
-      <button type="button" @click="open = !open" :aria-expanded="open.toString()" aria-haspopup="listbox" class="lang-switcher-btn" aria-label="{{ i18n "language_selector" }}">
-        <span aria-hidden="true">{{ index $flags .Language.Lang }}</span>
-        <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div x-show="open" x-cloak class="lang-switcher-menu" role="listbox" aria-label="{{ i18n "language_selector" }}">
-{{- range .AllTranslations }}
-        <a href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}" role="option" @click="open = false" class="lang-switcher-item{{ if eq .Language.Lang $.Language.Lang }} is-active{{ end }}"{{ if eq .Language.Lang $.Language.Lang }} aria-current="true"{{ end }}>
-          <span aria-hidden="true">{{ index $flags .Language.Lang }}</span>
-          <span>{{ .Language.LanguageName }}</span>
-        </a>
-{{- end }}
-      </div>
-    </div>
   </header>
