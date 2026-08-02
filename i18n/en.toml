@@ -30,6 +30,8 @@ earlier_releases = "Earlier releases"
 
 shop_teaser_title = "Merch"
 shop_teaser_cta = "Shop on Bandcamp"
+shop_product_tshirt = "Machinemens T-Shirt"
+shop_price = "€15"
 
 shows_title = "Shows"
 upcoming_shows = "Upcoming shows"

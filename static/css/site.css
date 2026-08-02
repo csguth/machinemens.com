@@ -226,26 +226,11 @@ footer {
   opacity: 0.55;
 }
 
-.shop-photo {
-  display: block;
-  border-radius: 1rem;
-  overflow: hidden;
-  border: 2px solid var(--gold);
-  transition: transform 0.15s ease;
-}
-
-.shop-photo:hover,
-.shop-photo:focus-visible {
-  transform: translateY(-2px);
-}
-
-.shop-photo img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-}
+/* Shop carousel — hides the native scroll bar so the CSS scroll-snap track
+   (js/shop-carousel.js) reads as a carousel, not a plain overflowing div.
+   Scrolling/swiping itself needs no JS at all. */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
 [x-cloak] {
   display: none !important;
