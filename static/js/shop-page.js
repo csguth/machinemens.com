@@ -1,4 +1,4 @@
-﻿// Alpine component for the /shop/ page (static/js/shop-page.js).
+// Alpine component for the /shop/ page (static/js/shop-page.js).
 // Fetches the product catalog from data/products.json and merges in each
 // product's Hugo-rendered i18n name (passed in from layouts/shop/list.html
 // as `productNames`, keeping translations compile-time like the rest of the
@@ -18,11 +18,12 @@ function shopPage(productNames) {
         name: productNames[product.id] || product.id
       }));
       this.cart = window.MachinemensCart.get();
+      this.paypalRendered = false;
       window.addEventListener('cart:updated', (event) => {
         this.cart = event.detail;
-        this.waitForPaypal(() => this.renderPaypalButtons());
+        this.maybeRenderPaypalButtons();
       });
-      this.waitForPaypal(() => this.renderPaypalButtons());
+      this.maybeRenderPaypalButtons();
     },
     addToCart(productId) {
       window.MachinemensCart.add(productId, 1);
@@ -57,18 +58,34 @@ function shopPage(productNames) {
         setTimeout(() => this.waitForPaypal(callback, attempt + 1), 250);
       }
     },
+    // Buttons only need to be rendered ONCE per checkout session -- createOrder
+    // below reads this.cartItems/this.cartTotal live at click time, so it always
+    // reflects the latest cart contents without re-rendering. Calling
+    // paypal.Buttons(...).render() again on the same mount point while a prior
+    // render is still settling causes a race (the SDK errors when a container is
+    // rendered twice), which was hiding the button until a second cart change
+    // happened to "win" the race. Guard with paypalRendered instead.
+    maybeRenderPaypalButtons() {
+      const container = document.getElementById('paypal-buttons');
+      if (this.cartItems.length === 0) {
+        this.paypalRendered = false;
+        if (container) container.innerHTML = '';
+        return;
+      }
+      if (this.paypalRendered) return;
+      this.waitForPaypal(() => this.renderPaypalButtons());
+    },
     renderPaypalButtons() {
       const container = document.getElementById('paypal-buttons');
-      if (!container || typeof window.paypal === 'undefined') return;
-      container.innerHTML = '';
+      if (!container || typeof window.paypal === 'undefined' || this.paypalRendered) return;
       if (this.cartItems.length === 0) return;
-
-      const items = this.cartItems;
-      const total = this.cartTotal;
+      this.paypalRendered = true;
 
       window.paypal.Buttons({
         style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'paypal' },
         createOrder: (data, actions) => {
+          const items = this.cartItems;
+          const total = this.cartTotal;
           return actions.order.create({
             purchase_units: [{
               amount: {
