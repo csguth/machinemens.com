@@ -41,19 +41,11 @@ body:not([data-env]) #env-banner { display: none; }
    z-index, so .hero-bg sits at z-index: 0 and the actual page content is
    raised above it instead of pushing the background behind everything. */
 #env-banner,
+header,
 main,
 footer {
   position: relative;
   z-index: 1;
-}
-
-/* header needs to sit above main/footer (not just above .hero-bg), since
-   header creates its own stacking context (position:relative + z-index) and
-   the language switcher dropdown overflows the header's box — with equal
-   z-index, main (later in DOM) would otherwise paint over that dropdown. */
-header {
-  position: relative;
-  z-index: 2;
 }
 
 .icon-link {
@@ -381,6 +373,15 @@ header {
   border-radius: 0.75rem;
   border: 1px solid rgba(201, 162, 75, 0.35);
   background-color: rgba(0, 0, 0, 0.85);
+}
+
+/* In the footer the switcher button sits centered (not flush to a container
+   edge like it did in the header), so center the dropdown under the button
+   instead of right-aligning it. */
+.lang-switcher-menu-footer {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
 }
 
 .lang-switcher-item {
