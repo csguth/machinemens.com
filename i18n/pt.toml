@@ -40,6 +40,7 @@ shop_price = "€15"
 
 shop_title = "Loja"
 add_to_cart = "Adicionar ao carrinho"
+size_label = "Tamanho"
 cart_heading = "Carrinho"
 cart_empty = "Seu carrinho está vazio."
 qty_label = "Qtd"

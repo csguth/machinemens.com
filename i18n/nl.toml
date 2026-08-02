@@ -40,6 +40,7 @@ shop_price = "€15"
 
 shop_title = "Shop"
 add_to_cart = "In winkelwagen"
+size_label = "Maat"
 cart_heading = "Winkelwagen"
 cart_empty = "Je winkelwagen is leeg."
 qty_label = "Aantal"

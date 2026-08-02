@@ -1,4 +1,4 @@
-﻿{{ define "main" }}
+{{ define "main" }}
   <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex flex-col items-center px-6 pb-16 pt-6 md:pt-8"
         x-data="shopPage({ 'tshirt-black': '{{ i18n "shop_product_tshirt_black" }}', 'tshirt-pink': '{{ i18n "shop_product_tshirt_pink" }}' })">
     <h1 class="sr-only">{{ i18n "shop_title" }}</h1>
@@ -12,6 +12,16 @@
           <div class="product-card-body">
             <h2 class="product-card-title" x-text="product.name"></h2>
             <p class="product-card-price" x-text="formatPrice(product.price)"></p>
+            <template x-if="product.sizes && product.sizes.length">
+              <div class="w-full">
+                <label class="sr-only" :for="'size-' + product.id">{{ i18n "size_label" }}</label>
+                <select :id="'size-' + product.id" class="size-select" x-model="selectedSize[product.id]">
+                  <template x-for="size in product.sizes" :key="size">
+                    <option :value="size" x-text="size"></option>
+                  </template>
+                </select>
+              </div>
+            </template>
             <button type="button" class="listen-get-btn" @click="addToCart(product.id)">{{ i18n "add_to_cart" }}</button>
           </div>
         </article>
@@ -34,17 +44,22 @@
 
       <template x-if="!checkoutComplete && cartItems.length > 0">
         <div class="w-full flex flex-col gap-3 mb-4">
-          <template x-for="item in cartItems" :key="item.id">
+          <template x-for="item in cartItems" :key="item.cartKey">
             <div class="cart-item">
               <img :src="item.image" :alt="item.name" class="cart-item-photo" loading="lazy" />
               <div class="cart-item-info">
                 <p class="cart-item-title" x-text="item.name"></p>
-                <p class="cart-item-price" x-text="formatPrice(item.price)"></p>
+                <p class="cart-item-price">
+                  <span x-text="formatPrice(item.price)"></span>
+                  <template x-if="item.size">
+                    <span class="cart-item-size" x-text="'· ' + item.size"></span>
+                  </template>
+                </p>
               </div>
               <div class="cart-item-actions">
-                <label class="sr-only" :for="'qty-' + item.id">{{ i18n "qty_label" }}</label>
-                <input :id="'qty-' + item.id" type="number" min="1" class="cart-qty-input" :value="item.qty" @change="setQty(item.id, $event.target.value)" />
-                <button type="button" class="cart-remove-btn" @click="removeFromCart(item.id)">{{ i18n "remove" }}</button>
+                <label class="sr-only" :for="'qty-' + item.cartKey">{{ i18n "qty_label" }}</label>
+                <input :id="'qty-' + item.cartKey" type="number" min="1" class="cart-qty-input" :value="item.qty" @change="setQty(item.cartKey, $event.target.value)" />
+                <button type="button" class="cart-remove-btn" @click="removeFromCart(item.cartKey)">{{ i18n "remove" }}</button>
               </div>
             </div>
           </template>

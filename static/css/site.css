@@ -494,6 +494,16 @@ header {
   font-size: 0.8125rem;
 }
 
+.size-select {
+  width: 100%;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(201, 162, 75, 0.35);
+  background-color: rgba(0, 0, 0, 0.35);
+  color: var(--cream);
+  font-size: 0.8125rem;
+}
+
 .cart-item {
   display: flex;
   align-items: center;
@@ -528,6 +538,10 @@ header {
 .cart-item-price {
   color: rgba(245, 239, 227, 0.65);
   font-size: 0.8125rem;
+}
+
+.cart-item-size {
+  color: rgba(245, 239, 227, 0.5);
 }
 
 .cart-item-actions {

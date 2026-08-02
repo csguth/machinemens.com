@@ -5,11 +5,18 @@
 // site). Cart state lives in the shared cart-store.js (localStorage), and
 // checkout renders PayPal JS SDK Smart Buttons entirely client-side from the
 // cart's contents -- no backend/order-management service (per issue #3).
+//
+// Products with a `sizes` array (e.g. t-shirts) require a size to be picked
+// before adding to cart. cart-store.js itself stays size-agnostic: it just
+// stores arbitrary string keys -> quantity, so each product+size combination
+// is stored under a composite key (`${productId}::${size}`), keeping the
+// same product available in multiple sizes as separate cart lines.
 function shopPage(productNames) {
   return {
     products: [],
     cart: {},
     checkoutComplete: false,
+    selectedSize: {},
     async init() {
       const res = await fetch('/data/products.json');
       const data = await res.json();
@@ -17,6 +24,11 @@ function shopPage(productNames) {
         ...product,
         name: productNames[product.id] || product.id
       }));
+      this.products.forEach((product) => {
+        if (product.sizes && product.sizes.length) {
+          this.selectedSize[product.id] = product.sizes[0];
+        }
+      });
       this.cart = window.MachinemensCart.get();
       this.paypalRendered = false;
       window.addEventListener('cart:updated', (event) => {
@@ -25,20 +37,27 @@ function shopPage(productNames) {
       });
       this.maybeRenderPaypalButtons();
     },
+    // Builds the cart-store key for a product+size combination. Products
+    // without sizes just use their own id as the key.
+    cartKey(productId, size) {
+      return size ? productId + '::' + size : productId;
+    },
     addToCart(productId) {
-      window.MachinemensCart.add(productId, 1);
+      const size = this.selectedSize[productId];
+      window.MachinemensCart.add(this.cartKey(productId, size), 1);
     },
-    setQty(productId, qty) {
-      window.MachinemensCart.setQty(productId, Number(qty));
+    setQty(cartKey, qty) {
+      window.MachinemensCart.setQty(cartKey, Number(qty));
     },
-    removeFromCart(productId) {
-      window.MachinemensCart.remove(productId);
+    removeFromCart(cartKey) {
+      window.MachinemensCart.remove(cartKey);
     },
     get cartItems() {
       return Object.entries(this.cart)
-        .map(([id, qty]) => {
-          const product = this.products.find((p) => p.id === id);
-          return product ? { ...product, qty } : null;
+        .map(([cartKey, qty]) => {
+          const [productId, size] = cartKey.split('::');
+          const product = this.products.find((p) => p.id === productId);
+          return product ? { ...product, qty, size: size || null, cartKey } : null;
         })
         .filter(Boolean);
     },
@@ -96,7 +115,7 @@ function shopPage(productNames) {
                 }
               },
               items: items.map((item) => ({
-                name: item.name,
+                name: item.size ? item.name + ' (' + item.size + ')' : item.name,
                 unit_amount: { value: item.price.toFixed(2), currency_code: 'EUR' },
                 quantity: String(item.qty)
               }))
