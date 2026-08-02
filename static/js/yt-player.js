@@ -30,6 +30,14 @@ function loadYouTubeIframeApi() {
 
 let ytPlayerMountCounter = 0;
 
+// YouTube always flashes a title/channel/branding overlay for several
+// seconds whenever a video starts playing, regardless of mouse position or
+// the controls=0 playerVar — there's no documented API parameter to
+// suppress it. To avoid showing that overlay, playback starts muted behind
+// our own poster and is only revealed (and unmuted) once the overlay has
+// had time to fade on its own.
+const YT_REVEAL_DELAY_MS = 8000;
+
 function ytPlayer(videoId, title, labels) {
   labels = labels || {};
 
@@ -44,10 +52,14 @@ function ytPlayer(videoId, title, labels) {
     mountId: `yt-player-mount-${++ytPlayerMountCounter}`,
     player: null,
     started: false,
+    // True once the initial branding overlay has had time to fade and the
+    // real player (with sound) is shown in place of our poster.
+    revealed: false,
     playing: false,
     duration: 0,
     currentTime: 0,
     progressTimer: null,
+    revealTimer: null,
 
     get posterUrl() {
       return `https://img.youtube.com/vi/${this.videoId}/hqdefault.jpg`;
@@ -57,6 +69,7 @@ function ytPlayer(videoId, title, labels) {
     },
 
     async start() {
+      if (this.started) return;
       this.started = true;
       const YT = await loadYouTubeIframeApi();
       this.player = new YT.Player(this.mountId, {
@@ -73,10 +86,20 @@ function ytPlayer(videoId, title, labels) {
           rel: 0,
           iv_load_policy: 3,
           playsinline: 1,
-          fs: 0
+          fs: 0,
+          mute: 1
         },
         events: {
-          onReady: (e) => e.target.playVideo(),
+          onReady: (e) => {
+            // Start muted so the branding overlay plays out silently behind
+            // our poster; unmute only once it's safe to reveal the player.
+            e.target.mute();
+            e.target.playVideo();
+            this.revealTimer = setTimeout(() => {
+              this.revealed = true;
+              this.player.unMute();
+            }, YT_REVEAL_DELAY_MS);
+          },
           onStateChange: (e) => this.handleStateChange(e)
         }
       });
