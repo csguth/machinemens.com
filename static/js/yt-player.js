@@ -60,6 +60,11 @@ function ytPlayer(videoId, title, labels) {
       this.started = true;
       const YT = await loadYouTubeIframeApi();
       this.player = new YT.Player(this.mountId, {
+        // The API defaults to a fixed 640x360 iframe; force it to fill the
+        // aspect-video container instead (see also ".yt-player iframe" in
+        // site.css, since the generated iframe doesn't inherit our classes).
+        width: '100%',
+        height: '100%',
         videoId: this.videoId,
         playerVars: {
           controls: 0,

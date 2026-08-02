@@ -197,6 +197,16 @@ footer {
 /* Custom-chrome YouTube player (js/yt-player.js). Replaces the native
    embed controls/branding with our own poster + play/pause/progress/
    fullscreen UI, driven by the YouTube IFrame Player API. */
+.yt-player iframe {
+  /* YT.Player() replaces the mount div with a brand-new iframe that
+     doesn't inherit our Tailwind classes, so force it to fill the
+     aspect-video container here instead of the API's default 640x360. */
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .yt-poster {
   display: block;
   position: relative;
