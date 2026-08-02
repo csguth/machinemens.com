@@ -17,9 +17,13 @@
            prev/next buttons + arrow keys). -->
       <div class="relative rounded-2xl overflow-hidden mb-4 border-2 border-gold">
         <div class="grid grid-flow-col auto-cols-[100%] overflow-x-auto snap-x snap-mandatory no-scrollbar" id="shop-carousel-track" tabindex="0">
-          <div class="snap-start [scroll-snap-stop:always] min-w-0 grid grid-cols-2 gap-0.5">
-            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="relative block">
-              <div class="relative aspect-[3/4] w-full">
+          <!-- Column widths use grid-cols-[<w1>fr_<w2>fr] matching each cropped photo's
+               real pixel aspect ratio (not a strict 50/50 split), and the slide's own
+               aspect-[totalW/768] keeps the row height in exact proportion — so
+               object-cover never re-crops the photos beyond the intentional edit. -->
+          <div class="snap-start [scroll-snap-stop:always] min-w-0 grid grid-cols-[560fr_930fr] gap-0.5 aspect-[1490/768]">
+            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="relative block h-full">
+              <div class="relative w-full h-full">
                 <img src="/images/shop/tshirt-black.jpg" alt="Machinemens T-Shirt, black" class="absolute inset-0 w-full h-full object-cover" loading="eager" width="560" height="768" />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
                 <div class="absolute inset-x-0 bottom-0 px-3 pb-3">
@@ -28,9 +32,9 @@
                 </div>
               </div>
             </a>
-            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="relative block">
-              <div class="relative aspect-[3/4] w-full">
-                <img src="/images/shop/tshirt-pink.jpg" alt="Machinemens T-Shirt, pink" class="absolute inset-0 w-full h-full object-cover" loading="eager" width="700" height="768" />
+            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="relative block h-full">
+              <div class="relative w-full h-full">
+                <img src="/images/shop/tshirt-pink.jpg" alt="Machinemens T-Shirt, pink" class="absolute inset-0 w-full h-full object-cover" loading="eager" width="930" height="768" />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
                 <div class="absolute inset-x-0 bottom-0 px-3 pb-3">
                   <p class="text-cream font-semibold text-sm">{{ i18n "shop_product_tshirt_pink" }}</p>
@@ -39,9 +43,9 @@
               </div>
             </a>
           </div>
-          <div class="snap-start [scroll-snap-stop:always] min-w-0 grid grid-cols-2 gap-0.5">
-            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="relative block">
-              <div class="relative aspect-[3/4] w-full">
+          <div class="snap-start [scroll-snap-stop:always] min-w-0 grid grid-cols-[620fr_984fr] gap-0.5 aspect-[1604/768]">
+            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="relative block h-full">
+              <div class="relative w-full h-full">
                 <img src="/images/shop/tshirt-black-detail.jpg" alt="Machinemens T-Shirt, black, print detail" class="absolute inset-0 w-full h-full object-cover" loading="lazy" width="620" height="768" />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
                 <div class="absolute inset-x-0 bottom-0 px-3 pb-3">
@@ -50,9 +54,9 @@
                 </div>
               </div>
             </a>
-            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="relative block">
-              <div class="relative aspect-[3/4] w-full">
-                <img src="/images/shop/tshirt-pink-detail.jpg" alt="Machinemens T-Shirt, pink, print detail" class="absolute inset-0 w-full h-full object-cover" loading="lazy" width="904" height="768" />
+            <a href="https://machinemens.bandcamp.com/" target="_blank" rel="noopener noreferrer" class="relative block h-full">
+              <div class="relative w-full h-full">
+                <img src="/images/shop/tshirt-pink-detail.jpg" alt="Machinemens T-Shirt, pink, print detail" class="absolute inset-0 w-full h-full object-cover" loading="lazy" width="984" height="768" />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
                 <div class="absolute inset-x-0 bottom-0 px-3 pb-3">
                   <p class="text-cream font-semibold text-sm">{{ i18n "shop_product_tshirt_pink" }}</p>
