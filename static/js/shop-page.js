@@ -67,14 +67,23 @@ function shopPage(productNames) {
     formatPrice(value) {
       return '€' + value.toFixed(2).replace(/\.00$/, '');
     },
-    // The PayPal SDK script (loaded with `defer`) may not be ready yet when
-    // Alpine mounts, so poll briefly rather than assuming it's available.
-    waitForPaypal(callback, attempt) {
+    // Two async gaps must both close before we can render: (1) the PayPal SDK
+    // script (loaded with `defer`) may not have executed yet, and (2) the
+    // #paypal-buttons element only exists once Alpine's x-if has patched the
+    // DOM for `cartItems.length > 0` -- and Alpine flushes that DOM patch on
+    // a microtask, *after* this event listener finishes running, so looking
+    // it up with document.getElementById() immediately after `this.cart = ...`
+    // returns null on the very first item added. That is why the button used
+    // to only show up once a *second* cart change happened to "win" the race
+    // (by then the first item's DOM patch had already settled). Poll for both
+    // conditions instead of assuming either is ready synchronously.
+    waitForPaypalAndContainer(callback, attempt) {
       attempt = attempt || 0;
-      if (typeof window.paypal !== 'undefined') {
-        callback();
-      } else if (attempt < 40) {
-        setTimeout(() => this.waitForPaypal(callback, attempt + 1), 250);
+      const container = document.getElementById('paypal-buttons');
+      if (container && typeof window.paypal !== 'undefined') {
+        callback(container);
+      } else if (attempt < 60) {
+        setTimeout(() => this.waitForPaypalAndContainer(callback, attempt + 1), 100);
       }
     },
     // Buttons only need to be rendered ONCE per checkout session -- createOrder
@@ -82,17 +91,16 @@ function shopPage(productNames) {
     // reflects the latest cart contents without re-rendering. Calling
     // paypal.Buttons(...).render() again on the same mount point while a prior
     // render is still settling causes a race (the SDK errors when a container is
-    // rendered twice), which was hiding the button until a second cart change
-    // happened to "win" the race. Guard with paypalRendered instead.
+    // rendered twice), so re-renders are guarded by paypalRendered too.
     maybeRenderPaypalButtons() {
-      const container = document.getElementById('paypal-buttons');
       if (this.cartItems.length === 0) {
         this.paypalRendered = false;
+        const container = document.getElementById('paypal-buttons');
         if (container) container.innerHTML = '';
         return;
       }
       if (this.paypalRendered) return;
-      this.waitForPaypal(() => this.renderPaypalButtons());
+      this.waitForPaypalAndContainer(() => this.renderPaypalButtons());
     },
     renderPaypalButtons() {
       const container = document.getElementById('paypal-buttons');

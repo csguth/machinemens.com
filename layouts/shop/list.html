@@ -77,6 +77,11 @@
   </main>
 {{ end }}
 {{ define "scripts" }}
-  <script src="https://www.paypal.com/sdk/js?client-id=__PAYPAL_CLIENT_ID__&currency=EUR&intent=capture" defer></script>
+  {{/* enable-funding=ideal surfaces the iDEAL bank-redirect button (NL, EUR
+       only) alongside PayPal/card -- it only actually renders once the
+       merchant's PayPal business account has completed iDEAL onboarding
+       (see PayPal docs: "Onboard a merchant for iDEAL payments"); until then
+       the SDK just ignores the flag and shows PayPal + card as before. */}}
+  <script src="https://www.paypal.com/sdk/js?client-id=__PAYPAL_CLIENT_ID__&currency=EUR&intent=capture&enable-funding=ideal" defer></script>
   <script src="/js/shop-page.js"></script>
 {{ end }}
