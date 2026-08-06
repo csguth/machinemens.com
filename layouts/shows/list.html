@@ -1,41 +1,41 @@
 {{ define "main" }}
-  <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-6xl flex flex-col items-center px-6 pb-16 pt-6 md:pt-8" x-data="showsPage()">
+  <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-6xl flex flex-col items-center px-6 pb-16 pt-6 md:pt-8" data-x-data="showsPage()">
     <h1 class="sr-only">{{ i18n "shows_title" }}</h1>
 
     <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "upcoming_shows" }}</p>
 
     <section class="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-x-6 mb-10 md:mb-12" aria-label="Upcoming shows">
-      <template x-if="upcoming.length === 0">
+      <template data-x-if="upcoming.length === 0">
         <p class="text-cream/60 text-sm lg:col-span-2">{{ i18n "no_shows_long" }}</p>
       </template>
-      <template x-for="show in upcoming" :key="show.id">
+      <template data-x-for="show in upcoming" data-x-bind:key="show.id">
         <article class="show-card">
-          <p class="show-card-date" x-text="formatDate(show.date)"></p>
-          <h2 class="show-card-title" x-text="show.title"></h2>
-          <p class="show-card-venue" x-text="show.venue + ' — ' + show.address"></p>
+          <p class="show-card-date" data-x-text="formatDate(show.date)"></p>
+          <h2 class="show-card-title" data-x-text="show.title"></h2>
+          <p class="show-card-venue" data-x-text="show.venue + ' — ' + show.address"></p>
           <div class="flex flex-wrap gap-2 mt-1">
-            <template x-if="show.ticketUrl">
-              <a :href="show.ticketUrl" target="_blank" rel="noopener noreferrer" class="listen-get-btn self-start">{{ i18n "tickets" }}</a>
+            <template data-x-if="show.ticketUrl">
+              <a data-x-bind:href="show.ticketUrl" target="_blank" rel="noopener noreferrer" class="listen-get-btn self-start">{{ i18n "tickets" }}</a>
             </template>
-            <template x-if="show.websiteUrl">
-              <a :href="show.websiteUrl" target="_blank" rel="noopener noreferrer" class="listen-get-btn self-start">{{ i18n "website" }}</a>
+            <template data-x-if="show.websiteUrl">
+              <a data-x-bind:href="show.websiteUrl" target="_blank" rel="noopener noreferrer" class="listen-get-btn self-start">{{ i18n "website" }}</a>
             </template>
           </div>
         </article>
       </template>
     </section>
 
-    <template x-if="past.length > 0">
+    <template data-x-if="past.length > 0">
       <div class="w-full">
         <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "past_shows" }}</p>
         <h2 class="sr-only">{{ i18n "past_shows" }}</h2>
 
         <section class="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-x-6 mb-4" aria-label="Past shows">
-          <template x-for="show in past" :key="show.id">
+          <template data-x-for="show in past" data-x-bind:key="show.id">
             <article class="show-card is-past">
-              <p class="show-card-date" x-text="formatDate(show.date)"></p>
-              <h2 class="show-card-title" x-text="show.title"></h2>
-              <p class="show-card-venue" x-text="show.venue + ' — ' + show.address"></p>
+              <p class="show-card-date" data-x-text="formatDate(show.date)"></p>
+              <h2 class="show-card-title" data-x-text="show.title"></h2>
+              <p class="show-card-venue" data-x-text="show.venue + ' — ' + show.address"></p>
             </article>
           </template>
         </section>
