@@ -294,6 +294,31 @@ footer {
   opacity: 0.55;
 }
 
+.news-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 2px solid var(--gold);
+}
+
+.news-card-date {
+  color: var(--gold);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.news-card-title {
+  color: var(--cream);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
 /* Shop carousel — hides the native scroll bar so the CSS scroll-snap track
    (js/shop-carousel.js) reads as a carousel, not a plain overflowing div.
    Scrolling/swiping itself needs no JS at all. */

@@ -3,6 +3,7 @@
 nav_home = "Home"
 nav_music = "Music"
 nav_shows = "Shows"
+nav_news = "News"
 nav_shop = "Shop"
 nav_contact = "Contact"
 
@@ -61,3 +62,10 @@ no_shows_long = "No shows scheduled at the moment. Check back soon."
 tickets = "Tickets"
 website = "Website"
 past_shows = "Past shows"
+
+news_title = "News"
+latest_news = "Latest news"
+no_news_long = "No news yet. Check back soon."
+no_news_short = "No news yet."
+read_more = "Read more"
+see_all_news = "See all news"

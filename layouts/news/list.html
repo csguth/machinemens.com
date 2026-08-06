@@ -1,0 +1,23 @@
+{{ define "main" }}
+  <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-6xl flex flex-col items-center px-6 pb-16 pt-6 md:pt-8" x-data="newsPage()">
+    <h1 class="sr-only">{{ i18n "news_title" }}</h1>
+
+    <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "latest_news" }}</p>
+
+    <section class="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-x-6 mb-4" aria-label="News">
+      <template x-if="items.length === 0">
+        <p class="text-cream/60 text-sm lg:col-span-2">{{ i18n "no_news_long" }}</p>
+      </template>
+      <template x-for="item in items" :key="item.id">
+        <article class="news-card">
+          <p class="news-card-date" x-text="formatDate(item.date) + ' — ' + item.source"></p>
+          <h2 class="news-card-title" x-text="item.title"></h2>
+          <a :href="item.url" target="_blank" rel="noopener noreferrer" class="listen-get-btn self-start">{{ i18n "read_more" }}</a>
+        </article>
+      </template>
+    </section>
+  </main>
+{{ end }}
+{{ define "scripts" }}
+  <script src="/js/news-page.js"></script>
+{{ end }}

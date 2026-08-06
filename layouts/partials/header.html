@@ -7,6 +7,7 @@
       <a href="{{ "/" | relLangURL }}" class="site-nav-link"{{ if .IsHome }} aria-current="page"{{ end }}>{{ i18n "nav_home" }}</a>
       <a href="{{ "/music/" | relLangURL }}" class="site-nav-link"{{ if eq .Section "music" }} aria-current="page"{{ end }}>{{ i18n "nav_music" }}</a>
       <a href="{{ "/shows/" | relLangURL }}" class="site-nav-link"{{ if eq .Section "shows" }} aria-current="page"{{ end }}>{{ i18n "nav_shows" }}</a>
+      <a href="{{ "/news/" | relLangURL }}" class="site-nav-link"{{ if eq .Section "news" }} aria-current="page"{{ end }}>{{ i18n "nav_news" }}</a>
       <a href="{{ "/shop/" | relLangURL }}" class="site-nav-link relative inline-flex items-center"{{ if eq .Section "shop" }} aria-current="page"{{ end }} x-data="cartBadge()">
         {{ i18n "nav_shop" }}
         <span x-show="count > 0" x-cloak x-text="count" class="cart-badge" aria-hidden="true"></span>

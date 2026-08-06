@@ -94,11 +94,29 @@
 
       <a href="{{ "/shows/" | relLangURL }}" class="listen-get-btn">{{ i18n "see_all_shows" }}</a>
     </section>
+
+    <section class="w-full lg:col-span-12 lg:row-start-3" x-data="newsTeaser()" aria-labelledby="news-heading">
+      <p class="text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "latest_news" }}</p>
+      <h2 id="news-heading" class="sr-only">{{ i18n "latest_news" }}</h2>
+
+      <template x-if="latest">
+        <article class="news-card mb-4">
+          <p class="news-card-date" x-text="formatDate(latest.date) + ' — ' + latest.source"></p>
+          <h3 class="news-card-title" x-text="latest.title"></h3>
+        </article>
+      </template>
+      <template x-if="!latest">
+        <p class="text-cream/60 text-sm mb-4">{{ i18n "no_news_short" }}</p>
+      </template>
+
+      <a href="{{ "/news/" | relLangURL }}" class="listen-get-btn">{{ i18n "see_all_news" }}</a>
+    </section>
     </div>
 
   </main>
 {{ end }}
 {{ define "scripts" }}
   <script src="/js/shows-teaser.js"></script>
+  <script src="/js/news-teaser.js"></script>
   <script src="/js/shop-carousel.js"></script>
 {{ end }}
