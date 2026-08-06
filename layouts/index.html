@@ -65,30 +65,30 @@
       <h2 id="featured-heading" class="text-cream font-semibold mb-3 md:text-lg">A Batalha de Netuno</h2>
 
       <iframe class="w-full rounded-xl mb-4" src="https://open.spotify.com/embed/track/4REutcZF6ZoQlE2m0JpDKm?utm_source=generator&theme=0"
-              width="100%" height="152" frameborder="0" allowfullscreen="" loading="lazy"
+              height="152" allowfullscreen="" loading="lazy"
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="A Batalha de Netuno on Spotify"></iframe>
 
       <div class="w-full aspect-video rounded-xl overflow-hidden mb-4">
         <iframe class="w-full h-full" src="https://www.youtube.com/embed/u4RU6NkH-KQ" title="Machinemens - A Batalha de Netuno (Official Lyric Video)"
-                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
       </div>
 
       <a href="{{ "/music/" | relLangURL }}" class="listen-get-btn">{{ i18n "see_full_discography" }}</a>
     </section>
 
-    <section class="w-full lg:col-span-7 lg:row-start-2" x-data="showsTeaser()" aria-labelledby="shows-heading">
+    <section class="w-full lg:col-span-7 lg:row-start-2" data-x-data="showsTeaser()" aria-labelledby="shows-heading">
       <p class="text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "next_show" }}</p>
       <h2 id="shows-heading" class="sr-only">{{ i18n "next_show" }}</h2>
 
-      <template x-if="nextShow">
+      <template data-x-if="nextShow">
         <article class="show-card mb-4">
-          <p class="show-card-date" x-text="formatDate(nextShow.date)"></p>
-          <h3 class="show-card-title" x-text="nextShow.title"></h3>
-          <p class="show-card-venue" x-text="nextShow.venue + ' — ' + nextShow.address"></p>
+          <p class="show-card-date" data-x-text="formatDate(nextShow.date)"></p>
+          <h3 class="show-card-title" data-x-text="nextShow.title"></h3>
+          <p class="show-card-venue" data-x-text="nextShow.venue + ' — ' + nextShow.address"></p>
         </article>
       </template>
-      <template x-if="!nextShow">
+      <template data-x-if="!nextShow">
         <p class="text-cream/60 text-sm mb-4">{{ i18n "no_shows_short" }}</p>
       </template>
 

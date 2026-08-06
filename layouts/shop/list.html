@@ -1,102 +1,102 @@
 {{ define "main" }}
   <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex flex-col items-center px-6 pb-16 pt-6 md:pt-8"
-        x-data="shopPage({ 'tshirt-black': '{{ i18n "shop_product_tshirt_black" }}', 'tshirt-pink': '{{ i18n "shop_product_tshirt_pink" }}' })">
+        data-x-data="shopPage({ 'tshirt-black': '{{ i18n "shop_product_tshirt_black" }}', 'tshirt-pink': '{{ i18n "shop_product_tshirt_pink" }}' })">
     <h1 class="sr-only">{{ i18n "shop_title" }}</h1>
 
     <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "shop_teaser_title" }}</p>
 
     <section class="w-full grid grid-cols-2 gap-4 mb-10 md:mb-12" aria-label="Products">
-      <template x-for="product in products" :key="product.id">
+      <template data-x-for="product in products" data-x-bind:key="product.id">
         <article class="product-card">
-          <img :src="product.image" :alt="product.name" class="product-card-photo" loading="lazy" />
+          <img data-x-bind:src="product.image" data-x-bind:alt="product.name" class="product-card-photo" loading="lazy" />
           <div class="product-card-body">
-            <h2 class="product-card-title" x-text="product.name"></h2>
-            <p class="product-card-price" x-text="formatPrice(product.price)"></p>
-            <template x-if="product.sizes && product.sizes.length">
+            <h2 class="product-card-title" data-x-text="product.name"></h2>
+            <p class="product-card-price" data-x-text="formatPrice(product.price)"></p>
+            <template data-x-if="product.sizes && product.sizes.length">
               <div class="w-full">
-                <label class="sr-only" :for="'size-' + product.id">{{ i18n "size_label" }}</label>
-                <select :id="'size-' + product.id" class="size-select" x-model="selectedSize[product.id]">
-                  <template x-for="size in product.sizes" :key="size">
-                    <option :value="size" x-text="size"></option>
+                <label class="sr-only" data-x-bind:for="'size-' + product.id">{{ i18n "size_label" }}</label>
+                <select data-x-bind:id="'size-' + product.id" class="size-select" data-x-model="selectedSize[product.id]">
+                  <template data-x-for="size in product.sizes" data-x-bind:key="size">
+                    <option data-x-bind:value="size" data-x-text="size">&nbsp;</option>
                   </template>
                 </select>
               </div>
             </template>
-            <button type="button" class="listen-get-btn" @click="addToCart(product.id)">{{ i18n "add_to_cart" }}</button>
+            <button type="button" class="listen-get-btn" data-x-on:click="addToCart(product.id)">{{ i18n "add_to_cart" }}</button>
           </div>
         </article>
       </template>
     </section>
 
     <section class="w-full shop-cart-col" aria-labelledby="cart-heading">
-      <p id="cart-heading" class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "cart_heading" }}</p>
+      <h2 id="cart-heading" class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "cart_heading" }}</h2>
 
-      <template x-if="checkoutComplete">
+      <template data-x-if="checkoutComplete">
         <div class="cart-success">
           <p class="cart-success-title">{{ i18n "order_complete_title" }}</p>
           <p class="cart-success-message">{{ i18n "order_complete_message" }}</p>
         </div>
       </template>
 
-      <template x-if="!checkoutComplete && cartItems.length === 0">
+      <template data-x-if="!checkoutComplete && cartItems.length === 0">
         <p class="text-cream/60 text-sm mb-4">{{ i18n "cart_empty" }}</p>
       </template>
 
-      <template x-if="!checkoutComplete && cartItems.length > 0">
+      <template data-x-if="!checkoutComplete && cartItems.length > 0">
         <div class="w-full mb-4">
           <label class="sr-only" for="shipping-country">{{ i18n "shipping_country_label" }}</label>
-          <select id="shipping-country" class="size-select" x-model="shippingCountry">
+          <select id="shipping-country" class="size-select" data-x-model="shippingCountry">
             <option value="nl">{{ i18n "shipping_country_nl" }}</option>
             <option value="other">{{ i18n "shipping_country_other" }}</option>
           </select>
         </div>
       </template>
 
-      <template x-if="!checkoutComplete && cartItems.length > 0 && shippingCountry !== 'nl'">
+      <template data-x-if="!checkoutComplete && cartItems.length > 0 && shippingCountry !== 'nl'">
         <div class="cart-international-note">
           <p>{{ i18n "international_shipping_message" }}</p>
           <p class="cart-international-links">
-            <a :href="'mailto:' + contactEmail">{{ i18n "contact_via_email" }}</a>
-            <template x-if="whatsappLink">
-              <a :href="whatsappLink" target="_blank" rel="noopener">{{ i18n "contact_via_whatsapp" }}</a>
+            <a data-x-bind:href="'mailto:' + contactEmail">{{ i18n "contact_via_email" }}</a>
+            <template data-x-if="whatsappLink">
+              <a data-x-bind:href="whatsappLink" target="_blank" rel="noopener">{{ i18n "contact_via_whatsapp" }}</a>
             </template>
           </p>
         </div>
       </template>
 
-      <template x-if="!checkoutComplete && cartItems.length > 0 && shippingCountry === 'nl'">
+      <template data-x-if="!checkoutComplete && cartItems.length > 0 && shippingCountry === 'nl'">
         <div class="w-full flex flex-col gap-3 mb-4">
-          <template x-for="item in cartItems" :key="item.cartKey">
+          <template data-x-for="item in cartItems" data-x-bind:key="item.cartKey">
             <div class="cart-item">
-              <img :src="item.image" :alt="item.name" class="cart-item-photo" loading="lazy" />
+              <img data-x-bind:src="item.image" data-x-bind:alt="item.name" class="cart-item-photo" loading="lazy" />
               <div class="cart-item-info">
-                <p class="cart-item-title" x-text="item.name"></p>
+                <p class="cart-item-title" data-x-text="item.name"></p>
                 <p class="cart-item-price">
-                  <span x-text="formatPrice(item.price)"></span>
-                  <template x-if="item.size">
-                    <span class="cart-item-size" x-text="'· ' + item.size"></span>
+                  <span data-x-text="formatPrice(item.price)"></span>
+                  <template data-x-if="item.size">
+                    <span class="cart-item-size" data-x-text="'· ' + item.size"></span>
                   </template>
                 </p>
               </div>
               <div class="cart-item-actions">
-                <label class="sr-only" :for="'qty-' + item.cartKey">{{ i18n "qty_label" }}</label>
-                <input :id="'qty-' + item.cartKey" type="number" min="1" class="cart-qty-input" :value="item.qty" @change="setQty(item.cartKey, $event.target.value)" />
-                <button type="button" class="cart-remove-btn" @click="removeFromCart(item.cartKey)">{{ i18n "remove" }}</button>
+                <label class="sr-only" data-x-bind:for="'qty-' + item.cartKey">{{ i18n "qty_label" }}</label>
+                <input data-x-bind:id="'qty-' + item.cartKey" type="number" min="1" class="cart-qty-input" data-x-bind:value="item.qty" data-x-on:change="setQty(item.cartKey, $event.target.value)" />
+                <button type="button" class="cart-remove-btn" data-x-on:click="removeFromCart(item.cartKey)">{{ i18n "remove" }}</button>
               </div>
             </div>
           </template>
 
           <div class="cart-subtotal-row">
             <span>{{ i18n "subtotal_label" }}</span>
-            <span x-text="formatPrice(cartTotal)"></span>
+            <span data-x-text="formatPrice(cartTotal)"></span>
           </div>
           <div class="cart-subtotal-row">
             <span>{{ i18n "shipping_label" }}</span>
-            <span x-text="formatPrice(shippingFee)"></span>
+            <span data-x-text="formatPrice(shippingFee)"></span>
           </div>
           <div class="cart-total">
             <span>{{ i18n "total_label" }}</span>
-            <span x-text="formatPrice(orderTotal)"></span>
+            <span data-x-text="formatPrice(orderTotal)"></span>
           </div>
 
           <div id="paypal-buttons" class="w-full"></div>
