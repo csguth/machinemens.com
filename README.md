@@ -96,6 +96,10 @@ site/                   Hugo build output (git-ignored; what actually gets deplo
   deploy-staging-cloudflare.yml  Staging deploy -> Cloudflare Pages (push to staging)
   deploy-preview-cloudflare.yml  PR preview -> Cloudflare Pages (pull_request into staging),
                                   posts a sticky comment with the preview URL on the PR
+  deploy-preview-cloudflare-main.yml
+                                  PR preview -> Cloudflare Pages (pull_request into main, i.e.
+                                  the staging -> main promotion PR or a hotfix PR), posts a
+                                  sticky comment with the preview URL on the PR
   guard-main-merges.yml          Enforces the staging -> main promotion order (see below)
 .github/skills/github-project-management/SKILL.md
                         Copilot skill with the exact gh CLI commands/IDs to manage the
@@ -136,12 +140,15 @@ git checkout -b feature/my-change
 # Test manually on staging
 # Open a PR: staging -> main  (use a regular merge, NEVER squash/rebase,
 #                              so the exact tested commit reaches main)
+#   -> deploy-preview-cloudflare-main.yml deploys an isolated preview of that
+#      exact commit and posts the URL as a sticky comment on the PR automatically
 # Merge -> auto-deploys to production (GitHub Pages)
 ```
 
 Hotfixes can branch directly from `main` and be merged back into `main` via a PR labeled
 `hotfix` (bypasses the "must come from staging" guard) — then the same fix should be
-cherry-picked/merged into `staging` too so both branches stay in sync.
+cherry-picked/merged into `staging` too so both branches stay in sync. Hotfix PRs also get
+an isolated preview from `deploy-preview-cloudflare-main.yml`, same as promotion PRs.
 
 Rules enforced on GitHub:
 - Both `main` and `staging` require a Pull Request to merge (no direct pushes) and block force-pushes/deletions.
