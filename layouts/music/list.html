@@ -1,5 +1,5 @@
 {{ define "main" }}
-  <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-6xl flex flex-col items-center px-6 pb-16 pt-6 md:pt-8" x-data="musicPage()">
+  <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-6xl flex flex-col items-center px-6 pb-16 pt-6 md:pt-8" data-x-data="musicPage()">
     <h1 class="sr-only">{{ i18n "music_title" }}</h1>
 
     <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "discography" }}</p>
@@ -8,28 +8,28 @@
          lg: up (7/5 split); below lg: they stay stacked as before. -->
     <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 mb-10 md:mb-12 items-start">
     <section class="w-full flex flex-col gap-6 md:gap-8 lg:col-span-7" aria-label="Latest release">
-      <template x-for="release in releases.slice(0, 1)" :key="release.id">
-        <article class="w-full" x-data="{ open: false }">
-          <h2 class="text-cream font-semibold mb-1 md:text-lg" x-text="release.title"></h2>
-          <p class="text-cream/50 text-xs mb-3" x-text="release.year ? release.type + ' · ' + release.year : release.type"></p>
+      <template data-x-for="release in releases.slice(0, 1)" data-x-bind:key="release.id">
+        <article class="w-full" data-x-data="{ open: false }">
+          <h2 class="text-cream font-semibold mb-1 md:text-lg" data-x-text="release.title"></h2>
+          <p class="text-cream/50 text-xs mb-3" data-x-text="release.year ? release.type + ' · ' + release.year : release.type"></p>
 
-          <iframe class="w-full rounded-xl" :src="release.spotifyEmbed"
-                  width="100%" :height="release.spotifyEmbedHeight" frameborder="0" allowfullscreen="" loading="lazy"
-                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" :title="release.title + ' on Spotify'"></iframe>
+          <iframe class="w-full rounded-xl" data-x-bind:src="release.spotifyEmbed"
+                  data-x-bind:height="release.spotifyEmbedHeight" allowfullscreen="" loading="lazy"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" data-x-bind:title="release.title + ' on Spotify'"></iframe>
 
-          <template x-if="release.video">
+          <template data-x-if="release.video">
             <div class="w-full aspect-video rounded-xl overflow-hidden mt-3">
-              <iframe class="w-full h-full" :src="'https://www.youtube.com/embed/' + release.video.youtubeId" :title="release.video.title"
-                      frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              <iframe class="w-full h-full" data-x-bind:src="'https://www.youtube.com/embed/' + release.video.youtubeId" data-x-bind:title="release.video.title"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
             </div>
           </template>
 
           <div class="relative mt-3">
-            <button type="button" @click="open = !open" class="listen-get-btn" :aria-expanded="open">{{ i18n "listen_get" }}</button>
-            <div x-show="open" x-cloak class="listen-get-menu">
-              <template x-for="[key, url] in Object.entries(release.stores)" :key="key">
-                <a :href="url" target="_blank" rel="noopener noreferrer" x-text="storeLabel(key)"></a>
+            <button type="button" data-x-on:click="open = !open" class="listen-get-btn" data-x-bind:aria-expanded="open">{{ i18n "listen_get" }}</button>
+            <div data-x-show="open" data-x-cloak class="listen-get-menu">
+              <template data-x-for="[key, url] in Object.entries(release.stores)" data-x-bind:key="key">
+                <a data-x-bind:href="url" target="_blank" rel="noopener noreferrer" data-x-text="storeLabel(key)"></a>
               </template>
             </div>
           </div>
@@ -50,13 +50,19 @@
 
         <div class="w-full aspect-video rounded-xl overflow-hidden">
           <iframe class="w-full h-full" src="https://www.youtube.com/embed/wdf72zXkDjw" title="Machinemens - Red Planet (live in Anker Studio)"
-                  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
         </div>
 
         <div class="w-full aspect-video rounded-xl overflow-hidden">
           <iframe class="w-full h-full" src="https://www.youtube.com/embed/WfT-lLayGcY" title="Machinemens - Mens Agitat Molem (live in Anker Studio)"
-                  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+        </div>
+
+        <div class="w-full aspect-video rounded-xl overflow-hidden">
+          <iframe class="w-full h-full" src="https://www.youtube.com/embed/-yFzxnGqTCM" title="Machinemens - A Batalha de Netuno (live in Anker Studio)"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
         </div>
       </section>
@@ -67,28 +73,28 @@
     <h2 class="sr-only">{{ i18n "earlier_releases" }}</h2>
 
     <section class="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-x-8 mb-4" aria-label="Earlier releases">
-      <template x-for="release in releases.slice(1)" :key="release.id">
-        <article class="w-full" x-data="{ open: false }">
-          <h2 class="text-cream font-semibold mb-1 md:text-lg" x-text="release.title"></h2>
-          <p class="text-cream/50 text-xs mb-3" x-text="release.year ? release.type + ' · ' + release.year : release.type"></p>
+      <template data-x-for="release in releases.slice(1)" data-x-bind:key="release.id">
+        <article class="w-full" data-x-data="{ open: false }">
+          <h2 class="text-cream font-semibold mb-1 md:text-lg" data-x-text="release.title"></h2>
+          <p class="text-cream/50 text-xs mb-3" data-x-text="release.year ? release.type + ' · ' + release.year : release.type"></p>
 
-          <iframe class="w-full rounded-xl" :src="release.spotifyEmbed"
-                  width="100%" :height="release.spotifyEmbedHeight" frameborder="0" allowfullscreen="" loading="lazy"
-                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" :title="release.title + ' on Spotify'"></iframe>
+          <iframe class="w-full rounded-xl" data-x-bind:src="release.spotifyEmbed"
+                  data-x-bind:height="release.spotifyEmbedHeight" allowfullscreen="" loading="lazy"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" data-x-bind:title="release.title + ' on Spotify'"></iframe>
 
-          <template x-if="release.video">
+          <template data-x-if="release.video">
             <div class="w-full aspect-video rounded-xl overflow-hidden mt-3">
-              <iframe class="w-full h-full" :src="'https://www.youtube.com/embed/' + release.video.youtubeId" :title="release.video.title"
-                      frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              <iframe class="w-full h-full" data-x-bind:src="'https://www.youtube.com/embed/' + release.video.youtubeId" data-x-bind:title="release.video.title"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
             </div>
           </template>
 
           <div class="relative mt-3">
-            <button type="button" @click="open = !open" class="listen-get-btn" :aria-expanded="open">{{ i18n "listen_get" }}</button>
-            <div x-show="open" x-cloak class="listen-get-menu">
-              <template x-for="[key, url] in Object.entries(release.stores)" :key="key">
-                <a :href="url" target="_blank" rel="noopener noreferrer" x-text="storeLabel(key)"></a>
+            <button type="button" data-x-on:click="open = !open" class="listen-get-btn" data-x-bind:aria-expanded="open">{{ i18n "listen_get" }}</button>
+            <div data-x-show="open" data-x-cloak class="listen-get-menu">
+              <template data-x-for="[key, url] in Object.entries(release.stores)" data-x-bind:key="key">
+                <a data-x-bind:href="url" target="_blank" rel="noopener noreferrer" data-x-text="storeLabel(key)"></a>
               </template>
             </div>
           </div>

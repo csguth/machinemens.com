@@ -39,3 +39,14 @@ defaultContentLanguageInSubdir = true
 
 [build]
   writeStats = false
+
+# Keep attribute quotes during HTML minification. The deploy workflows substitute
+# the `__SITE_URL__` / `__ENV_LABEL__` / `__PAYPAL_CLIENT_ID__` placeholders with
+# `sed` AFTER `hugo --minify`; without this, the minifier drops the quotes around
+# e.g. `data-env="__ENV_LABEL__"`, and an empty substituted value would then merge
+# into the next attribute and corrupt the tag (invalid HTML). Keeping quotes makes
+# the placeholder substitution robust for any value (including empty).
+[minify]
+  [minify.tdewolff]
+    [minify.tdewolff.html]
+      keepQuotes = true
