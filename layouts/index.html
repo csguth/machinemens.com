@@ -74,11 +74,13 @@
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
       </div>
 
-      <p class="text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "live_performance" }}</p>
-      <div class="w-full aspect-video rounded-xl overflow-hidden mb-4">
-        <iframe class="w-full h-full" src="https://www.youtube.com/embed/-yFzxnGqTCM" title="Machinemens - A Batalha de Netuno (Live)"
-                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+      <div class="w-full mb-4">
+        <p class="text-gold text-xs font-bold tracking-widest uppercase mb-2">{{ i18n "live_performance" }}</p>
+        <div class="w-full aspect-video rounded-xl overflow-hidden">
+          <iframe class="w-full h-full" src="https://www.youtube.com/embed/-yFzxnGqTCM" title="Machinemens - A Batalha de Netuno (Live)"
+                  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+        </div>
       </div>
 
       <a href="{{ "/music/" | relLangURL }}" class="listen-get-btn">{{ i18n "see_full_discography" }}</a>
