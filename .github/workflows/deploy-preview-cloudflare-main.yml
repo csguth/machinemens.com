@@ -1,0 +1,135 @@
+name: Deploy PR Preview for main (Cloudflare Pages)
+
+# Automatically deploys every pull request targeting `main` (the staging -> main
+# promotion PR, or a `hotfix` PR — see guard-main-merges.yml for what's allowed
+# to target `main`) to its own isolated Cloudflare Pages preview URL, so the
+# exact commit about to reach production can be eyeballed before merging —
+# without touching machinemens.com or staging.machinemens.com. Each PR gets a
+# stable `pr-main-<number>` preview that is re-deployed on every push, and the
+# URL is posted back as a sticky PR comment.
+#
+# This mirrors deploy-preview-cloudflare.yml (the `staging`-targeting preview
+# workflow) and reuses the same `staging` GitHub Environment config/secrets and
+# Cloudflare Pages project (`machinemens-com-staging`) — there is no separate
+# production Cloudflare project, so this preview is not a byte-for-byte match
+# of what GitHub Pages will serve (it uses the staging SITE_URL/PAYPAL_CLIENT_ID
+# sandbox vars, not the live production ones) but is enough to review layout
+# and content changes safely, without exposing live PayPal checkout on a
+# preview URL.
+#
+# Uses `pull_request` (not `pull_request_target`) so repository secrets are
+# only available to branches pushed to this repo, never to untrusted forks.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: cloudflare-preview-main-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate variables
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          PAYPAL_CLIENT_ID: ${{ vars.PAYPAL_CLIENT_ID }}
+        run: |
+          if [ -z "$SITE_URL" ]; then
+            echo "Missing environment variable: SITE_URL"
+            exit 1
+          fi
+          if [ -z "$PAYPAL_CLIENT_ID" ]; then
+            echo "Missing environment variable: PAYPAL_CLIENT_ID"
+            exit 1
+          fi
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.148.1'
+          extended: true
+
+      - name: Build site with Hugo and inject variables
+        run: |
+          hugo --gc --minify
+
+          while IFS= read -r -d '' f; do
+            sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" "$f"
+            sed -i "s|__ENV_LABEL__|${{ vars.ENV_LABEL }}|g" "$f"
+            sed -i "s|__PAYPAL_CLIENT_ID__|${{ vars.PAYPAL_CLIENT_ID }}|g" "$f"
+          done < <(find site -name "*.html" -print0)
+
+          sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" site/robots.txt
+          sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" site/sitemap.xml
+
+      - name: Minify static JS
+        # hugo --minify only touches rendered HTML/CSS; static/js/*.js is copied
+        # verbatim. Minify the *build output* only (never static/js/ sources),
+        # via npx so the repo stays zero-build (no package.json/node_modules).
+        run: |
+          for f in site/js/*.js; do
+            npx --yes terser@5 "$f" --compress --mangle -o "$f"
+          done
+
+      - name: Deploy to Cloudflare Pages (staging project, main PR preview)
+        id: deploy
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: machinemens-com-staging
+          directory: site
+          # A stable, per-PR preview branch so every push to the PR re-deploys the
+          # same isolated preview (never the real `staging`/production branch/URL).
+          branch: pr-main-${{ github.event.pull_request.number }}
+
+      - name: Comment preview URL on the PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = ${{ toJSON(steps.deploy.outputs.url) }};
+            const marker = '<!-- cloudflare-pr-preview-main -->';
+            const body = [
+              marker,
+              '### 🚀 Cloudflare Pages preview (PR into `main`)',
+              '',
+              `Preview desta PR: ${url}`,
+              '',
+              `Commit: \`${context.sha.slice(0, 7)}\``,
+              '',
+              '> ⚠️ Build gerado com as variáveis/segredos de **staging** (sandbox PayPal) — não é uma cópia exata da produção, mas serve para revisar layout/conteúdo antes do merge em `main`.',
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.find(c => c.body && c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
