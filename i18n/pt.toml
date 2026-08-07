@@ -18,6 +18,8 @@ contact_page_intro = "Fale conosco para bookings ou dúvidas gerais."
 
 new_release = "Novo lançamento"
 see_full_discography = "Ver discografia completa"
+live_performance = "Ao vivo"
+badge_new = "Novo"
 
 next_show = "Próximo show"
 no_shows_short = "Nenhum show agendado no momento."

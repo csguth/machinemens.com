@@ -18,6 +18,8 @@ contact_page_intro = "Get in touch for bookings or general inquiries."
 
 new_release = "New release"
 see_full_discography = "See full discography"
+live_performance = "Live performance"
+badge_new = "New"
 
 next_show = "Next show"
 no_shows_short = "No shows scheduled at the moment."
