@@ -54,6 +54,7 @@ international_shipping_message = "Online afrekenen is momenteel alleen mogelijk 
 contact_via_email = "Mail ons"
 contact_via_whatsapp = "WhatsApp ons"
 checkout_note = "Veilig afrekenen via PayPal."
+checkout_error_message = "Er is iets misgegaan bij het verwerken van je betaling. Probeer het opnieuw, of neem contact met ons op als het probleem aanhoudt."
 order_complete_title = "Bedankt voor je bestelling!"
 order_complete_message = "We nemen binnenkort contact op met verzendgegevens."
 

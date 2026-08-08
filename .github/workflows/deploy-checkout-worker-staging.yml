@@ -1,0 +1,56 @@
+name: Deploy Checkout Worker (Staging)
+
+# Deploys the checkout Worker (workers/checkout/) to Cloudflare, staging
+# environment: machinemens-checkout-staging @ api-staging.machinemens.com.
+# See workers/checkout/README.md.
+on:
+  push:
+    branches: [staging]
+    paths: ['workers/checkout/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checkout-worker-staging
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    defaults:
+      run:
+        working-directory: workers/checkout
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate variables
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "Missing environment variable: CLOUDFLARE_ACCOUNT_ID"
+            exit 1
+          fi
+
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: workers/checkout
+          environment: staging
+          command: deploy --env staging
+          secrets: |
+            PRINTFUL_API_KEY
+            RESEND_API_KEY
+            PAYPAL_CLIENT_ID
+            PAYPAL_CLIENT_SECRET
+        env:
+          PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          PAYPAL_CLIENT_ID: ${{ vars.PAYPAL_CLIENT_ID }}
+          PAYPAL_CLIENT_SECRET: ${{ secrets.PAYPAL_CLIENT_SECRET }}

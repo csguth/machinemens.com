@@ -1,0 +1,71 @@
+name = "machinemens-checkout"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Production KV namespace (idempotency store, keyed by PayPal order id).
+# One-time setup: `wrangler kv namespace create ORDERS_KV` from this directory,
+# then replace the id below with the one it prints.
+kv_namespaces = [
+  { binding = "ORDERS_KV", id = "62a93e1e42ab4c7d8533651ab36b6821" }
+]
+
+# No Custom Domain: attaching a Custom Domain (api.machinemens.com) requires
+# machinemens.com to be an active Cloudflare zone (nameservers on Cloudflare),
+# which it isn't -- production DNS stays on Namecheap/GitHub Pages. Using the
+# free *.workers.dev URL instead (https://machinemens-checkout.csguth.workers.dev)
+# needs zero DNS changes. Revisit a Custom Domain if the whole domain ever
+# moves its DNS to Cloudflare.
+workers_dev = true
+
+[vars]
+SITE_URL = "https://machinemens.com"
+CONTACT_EMAIL = "machinemens.contact@gmail.com"
+# Kept in sync manually with SHIPPING_FEE in static/js/shop-page.js (NL-only
+# flat rate) -- see the comment there for why this isn't computed dynamically.
+SHIPPING_FEE_NL = "4.95"
+# Comma-separated list of allowed CORS origins. Supports a leading "*." prefix
+# to match any Cloudflare Pages PR-preview subdomain (see src/cors.js).
+ALLOWED_ORIGINS = "https://machinemens.com"
+PAYPAL_API_BASE = "https://api-m.paypal.com"
+# From email address for Resend fallback notifications. Uses a dedicated
+# send.machinemens.com subdomain (not the apex domain), verified as the one
+# domain the Resend Free plan allows -- see workers/checkout/README.md.
+# Staging uses a different local-part (orders-staging@) on the SAME verified
+# domain instead of its own domain, since Free only supports one.
+RESEND_FROM_EMAIL = "orders@send.machinemens.com"
+# Printful account has a single store ("Machinemens Webshop") shared by both
+# environments -- draft orders (never auto-confirmed) make this safe to also
+# use from staging. Not a secret, just an account id.
+PRINTFUL_STORE_ID = "18582480"
+
+# Secrets (never in this file -- set via `wrangler secret put <NAME>`, or by
+# the deploy workflow from GitHub Actions secrets):
+#   PRINTFUL_API_KEY, RESEND_API_KEY, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET
+
+[env.staging]
+name = "machinemens-checkout-staging"
+
+kv_namespaces = [
+  { binding = "ORDERS_KV", id = "e151b99b5d68401c89203ef4eccb5d9e" }
+]
+
+# No Custom Domain here either, same reasoning as production -- URL is
+# https://machinemens-checkout-staging.csguth.workers.dev.
+workers_dev = true
+
+[env.staging.vars]
+SITE_URL = "https://staging.machinemens.com"
+CONTACT_EMAIL = "machinemens.contact@gmail.com"
+SHIPPING_FEE_NL = "4.95"
+# Also allow any Cloudflare Pages PR-preview URL (pr-<n>.machinemens-com-staging.pages.dev)
+# so a feature branch preview can exercise the full checkout flow before merging.
+ALLOWED_ORIGINS = "https://staging.machinemens.com,*.machinemens-com-staging.pages.dev"
+PAYPAL_API_BASE = "https://api-m.sandbox.paypal.com"
+# Same verified send.machinemens.com domain as production (Resend Free plan
+# only allows 1 domain) -- a distinct local-part (orders-staging@) still
+# keeps staging/test emails visually distinguishable from production ones.
+RESEND_FROM_EMAIL = "orders-staging@send.machinemens.com"
+# Same Printful store as production -- staging orders stay as unconfirmed
+# drafts, so testing against the real store is safe (see PRINTFUL_STORE_ID
+# comment above).
+PRINTFUL_STORE_ID = "18582480"

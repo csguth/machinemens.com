@@ -54,6 +54,7 @@ international_shipping_message = "Online checkout currently only supports shippi
 contact_via_email = "Email us"
 contact_via_whatsapp = "WhatsApp us"
 checkout_note = "Secure checkout via PayPal."
+checkout_error_message = "Something went wrong processing your payment. Please try again, or contact us if the problem persists."
 order_complete_title = "Thank you for your order!"
 order_complete_message = "We'll be in touch with shipping details soon."
 
