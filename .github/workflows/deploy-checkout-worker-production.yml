@@ -1,0 +1,57 @@
+name: Deploy Checkout Worker (Production)
+
+# Deploys the checkout Worker (workers/checkout/) to Cloudflare, production
+# environment: machinemens-checkout @ api.machinemens.com. Independent of the
+# GitHub Pages site deploy (deploy-pages.yml) -- production is served by
+# GitHub Pages (no serverless support), so this Worker is a standalone
+# deployable that the frontend calls cross-origin. See workers/checkout/README.md.
+on:
+  push:
+    branches: [main]
+    paths: ['workers/checkout/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checkout-worker-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: github-pages
+    defaults:
+      run:
+        working-directory: workers/checkout
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate variables
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "Missing environment variable: CLOUDFLARE_ACCOUNT_ID"
+            exit 1
+          fi
+
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: workers/checkout
+          command: deploy
+          secrets: |
+            PRINTFUL_API_KEY
+            RESEND_API_KEY
+            PAYPAL_CLIENT_ID
+            PAYPAL_CLIENT_SECRET
+        env:
+          PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          PAYPAL_CLIENT_ID: ${{ vars.PAYPAL_CLIENT_ID }}
+          PAYPAL_CLIENT_SECRET: ${{ secrets.PAYPAL_CLIENT_SECRET }}

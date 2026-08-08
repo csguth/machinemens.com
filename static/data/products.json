@@ -5,7 +5,14 @@
     "currency": "EUR",
     "image": "/images/shop/tshirt-black.jpg",
     "detailImage": "/images/shop/tshirt-black-detail.jpg",
-    "sizes": ["S", "M", "L", "XL", "XXL"]
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "printfulVariants": {
+      "S": null,
+      "M": null,
+      "L": null,
+      "XL": null,
+      "XXL": null
+    }
   },
   {
     "id": "tshirt-pink",
@@ -13,6 +20,13 @@
     "currency": "EUR",
     "image": "/images/shop/tshirt-pink.jpg",
     "detailImage": "/images/shop/tshirt-pink-detail.jpg",
-    "sizes": ["S", "M", "L", "XL", "XXL"]
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "printfulVariants": {
+      "S": null,
+      "M": null,
+      "L": null,
+      "XL": null,
+      "XXL": null
+    }
   }
 ]

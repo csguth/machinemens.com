@@ -2,9 +2,13 @@
 // Fetches the product catalog from data/products.json and merges in each
 // product's Hugo-rendered i18n name (passed in from layouts/shop/list.html
 // as `productNames`, keeping translations compile-time like the rest of the
-// site). Cart state lives in the shared cart-store.js (localStorage), and
-// checkout renders PayPal JS SDK Smart Buttons entirely client-side from the
-// cart's contents -- no backend/order-management service (per issue #3).
+// site). Cart state lives in the shared cart-store.js (localStorage).
+//
+// PayPal JS SDK Smart Buttons render client-side, but order creation/capture
+// happen server-side in the checkout Worker (workers/checkout/) so the
+// charged amount is always re-derived from the trusted catalog, never from
+// this file -- and so a successful payment can automatically create a
+// Printful (print-on-demand) draft order for fulfillment. See issue #124.
 //
 // Products with a `sizes` array (e.g. t-shirts) require a size to be picked
 // before adding to cart. cart-store.js itself stays size-agnostic: it just
@@ -14,11 +18,13 @@
 //
 // SHIPPING_FEE is a flat rate added to every order -- it only covers shipping
 // within the Netherlands (see shippingCountry below). International/Brazil
-// shipping is currently priced/handled manually (no backend to calculate a
-// per-country rate table or collect/validate a real address), so those
-// orders are routed to a manual contact instead of the PayPal checkout.
+// shipping is currently priced/handled manually (no automated way to
+// calculate a per-country rate table or collect/validate a real address), so
+// those orders are routed to a manual contact instead of the PayPal checkout.
 // Adjust this constant (and the shipping_label i18n string if the wording
-// needs to change) as the band's actual NL shipping cost becomes clearer.
+// needs to change) as the band's actual NL shipping cost becomes clearer --
+// and keep it in sync with SHIPPING_FEE_NL in workers/checkout/wrangler.toml,
+// which independently re-derives the same fee server-side.
 const SHIPPING_FEE = 4.95;
 
 // Set this to a WhatsApp number (digits only, with country code, e.g.
@@ -29,13 +35,18 @@ const SHIPPING_FEE = 4.95;
 const WHATSAPP_NUMBER = '';
 const CONTACT_EMAIL = 'contact@machinemens.com';
 
-function shopPage(productNames) {
+function shopPage({ productNames, checkoutApiUrl }) {
   return {
     products: [],
     cart: {},
     checkoutComplete: false,
+    checkoutError: null,
     selectedSize: {},
     shippingFee: SHIPPING_FEE,
+    // Base URL of the checkout Worker (workers/checkout/), injected at build
+    // time via the __CHECKOUT_API_URL__ placeholder in layouts/shop/list.html
+    // (same substitution mechanism as __SITE_URL__/__PAYPAL_CLIENT_ID__).
+    checkoutApiUrl,
     // Checkout via PayPal is only offered for shipments within the
     // Netherlands (matches SHIPPING_FEE, which is an NL-only flat rate).
     // Buyers elsewhere are shown a manual-contact message instead, since
@@ -156,34 +167,47 @@ function shopPage(productNames) {
 
       window.paypal.Buttons({
         style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'paypal' },
-        createOrder: (data, actions) => {
+        // Order creation AND capture both happen server-side in the checkout
+        // Worker (workers/checkout/): the amount charged is always re-derived
+        // there from the trusted product catalog, never from this file, and
+        // a successful capture automatically creates the Printful (POD)
+        // draft order. Only the id/size/qty selections are sent here --
+        // prices/names are cosmetic-only display data for PayPal's own UI.
+        createOrder: async () => {
+          this.checkoutError = null;
           const items = this.cartItems;
-          const subtotal = this.cartTotal;
-          const shipping = this.shippingFee;
-          const total = subtotal + shipping;
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                value: total.toFixed(2),
-                currency_code: 'EUR',
-                breakdown: {
-                  item_total: { value: subtotal.toFixed(2), currency_code: 'EUR' },
-                  shipping: { value: shipping.toFixed(2), currency_code: 'EUR' }
-                }
-              },
-              items: items.map((item) => ({
-                name: item.size ? item.name + ' (' + item.size + ')' : item.name,
-                unit_amount: { value: item.price.toFixed(2), currency_code: 'EUR' },
-                quantity: String(item.qty)
-              }))
-            }]
+          const res = await fetch(this.checkoutApiUrl + '/paypal/create-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              items: items.map((item) => ({ id: item.id, size: item.size, qty: item.qty })),
+              shippingCountry: this.shippingCountry,
+              itemNames: items.reduce((names, item) => {
+                names[item.id] = item.name;
+                return names;
+              }, {})
+            })
           });
+          if (!res.ok) throw new Error('Failed to create order');
+          const order = await res.json();
+          return order.id;
         },
-        onApprove: (data, actions) => {
-          return actions.order.capture().then(() => {
-            window.MachinemensCart.clear();
-            this.checkoutComplete = true;
+        onApprove: async (data) => {
+          const res = await fetch(this.checkoutApiUrl + '/paypal/capture-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderID: data.orderID })
           });
+          const result = await res.json();
+          if (!res.ok || !result.success) {
+            this.checkoutError = true;
+            return;
+          }
+          window.MachinemensCart.clear();
+          this.checkoutComplete = true;
+        },
+        onError: () => {
+          this.checkoutError = true;
         }
       }).render('#paypal-buttons');
     }

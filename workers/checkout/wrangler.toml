@@ -1,0 +1,58 @@
+name = "machinemens-checkout"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Production KV namespace (idempotency store, keyed by PayPal order id).
+# One-time setup: `wrangler kv namespace create ORDERS_KV` from this directory,
+# then replace the id below with the one it prints.
+kv_namespaces = [
+  { binding = "ORDERS_KV", id = "REPLACE_WITH_PRODUCTION_KV_ID" }
+]
+
+# One-time setup: attach this Worker to api.machinemens.com as a Custom Domain
+# in the Cloudflare dashboard (Workers & Pages -> machinemens-checkout ->
+# Settings -> Domains & Routes), which manages the DNS record automatically.
+# Custom Domains attach to the whole hostname -- no wildcard/path suffix.
+routes = [
+  { pattern = "api.machinemens.com", custom_domain = true }
+]
+
+[vars]
+SITE_URL = "https://machinemens.com"
+CONTACT_EMAIL = "contact@machinemens.com"
+# Kept in sync manually with SHIPPING_FEE in static/js/shop-page.js (NL-only
+# flat rate) -- see the comment there for why this isn't computed dynamically.
+SHIPPING_FEE_NL = "4.95"
+# Comma-separated list of allowed CORS origins. Supports a leading "*." prefix
+# to match any Cloudflare Pages PR-preview subdomain (see src/cors.js).
+ALLOWED_ORIGINS = "https://machinemens.com"
+PAYPAL_API_BASE = "https://api-m.paypal.com"
+# From email address for Resend fallback notifications -- must be on a domain
+# verified in the Resend dashboard.
+RESEND_FROM_EMAIL = "orders@machinemens.com"
+
+# Secrets (never in this file -- set via `wrangler secret put <NAME>`, or by
+# the deploy workflow from GitHub Actions secrets):
+#   PRINTFUL_API_KEY, RESEND_API_KEY, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET
+
+[env.staging]
+name = "machinemens-checkout-staging"
+
+kv_namespaces = [
+  { binding = "ORDERS_KV", id = "REPLACE_WITH_STAGING_KV_ID" }
+]
+
+# One-time setup: attach to api-staging.machinemens.com the same way as above.
+routes = [
+  { pattern = "api-staging.machinemens.com", custom_domain = true }
+]
+
+[env.staging.vars]
+SITE_URL = "https://staging.machinemens.com"
+CONTACT_EMAIL = "contact@machinemens.com"
+SHIPPING_FEE_NL = "4.95"
+# Also allow any Cloudflare Pages PR-preview URL (pr-<n>.machinemens-com-staging.pages.dev)
+# so a feature branch preview can exercise the full checkout flow before merging.
+ALLOWED_ORIGINS = "https://staging.machinemens.com,*.machinemens-com-staging.pages.dev"
+PAYPAL_API_BASE = "https://api-m.sandbox.paypal.com"
+RESEND_FROM_EMAIL = "orders@machinemens.com"

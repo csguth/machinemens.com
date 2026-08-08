@@ -54,6 +54,7 @@ international_shipping_message = "No momento, o checkout online só está dispon
 contact_via_email = "Fale por e-mail"
 contact_via_whatsapp = "Fale pelo WhatsApp"
 checkout_note = "Checkout seguro via PayPal."
+checkout_error_message = "Algo deu errado ao processar seu pagamento. Tente novamente ou entre em contato conosco se o problema persistir."
 order_complete_title = "Obrigado pelo seu pedido!"
 order_complete_message = "Entraremos em contato em breve com os detalhes de envio."
 

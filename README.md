@@ -80,17 +80,28 @@ static/                 Copied verbatim into the build output (served as-is):
                         and shop-page.js so the header badge and /shop/ page stay in sync
   js/cart-badge.js      Alpine component for the header cart-count badge (loaded on every page)
   js/shop-page.js       Alpine component for /shop/ (fetches data/products.json, renders the
-                        cart, and mounts PayPal JS SDK Smart Buttons client-side -- no backend)
+                        cart, and mounts PayPal JS SDK Smart Buttons -- order create/capture
+                        happen server-side in the checkout Worker, see below)
   data/releases.json    Discography data consumed by /music/ (Alpine fetch + x-for) — add a new
                         release here, including its per-store links, when it drops
   data/shows.json       Shows/agenda data consumed by /shows/ and the home teaser
   data/products.json    Product catalog consumed by /shop/ (id/price/image) -- product display
                         names are translated i18n keys (shop_product_<id>), resolved server-side
-                        in layouts/shop/list.html and passed into the Alpine component
+                        in layouts/shop/list.html and passed into the Alpine component. Also the
+                        single source of truth for Printful fulfillment: each product's
+                        printfulVariants map (size -> sync_variant_id) is read by the checkout
+                        Worker (workers/checkout/) to build Printful orders -- fill these in once
+                        the Sync Products are created in the Printful dashboard.
   images/logo.png       Band logo (wordmark)
   images/favicon.png    Source favicon image copied to the root favicon paths above
   robots.txt, sitemap.xml, CNAME
 site/                   Hugo build output (git-ignored; what actually gets deployed)
+workers/checkout/       Cloudflare Worker backing /shop/'s checkout (server-side PayPal order
+                        create/capture + Printful print-on-demand draft order creation, with a
+                        Resend email fallback on Printful failures). Deployed as two independent
+                        Workers (production: api.machinemens.com, staging:
+                        api-staging.machinemens.com) since GitHub Pages (production) has no
+                        serverless support -- see workers/checkout/README.md for full details.
 .github/workflows/
   deploy-pages.yml               Production deploy -> GitHub Pages (push to main)
   deploy-staging-cloudflare.yml  Staging deploy -> Cloudflare Pages (push to staging)
@@ -100,6 +111,12 @@ site/                   Hugo build output (git-ignored; what actually gets deplo
                                   PR preview -> Cloudflare Pages (pull_request into main, i.e.
                                   the staging -> main promotion PR or a hotfix PR), posts a
                                   sticky comment with the preview URL on the PR
+  deploy-checkout-worker-production.yml
+                                  Deploys workers/checkout/ to Cloudflare (production Worker),
+                                  triggered on push to main touching workers/checkout/**
+  deploy-checkout-worker-staging.yml
+                                  Deploys workers/checkout/ to Cloudflare (staging Worker),
+                                  triggered on push to staging touching workers/checkout/**
   guard-main-merges.yml          Enforces the staging -> main promotion order (see below)
 .github/skills/github-project-management/SKILL.md
                         Copilot skill with the exact gh CLI commands/IDs to manage the
@@ -166,11 +183,20 @@ Before first deploy, add these **repository or environment** variables
 - `SITE_URL` — e.g. `https://machinemens.com` (production) / `https://staging.machinemens.com` (staging)
 - `ENV_LABEL` — `production` or `staging`, drives the visible staging banner (`data-env` attribute)
 - PAYPAL_CLIENT_ID — PayPal REST app **Client ID** (the public/publishable one, safe to embed client-side; never the Secret) used by the PayPal JS SDK Smart Buttons on /shop/. Use a Sandbox app's Client ID for staging/previews and a Live app's for production.
+- `CHECKOUT_API_URL` — base URL of the checkout Worker (`workers/checkout/`), e.g.
+  `https://api.machinemens.com` (production) / `https://api-staging.machinemens.com` (staging).
+  Injected into `/shop/` via the `__CHECKOUT_API_URL__` placeholder.
 
-### Internal / infra (staging only)
-- `CLOUDFLARE_ACCOUNT_ID` (repo variable) and `CLOUDFLARE_API_TOKEN` (repo **secret**) — used by
-  the staging deploy and PR preview workflows, same Cloudflare account as gatoweb.nl, dedicated
-  Pages project `machinemens-com-staging`.
+### Checkout Worker (both environments — see workers/checkout/README.md for full setup)
+- `CLOUDFLARE_ACCOUNT_ID` (variable) and `CLOUDFLARE_API_TOKEN` (secret) — now needed in **both**
+  environments (not staging-only anymore), since the production checkout Worker also deploys to
+  Cloudflare even though the static site itself is on GitHub Pages. The token needs the
+  **Workers Scripts: Edit** permission in addition to Pages edit.
+- `PRINTFUL_API_KEY` (secret) — Printful dashboard → Settings → API access.
+- `RESEND_API_KEY` (secret) — Resend dashboard → API Keys. Used for the fallback email sent when
+  a Printful order can't be created automatically after a successful payment.
+- `PAYPAL_CLIENT_SECRET` (secret) — pairs with `PAYPAL_CLIENT_ID` above (same PayPal REST app);
+  used server-side to create/capture PayPal orders.
 
 Notes:
 - Language & URL: the site is served per-language under `/en/`, `/nl/` and `/pt/`. The bare root
@@ -178,10 +204,11 @@ Notes:
   (`localStorage.machinemens_lang`), else browser language (`pt`/`nl`), else English. The header
   language selector is plain links to each language's URL, so the URL always changes with the
   language; `js/lang-persist.js` re-saves the current page's language on every load.
-- Placeholders `__SITE_URL__` / `__ENV_LABEL__` / `__PAYPAL_CLIENT_ID__` (in the Hugo layouts, `static/robots.txt`,
-  `static/sitemap.xml`) are kept verbatim in the generated HTML and substituted with `sed` at
-  deploy time — see each workflow's "Build site with Hugo and inject variables" step, which runs
-  `hugo --gc --minify` first and then the `sed` substitution.
+- Placeholders `__SITE_URL__` / `__ENV_LABEL__` / `__PAYPAL_CLIENT_ID__` / `__CHECKOUT_API_URL__`
+  (in the Hugo layouts, `static/robots.txt`, `static/sitemap.xml`) are kept verbatim in the
+  generated HTML and substituted with `sed` at deploy time — see each workflow's "Build site with
+  Hugo and inject variables" step, which runs `hugo --gc --minify` first and then the `sed`
+  substitution.
 
 Changes go live automatically:
 - push/merge to `staging` → deploys to the staging Cloudflare Pages URL in ~1-2 minutes
@@ -205,6 +232,35 @@ Changes go live automatically:
    `machinemens-com-staging.pages.dev` at Namecheap).
 3. Create a `CLOUDFLARE_API_TOKEN` (Pages edit permission) and set it as a repo secret; set
    `CLOUDFLARE_ACCOUNT_ID` as a repo variable.
+
+## Checkout Worker setup (one-time)
+
+The `/shop/` checkout (PayPal order create/capture + Printful print-on-demand fulfillment) runs
+in `workers/checkout/`, deployed as **two separate Cloudflare Workers** (not Pages Functions,
+since production is GitHub Pages and has no serverless support) — see
+[workers/checkout/README.md](workers/checkout/README.md) for the full endpoint/architecture
+reference. One-time setup:
+
+1. **Printful**: create an account/store (API/manual type, not a Shopify/Etsy-connected store),
+   upload the t-shirt artwork and create Sync Products for both colors, then generate an API
+   token (Settings → API access). Note each size's `sync_variant_id` and fill them into
+   `static/data/products.json`'s `printfulVariants` map (checkout rejects any product/size still
+   set to `null`).
+2. **Resend**: create an account, verify a sending domain (or use `onboarding@resend.dev` while
+   testing), generate an API key.
+3. **PayPal**: generate the **Client Secret** for the same sandbox app (staging) and live app
+   (production) whose Client ID is already used as `PAYPAL_CLIENT_ID`.
+4. **Cloudflare**:
+   - Expand `CLOUDFLARE_API_TOKEN`'s permissions to include **Workers Scripts: Edit** (it
+     currently only has Pages edit).
+   - Create the two KV namespaces (`wrangler kv namespace create ORDERS_KV` and
+     `... --env staging` from `workers/checkout/`) and paste their ids into `wrangler.toml`.
+   - After the first deploy of each Worker, attach the custom domains `api.machinemens.com` /
+     `api-staging.machinemens.com` (Workers & Pages → Settings → Domains & Routes) — this also
+     creates the DNS record.
+5. Add the new secrets/vars from the "Deploy configuration" section above
+   (`PRINTFUL_API_KEY`, `RESEND_API_KEY`, `PAYPAL_CLIENT_SECRET`, `CHECKOUT_API_URL`) to both the
+   `github-pages` and `staging` GitHub Environments.
 
 ---
 

@@ -1,6 +1,9 @@
 {{ define "main" }}
   <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex flex-col items-center px-6 pb-16 pt-6 md:pt-8"
-        data-x-data="shopPage({ 'tshirt-black': '{{ i18n "shop_product_tshirt_black" }}', 'tshirt-pink': '{{ i18n "shop_product_tshirt_pink" }}' })">
+        data-x-data="shopPage({
+          productNames: { 'tshirt-black': '{{ i18n "shop_product_tshirt_black" }}', 'tshirt-pink': '{{ i18n "shop_product_tshirt_pink" }}' },
+          checkoutApiUrl: '__CHECKOUT_API_URL__'
+        })">
     <h1 class="sr-only">{{ i18n "shop_title" }}</h1>
 
     <p class="w-full text-gold text-xs font-bold tracking-widest uppercase mb-4">{{ i18n "shop_teaser_title" }}</p>
@@ -98,6 +101,10 @@
             <span>{{ i18n "total_label" }}</span>
             <span data-x-text="formatPrice(orderTotal)"></span>
           </div>
+
+          <template data-x-if="checkoutError">
+            <p class="cart-error-note">{{ i18n "checkout_error_message" }}</p>
+          </template>
 
           <div id="paypal-buttons" class="w-full"></div>
           <p class="text-cream/50 text-xs text-center">{{ i18n "checkout_note" }}</p>
