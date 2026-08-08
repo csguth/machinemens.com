@@ -5,6 +5,25 @@
 
     <p class="text-center text-cream/80 mb-8 md:mb-10 italic md:text-lg">{{ i18n "tagline" }}</p>
 
+    <!-- Live performance highlight: full-width, single-column hero-style
+         section at the very top (above the bento grid) since this just
+         launched and deserves the most prominence on the page. Kept out of
+         the "New release" tile (which already carries a Spotify embed +
+         lyric video) to avoid an overly tall column unbalancing the grid
+         next to the shop/shows tiles. -->
+    <section class="w-full mb-8 md:mb-10" aria-labelledby="live-performance-heading">
+      <div class="flex items-center gap-2 mb-2">
+        <p class="text-gold text-xs font-bold tracking-widest uppercase">{{ i18n "live_performance" }}</p>
+        <span class="text-black text-[10px] font-bold uppercase tracking-wide bg-gold px-2 py-0.5 rounded-full">{{ i18n "badge_new" }}</span>
+      </div>
+      <h2 id="live-performance-heading" class="sr-only">{{ i18n "live_performance" }} — A Batalha de Netuno</h2>
+      <div class="w-full aspect-video rounded-2xl overflow-hidden border-2 border-gold">
+        <iframe class="w-full h-full" src="https://www.youtube.com/embed/-yFzxnGqTCM" title="Machinemens - A Batalha de Netuno (Live)"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </section>
+
     <!-- Desktop tile grid (bento): merch (top-left) and the next-show
          teaser (bottom-left, secondary/smaller) stack in a 7-col column,
          while the featured release -- the other primary tile -- fills one
@@ -72,18 +91,6 @@
         <iframe class="w-full h-full" src="https://www.youtube.com/embed/u4RU6NkH-KQ" title="Machinemens - A Batalha de Netuno (Official Lyric Video)"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
-      </div>
-
-      <div class="w-full mb-4">
-        <div class="flex items-center gap-2 mb-2">
-          <p class="text-gold text-xs font-bold tracking-widest uppercase">{{ i18n "live_performance" }}</p>
-          <span class="text-black text-[10px] font-bold uppercase tracking-wide bg-gold px-2 py-0.5 rounded-full">{{ i18n "badge_new" }}</span>
-        </div>
-        <div class="w-full aspect-video rounded-xl overflow-hidden">
-          <iframe class="w-full h-full" src="https://www.youtube.com/embed/-yFzxnGqTCM" title="Machinemens - A Batalha de Netuno (Live)"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
-        </div>
       </div>
 
       <a href="{{ "/music/" | relLangURL }}" class="listen-get-btn">{{ i18n "see_full_discography" }}</a>
