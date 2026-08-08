@@ -46,10 +46,11 @@ Domain if `machinemens.com`'s DNS ever moves to Cloudflare.
      token (the Printful account may hold multiple stores), so every API call also needs the
      `X-PF-Store-Id` header — that's `PRINTFUL_STORE_ID` in `wrangler.toml` (`18582480`, "Machinemens
      Webshop"), not a secret since a store id isn't sensitive.
-   - `RESEND_API_KEY` — Resend dashboard → API Keys. Requires **`send.machinemens.com`**
-     (production) and **`send-staging.machinemens.com`** (staging) to each be added and verified
-     as their own domain in Resend — see "Sending domain DNS setup" below. `RESEND_FROM_EMAIL` in
-     `wrangler.toml` already matches this per environment.
+   - `RESEND_API_KEY` — Resend dashboard → API Keys. Requires **`send.machinemens.com`** added and
+     verified as a domain in Resend (the Free plan only allows 1 verified domain, so both
+     environments share it — see "Sending domain DNS setup" below). `RESEND_FROM_EMAIL` in
+     `wrangler.toml` differs only by local-part per environment (`orders@` production,
+     `orders-staging@` staging) to keep emails visually distinguishable.
    - `PAYPAL_CLIENT_ID` / `PAYPAL_CLIENT_SECRET` — same PayPal REST app as the frontend's
      `PAYPAL_CLIENT_ID` var (sandbox app for staging, live app for production); the Secret is the
      one piece not already configured elsewhere.
@@ -70,14 +71,15 @@ from `Email Forwarding` to `Custom MX` without breaking anything -- that's what 
 custom `MX Record` in Namecheap's Advanced DNS (it's otherwise hidden from the Type dropdown).
 
 1. Namecheap → Advanced DNS → **Mail Settings** → change the dropdown to `Custom MX`.
-2. Under **Host Records**, add for each environment (values come from the Resend "Add Domain"
-   page — copy them exactly, host is relative so type only the part before `.machinemens.com`):
-   - `MX Record`, Host `send`, Value/Priority as given by Resend (production).
-   - `TXT Record`, Host `send`, SPF value as given by Resend (production).
+2. Under **Host Records**, add the 3 records Resend's "Add Domain" page gives you for
+   `send.machinemens.com` (copy them exactly; host is relative, so type only the part before
+   `.machinemens.com`):
+   - `MX Record`, Host `send`, Value/Priority as given by Resend.
+   - `TXT Record`, Host `send`, SPF value as given by Resend.
    - `TXT Record`, Host `resend._domainkey.send` (or whatever Resend labels the DKIM host as).
-   - Repeat the same 3 records with `send-staging` instead of `send` for the staging domain.
-3. In Resend, add and verify `send.machinemens.com` and `send-staging.machinemens.com` as two
-   separate domains (each gets its own DKIM key).
+3. In Resend, add and verify `send.machinemens.com` as a domain. This is the only domain needed
+   for both environments -- Resend's Free plan only allows 1 verified domain, so staging uses a
+   different local-part (`orders-staging@`) on this same domain instead of a separate one.
 
 ## Local development
 
