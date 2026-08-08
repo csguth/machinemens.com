@@ -30,6 +30,10 @@ PAYPAL_API_BASE = "https://api-m.paypal.com"
 # From email address for Resend fallback notifications -- must be on a domain
 # verified in the Resend dashboard.
 RESEND_FROM_EMAIL = "orders@machinemens.com"
+# Printful account has a single store ("Machinemens Webshop") shared by both
+# environments -- draft orders (never auto-confirmed) make this safe to also
+# use from staging. Not a secret, just an account id.
+PRINTFUL_STORE_ID = "18582480"
 
 # Secrets (never in this file -- set via `wrangler secret put <NAME>`, or by
 # the deploy workflow from GitHub Actions secrets):
@@ -56,3 +60,7 @@ SHIPPING_FEE_NL = "4.95"
 ALLOWED_ORIGINS = "https://staging.machinemens.com,*.machinemens-com-staging.pages.dev"
 PAYPAL_API_BASE = "https://api-m.sandbox.paypal.com"
 RESEND_FROM_EMAIL = "orders@machinemens.com"
+# Same Printful store as production -- staging orders stay as unconfirmed
+# drafts, so testing against the real store is safe (see PRINTFUL_STORE_ID
+# comment above).
+PRINTFUL_STORE_ID = "18582480"

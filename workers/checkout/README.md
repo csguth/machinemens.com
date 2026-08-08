@@ -37,15 +37,20 @@ Cloudflare Pages — a Pages Function would only ever be reachable from the stag
    (Workers & Pages → Settings → Domains & Routes). This also creates the DNS record.
 3. **Secrets** (never in `wrangler.toml`, set with `wrangler secret put <NAME>` or via the
    `deploy-checkout-worker-*.yml` GitHub Actions workflow from repo/environment secrets):
-   - `PRINTFUL_API_KEY` — Printful dashboard → Settings → API access (Bearer token).
+   - `PRINTFUL_API_KEY` — Printful dashboard → Settings → API access. This is an **account-level**
+     token (the Printful account may hold multiple stores), so every API call also needs the
+     `X-PF-Store-Id` header — that's `PRINTFUL_STORE_ID` in `wrangler.toml` (`18582480`, "Machinemens
+     Webshop"), not a secret since a store id isn't sensitive.
    - `RESEND_API_KEY` — Resend dashboard → API Keys.
    - `PAYPAL_CLIENT_ID` / `PAYPAL_CLIENT_SECRET` — same PayPal REST app as the frontend's
      `PAYPAL_CLIENT_ID` var (sandbox app for staging, live app for production); the Secret is the
      one piece not already configured elsewhere.
-4. **Printful Sync Products**: create the sync products for both t-shirts (art is already
-   prepared) and note each size's `sync_variant_id`. Fill these into
-   `static/data/products.json`'s `printfulVariants` map — until then, checkout for that
-   product/size is rejected with a 400 (`Product not yet available for order`).
+4. **Printful Sync Products**: the two t-shirts are already synced ("Machinemens Original Zwart" /
+   "Machinemens Original Roze", both store id `18582480`), and `static/data/products.json`'s
+   `printfulVariants` map already has the real `sync_variant_id`s for S/M/L/XL/XXL (XXL maps to
+   Printful's "2XL" variant). Both staging and production point at this same store — safe because
+   orders are always created as unconfirmed drafts (`confirm: false`), so testing in staging never
+   auto-charges/ships anything.
 5. Cloudflare API token used by CI needs the **Workers Scripts: Edit** permission (the existing
    token only has Pages edit — either broaden it or add a second token/secret).
 

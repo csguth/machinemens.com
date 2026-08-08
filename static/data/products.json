@@ -7,11 +7,11 @@
     "detailImage": "/images/shop/tshirt-black-detail.jpg",
     "sizes": ["S", "M", "L", "XL", "XXL"],
     "printfulVariants": {
-      "S": null,
-      "M": null,
-      "L": null,
-      "XL": null,
-      "XXL": null
+      "S": 5432130771,
+      "M": 5432130772,
+      "L": 5432130773,
+      "XL": 5432130774,
+      "XXL": 5432130775
     }
   },
   {
@@ -22,11 +22,11 @@
     "detailImage": "/images/shop/tshirt-pink-detail.jpg",
     "sizes": ["S", "M", "L", "XL", "XXL"],
     "printfulVariants": {
-      "S": null,
-      "M": null,
-      "L": null,
-      "XL": null,
-      "XXL": null
+      "S": 5432133806,
+      "M": 5432133807,
+      "L": 5432133808,
+      "XL": 5432133809,
+      "XXL": 5432133810
     }
   }
 ]

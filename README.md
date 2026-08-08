@@ -90,8 +90,8 @@ static/                 Copied verbatim into the build output (served as-is):
                         in layouts/shop/list.html and passed into the Alpine component. Also the
                         single source of truth for Printful fulfillment: each product's
                         printfulVariants map (size -> sync_variant_id) is read by the checkout
-                        Worker (workers/checkout/) to build Printful orders -- fill these in once
-                        the Sync Products are created in the Printful dashboard.
+                        Worker (workers/checkout/) to build Printful orders (store id
+                        18582480, "Machinemens Webshop" -- see workers/checkout/README.md).
   images/logo.png       Band logo (wordmark)
   images/favicon.png    Source favicon image copied to the root favicon paths above
   robots.txt, sitemap.xml, CNAME
@@ -241,11 +241,10 @@ since production is GitHub Pages and has no serverless support) — see
 [workers/checkout/README.md](workers/checkout/README.md) for the full endpoint/architecture
 reference. One-time setup:
 
-1. **Printful**: create an account/store (API/manual type, not a Shopify/Etsy-connected store),
-   upload the t-shirt artwork and create Sync Products for both colors, then generate an API
-   token (Settings → API access). Note each size's `sync_variant_id` and fill them into
-   `static/data/products.json`'s `printfulVariants` map (checkout rejects any product/size still
-   set to `null`).
+1. **Printful**: account/store already set up (API type store "Machinemens Webshop", id
+   `18582480`), both t-shirts already have Sync Products, and `static/data/products.json`'s
+   `printfulVariants` map already has the real `sync_variant_id`s. Still needed: generate the API
+   token (Settings → API access) if not already done.
 2. **Resend**: create an account, verify a sending domain (or use `onboarding@resend.dev` while
    testing), generate an API key.
 3. **PayPal**: generate the **Client Secret** for the same sandbox app (staging) and live app
