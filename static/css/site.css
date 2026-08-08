@@ -513,8 +513,12 @@ footer {
   margin-right: auto;
 }
 
-[x-cloak] {
+[data-x-cloak] {
   display: none !important;
+}
+
+iframe {
+  border: 0;
 }
 
 .sr-only {

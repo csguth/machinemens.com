@@ -92,5 +92,9 @@
   <script src="/js/tailwind-config.js"></script>
 
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <!-- Use a `data-x-` prefix so every Alpine directive is a valid HTML5 data-*
+       attribute (keeps the markup W3C-valid). Registered before Alpine's
+       deferred build dispatches `alpine:init`, which runs before it walks the DOM. -->
+  <script>document.addEventListener('alpine:init', function () { Alpine.prefix('data-x-'); });</script>
 
   <link rel="stylesheet" href="/css/site.css" />
