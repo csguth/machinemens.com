@@ -33,7 +33,7 @@ const SHIPPING_FEE = 4.95;
 // the template only renders the WhatsApp link when this is non-empty, so it
 // never shows a broken/placeholder link.
 const WHATSAPP_NUMBER = '';
-const CONTACT_EMAIL = 'contact@machinemens.com';
+const CONTACT_EMAIL = 'machinemens.contact@gmail.com';
 
 function shopPage({ productNames, checkoutApiUrl }) {
   return {
