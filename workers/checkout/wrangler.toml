@@ -27,9 +27,13 @@ SHIPPING_FEE_NL = "4.95"
 # to match any Cloudflare Pages PR-preview subdomain (see src/cors.js).
 ALLOWED_ORIGINS = "https://machinemens.com"
 PAYPAL_API_BASE = "https://api-m.paypal.com"
-# From email address for Resend fallback notifications -- must be on a domain
-# verified in the Resend dashboard.
-RESEND_FROM_EMAIL = "orders@machinemens.com"
+# From email address for Resend fallback notifications. Uses a dedicated
+# mail.machinemens.com subdomain (NS-delegated to Cloudflare -- see
+# workers/checkout/README.md), never the apex domain, so Resend's required
+# MX/SPF/DKIM records never touch machinemens.com's existing MX record (used
+# for contact@machinemens.com's email forwarding). Verify mail.machinemens.com
+# as its own domain in the Resend dashboard (production).
+RESEND_FROM_EMAIL = "orders@mail.machinemens.com"
 # Printful account has a single store ("Machinemens Webshop") shared by both
 # environments -- draft orders (never auto-confirmed) make this safe to also
 # use from staging. Not a secret, just an account id.
@@ -59,7 +63,11 @@ SHIPPING_FEE_NL = "4.95"
 # so a feature branch preview can exercise the full checkout flow before merging.
 ALLOWED_ORIGINS = "https://staging.machinemens.com,*.machinemens-com-staging.pages.dev"
 PAYPAL_API_BASE = "https://api-m.sandbox.paypal.com"
-RESEND_FROM_EMAIL = "orders@machinemens.com"
+# Separate Resend domain from production (staging.mail.machinemens.com,
+# verified independently) so test/staging emails never share production's
+# sending identity/reputation -- both live under the same NS-delegated
+# mail.machinemens.com Cloudflare zone, no extra delegation needed.
+RESEND_FROM_EMAIL = "orders@staging.mail.machinemens.com"
 # Same Printful store as production -- staging orders stay as unconfirmed
 # drafts, so testing against the real store is safe (see PRINTFUL_STORE_ID
 # comment above).

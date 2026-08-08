@@ -194,7 +194,9 @@ Before first deploy, add these **repository or environment** variables
   **Workers Scripts: Edit** permission in addition to Pages edit.
 - `PRINTFUL_API_KEY` (secret) — Printful dashboard → Settings → API access.
 - `RESEND_API_KEY` (secret) — Resend dashboard → API Keys. Used for the fallback email sent when
-  a Printful order can't be created automatically after a successful payment.
+  a Printful order can't be created automatically after a successful payment. Requires
+  `mail.machinemens.com` (production) / `staging.mail.machinemens.com` (staging) verified as
+  separate domains in Resend — see `workers/checkout/README.md`'s "Sending domain DNS setup".
 - `PAYPAL_CLIENT_SECRET` (secret) — pairs with `PAYPAL_CLIENT_ID` above (same PayPal REST app);
   used server-side to create/capture PayPal orders.
 
@@ -245,8 +247,10 @@ reference. One-time setup:
    `18582480`), both t-shirts already have Sync Products, and `static/data/products.json`'s
    `printfulVariants` map already has the real `sync_variant_id`s. Still needed: generate the API
    token (Settings → API access) if not already done.
-2. **Resend**: create an account, verify a sending domain (or use `onboarding@resend.dev` while
-   testing), generate an API key.
+2. **Resend**: NS-delegate `mail.machinemens.com` to Cloudflare (doesn't touch the existing
+   `contact@machinemens.com` email forwarding on the apex domain), then verify `mail.machinemens.com`
+   (production) and `staging.mail.machinemens.com` (staging) as two separate domains in Resend —
+   full steps in `workers/checkout/README.md`. Generate an API key.
 3. **PayPal**: generate the **Client Secret** for the same sandbox app (staging) and live app
    (production) whose Client ID is already used as `PAYPAL_CLIENT_ID`.
 4. **Cloudflare**:

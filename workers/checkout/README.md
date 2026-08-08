@@ -41,7 +41,13 @@ Cloudflare Pages — a Pages Function would only ever be reachable from the stag
      token (the Printful account may hold multiple stores), so every API call also needs the
      `X-PF-Store-Id` header — that's `PRINTFUL_STORE_ID` in `wrangler.toml` (`18582480`, "Machinemens
      Webshop"), not a secret since a store id isn't sensitive.
-   - `RESEND_API_KEY` — Resend dashboard → API Keys.
+   - `RESEND_API_KEY` — Resend dashboard → API Keys. Requires **`mail.machinemens.com`** (production)
+     and **`staging.mail.machinemens.com`** (staging) to each be added and verified as their own
+     domain in Resend. Both live under a `mail.machinemens.com` subdomain NS-delegated to
+     Cloudflare (see "Sending domain DNS setup" below) — never the apex `machinemens.com`, so
+     Resend's required MX/SPF/DKIM records never touch the existing MX record used for
+     `contact@machinemens.com` email forwarding. `RESEND_FROM_EMAIL` in `wrangler.toml` already
+     matches this per environment.
    - `PAYPAL_CLIENT_ID` / `PAYPAL_CLIENT_SECRET` — same PayPal REST app as the frontend's
      `PAYPAL_CLIENT_ID` var (sandbox app for staging, live app for production); the Secret is the
      one piece not already configured elsewhere.
@@ -53,6 +59,24 @@ Cloudflare Pages — a Pages Function would only ever be reachable from the stag
    auto-charges/ships anything.
 5. Cloudflare API token used by CI needs the **Workers Scripts: Edit** permission (the existing
    token only has Pages edit — either broaden it or add a second token/secret).
+
+### Sending domain DNS setup (Resend)
+
+Namecheap's "Mail Settings" is a single domain-wide switch (currently `Email Forwarding`, used for
+`contact@machinemens.com`) — changing it to `Custom MX` to add Resend's MX record would risk
+breaking that forwarding. Instead, NS-delegate a dedicated subdomain to Cloudflare, which is
+completely independent of Namecheap's Mail Settings:
+
+1. In Cloudflare, **Add a Site** → `mail.machinemens.com` (Free plan). Cloudflare assigns it 2
+   nameservers.
+2. In Namecheap → Advanced DNS → **Host Records** (not Mail Settings, which doesn't apply to a
+   delegated subdomain), add two **NS Record**s: Host `mail`, Value = each Cloudflare nameserver.
+3. Once Cloudflare shows the zone as active, add both Resend domains' DNS records (MX/TXT for
+   DKIM+SPF) inside this one Cloudflare zone:
+   - `mail.machinemens.com` (production) — records at host `@` and `send` within the zone.
+   - `staging.mail.machinemens.com` (staging) — records at host `staging` and `send.staging`
+     within the same zone.
+4. In Resend, add and verify both domains separately (each gets its own API key scoping/DKIM).
 
 ## Local development
 
