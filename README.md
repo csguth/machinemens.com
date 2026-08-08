@@ -99,9 +99,9 @@ site/                   Hugo build output (git-ignored; what actually gets deplo
 workers/checkout/       Cloudflare Worker backing /shop/'s checkout (server-side PayPal order
                         create/capture + Printful print-on-demand draft order creation, with a
                         Resend email fallback on Printful failures). Deployed as two independent
-                        Workers (production: api.machinemens.com, staging:
-                        api-staging.machinemens.com) since GitHub Pages (production) has no
-                        serverless support -- see workers/checkout/README.md for full details.
+                        Workers on their free *.workers.dev URLs (no Custom Domain, since that
+                        would require machinemens.com's DNS to move to Cloudflare) -- see
+                        workers/checkout/README.md for full details.
 .github/workflows/
   deploy-pages.yml               Production deploy -> GitHub Pages (push to main)
   deploy-staging-cloudflare.yml  Staging deploy -> Cloudflare Pages (push to staging)
@@ -184,8 +184,9 @@ Before first deploy, add these **repository or environment** variables
 - `ENV_LABEL` — `production` or `staging`, drives the visible staging banner (`data-env` attribute)
 - PAYPAL_CLIENT_ID — PayPal REST app **Client ID** (the public/publishable one, safe to embed client-side; never the Secret) used by the PayPal JS SDK Smart Buttons on /shop/. Use a Sandbox app's Client ID for staging/previews and a Live app's for production.
 - `CHECKOUT_API_URL` — base URL of the checkout Worker (`workers/checkout/`), e.g.
-  `https://api.machinemens.com` (production) / `https://api-staging.machinemens.com` (staging).
-  Injected into `/shop/` via the `__CHECKOUT_API_URL__` placeholder.
+  `https://machinemens-checkout.csguth.workers.dev` (production) /
+  `https://machinemens-checkout-staging.csguth.workers.dev` (staging). Injected into `/shop/` via
+  the `__CHECKOUT_API_URL__` placeholder.
 
 ### Checkout Worker (both environments — see workers/checkout/README.md for full setup)
 - `CLOUDFLARE_ACCOUNT_ID` (variable) and `CLOUDFLARE_API_TOKEN` (secret) — now needed in **both**
@@ -259,9 +260,9 @@ reference. One-time setup:
      currently only has Pages edit).
    - Create the two KV namespaces (`wrangler kv namespace create ORDERS_KV` and
      `... --env staging` from `workers/checkout/`) and paste their ids into `wrangler.toml`.
-   - After the first deploy of each Worker, attach the custom domains `api.machinemens.com` /
-     `api-staging.machinemens.com` (Workers & Pages → Settings → Domains & Routes) — this also
-     creates the DNS record.
+   - No Custom Domain step needed — each Worker deploys to its free `*.workers.dev` URL (see
+     `workers/checkout/README.md`), since a Custom Domain would require `machinemens.com`'s DNS
+     to move to Cloudflare.
 5. Add the new secrets/vars from the "Deploy configuration" section above
    (`PRINTFUL_API_KEY`, `RESEND_API_KEY`, `PAYPAL_CLIENT_SECRET`, `CHECKOUT_API_URL`) to both the
    `github-pages` and `staging` GitHub Environments.

@@ -13,9 +13,14 @@ Cloudflare Pages — a Pages Function would only ever be reachable from the stag
 | | Production | Staging |
 |---|---|---|
 | Worker name | `machinemens-checkout` | `machinemens-checkout-staging` |
-| Custom domain | `api.machinemens.com` | `api-staging.machinemens.com` |
+| URL | `https://machinemens-checkout.csguth.workers.dev` | `https://machinemens-checkout-staging.csguth.workers.dev` |
 | `SITE_URL` (catalog source) | `https://machinemens.com` | `https://staging.machinemens.com` |
 | PayPal API | live (`api-m.paypal.com`) | sandbox (`api-m.sandbox.paypal.com`) |
+
+No Custom Domain (`api.machinemens.com`) is used: Cloudflare requires the whole domain to be an
+active Cloudflare zone (nameservers on Cloudflare) for that, and production DNS stays on
+Namecheap/GitHub Pages. The free `*.workers.dev` URL needs zero DNS changes — revisit a Custom
+Domain if `machinemens.com`'s DNS ever moves to Cloudflare.
 
 ## Endpoints
 
@@ -32,9 +37,9 @@ Cloudflare Pages — a Pages Function would only ever be reachable from the stag
 1. **KV namespace**: `npx wrangler kv namespace create ORDERS_KV` (production) and
    `npx wrangler kv namespace create ORDERS_KV --env staging` (staging). Paste the printed ids
    into `wrangler.toml` (`kv_namespaces` / `[env.staging]`).
-2. **Custom domain**: after the first deploy, attach `api.machinemens.com` /
-   `api-staging.machinemens.com` to the respective Worker in the Cloudflare dashboard
-   (Workers & Pages → Settings → Domains & Routes). This also creates the DNS record.
+2. **`CHECKOUT_API_URL`**: after the first deploy, set the GitHub repo/environment variable to
+   the Worker's `*.workers.dev` URL (see table above) — that's what gets injected into `/shop/`
+   via the `__CHECKOUT_API_URL__` placeholder.
 3. **Secrets** (never in `wrangler.toml`, set with `wrangler secret put <NAME>` or via the
    `deploy-checkout-worker-*.yml` GitHub Actions workflow from repo/environment secrets):
    - `PRINTFUL_API_KEY` — Printful dashboard → Settings → API access. This is an **account-level**

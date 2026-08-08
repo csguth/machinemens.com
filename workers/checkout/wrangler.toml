@@ -6,16 +6,16 @@ compatibility_date = "2024-11-01"
 # One-time setup: `wrangler kv namespace create ORDERS_KV` from this directory,
 # then replace the id below with the one it prints.
 kv_namespaces = [
-  { binding = "ORDERS_KV", id = "REPLACE_WITH_PRODUCTION_KV_ID" }
+  { binding = "ORDERS_KV", id = "62a93e1e42ab4c7d8533651ab36b6821" }
 ]
 
-# One-time setup: attach this Worker to api.machinemens.com as a Custom Domain
-# in the Cloudflare dashboard (Workers & Pages -> machinemens-checkout ->
-# Settings -> Domains & Routes), which manages the DNS record automatically.
-# Custom Domains attach to the whole hostname -- no wildcard/path suffix.
-routes = [
-  { pattern = "api.machinemens.com", custom_domain = true }
-]
+# No Custom Domain: attaching a Custom Domain (api.machinemens.com) requires
+# machinemens.com to be an active Cloudflare zone (nameservers on Cloudflare),
+# which it isn't -- production DNS stays on Namecheap/GitHub Pages. Using the
+# free *.workers.dev URL instead (https://machinemens-checkout.csguth.workers.dev)
+# needs zero DNS changes. Revisit a Custom Domain if the whole domain ever
+# moves its DNS to Cloudflare.
+workers_dev = true
 
 [vars]
 SITE_URL = "https://machinemens.com"
@@ -44,13 +44,12 @@ PRINTFUL_STORE_ID = "18582480"
 name = "machinemens-checkout-staging"
 
 kv_namespaces = [
-  { binding = "ORDERS_KV", id = "REPLACE_WITH_STAGING_KV_ID" }
+  { binding = "ORDERS_KV", id = "e151b99b5d68401c89203ef4eccb5d9e" }
 ]
 
-# One-time setup: attach to api-staging.machinemens.com the same way as above.
-routes = [
-  { pattern = "api-staging.machinemens.com", custom_domain = true }
-]
+# No Custom Domain here either, same reasoning as production -- URL is
+# https://machinemens-checkout-staging.csguth.workers.dev.
+workers_dev = true
 
 [env.staging.vars]
 SITE_URL = "https://staging.machinemens.com"
