@@ -101,6 +101,10 @@ site/                   Hugo build output (git-ignored; what actually gets deplo
                                   the staging -> main promotion PR or a hotfix PR), posts a
                                   sticky comment with the preview URL on the PR
   guard-main-merges.yml          Enforces the staging -> main promotion order (see below)
+  w3c-compliance.yml            W3C HTML compliance check (pull_request into staging or main),
+                                  builds with Hugo and validates every page with the W3C Nu Html
+                                  Checker (vnu.jar) — set as a required status check so a PR can
+                                  only be merged once it's green
 .github/skills/github-project-management/SKILL.md
                         Copilot skill with the exact gh CLI commands/IDs to manage the
                         project board (issues, Status, Priority) without rediscovering IDs.
@@ -154,6 +158,10 @@ Rules enforced on GitHub:
 - Both `main` and `staging` require a Pull Request to merge (no direct pushes) and block force-pushes/deletions.
 - `.github/workflows/guard-main-merges.yml` fails any PR targeting `main` whose source branch isn't
   `staging`, unless the PR is labeled `hotfix` (emergency bypass for urgent production fixes).
+- `.github/workflows/w3c-compliance.yml` builds the site and validates every generated page with
+  the [W3C Nu Html Checker](https://validator.w3.org/nu/) on every PR into `staging` or `main`. Set
+  as a **required status check** in each branch's protection rule (`Settings → Branches`) so a PR
+  can't be merged until it's green.
 
 ---
 
