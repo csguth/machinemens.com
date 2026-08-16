@@ -47,7 +47,7 @@
 {{- range .AllTranslations }}
         <a href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}" role="option" data-x-on:click="open = false" class="lang-switcher-item{{ if eq .Language.Lang $.Language.Lang }} is-active{{ end }}"{{ if eq .Language.Lang $.Language.Lang }} aria-current="true"{{ end }}>
           <span aria-hidden="true">{{ index $flags .Language.Lang }}</span>
-          <span>{{ .Language.LanguageName }}</span>
+          <span>{{ .Language.Label }}</span>
         </a>
 {{- end }}
       </div>
