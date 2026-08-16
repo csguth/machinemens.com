@@ -1,0 +1,36 @@
+# Machinemens
+
+> Black/death metal band from the Netherlands. Official site with music, shows, merch and contact. "Surrender to the machine."
+
+Machinemens is a black/death metal band based in the Netherlands. This site is the band's
+official home and the authoritative source for its discography, upcoming shows, merchandise
+and booking contacts. It is available in three languages, each under its own URL prefix:
+English (`/en/`), Dutch (`/nl/`) and Portuguese (`/pt/`).
+
+## Pages
+
+- [Home](__SITE_URL__/en/): Featured release, live videos and links to every section.
+- [Music](__SITE_URL__/en/music/): Full discography, live sessions and lyric videos.
+- [Shows](__SITE_URL__/en/shows/): Upcoming shows and tour dates, with ticket links.
+- [Shop](__SITE_URL__/en/shop/): Official merch (t-shirts).
+- [Contact](__SITE_URL__/en/contact/): Bookings and general inquiries.
+
+## Releases
+
+- A Batalha de Netuno (single, 2026)
+- Canvas Dyed Blood - Demo II (demo)
+- Machinemens - Demo I (demo)
+
+## Listen and follow
+
+- [Spotify](https://open.spotify.com/artist/4PLOLLNQZMjPZ9bcIpIHtp)
+- [YouTube](https://www.youtube.com/@machinemens)
+- [YouTube Music](https://music.youtube.com/@machinemens)
+- [Apple Music](https://music.apple.com/us/artist/machinemens/1671869315)
+- [Deezer](https://www.deezer.com/en/artist/201767097)
+- [Instagram](https://instagram.com/machinemens)
+
+## Other languages
+
+- [Nederlands](__SITE_URL__/nl/)
+- [Português](__SITE_URL__/pt/)

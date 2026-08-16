@@ -70,6 +70,7 @@ jobs:
           done < <(find site -name "*.html" -print0)
 
           sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" site/robots.txt
+          sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" site/llms.txt
           sed -i "s|__SITE_URL__|${{ vars.SITE_URL }}|g" site/sitemap.xml
 
       - name: Minify static JS
