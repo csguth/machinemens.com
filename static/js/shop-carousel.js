@@ -30,7 +30,10 @@
 
   function scrollToSlide(index) {
     const clamped = Math.max(0, Math.min(index, slides.length - 1));
-    slides[clamped].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    // Scroll only the track horizontally (scrollIntoView can also nudge the
+    // page's vertical scroll position, e.g. autoplay firing while the user
+    // is watching a video further down the page — see #149).
+    track.scrollTo({ left: slides[clamped].offsetLeft, behavior: 'smooth' });
   }
 
   function currentActiveIndex() {
