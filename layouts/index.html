@@ -101,10 +101,23 @@
       <h2 id="shows-heading" class="sr-only">{{ i18n "next_show" }}</h2>
 
       <template data-x-if="nextShow">
-        <article class="show-card mb-4">
-          <p class="show-card-date" data-x-text="formatDate(nextShow.date)"></p>
-          <h3 class="show-card-title" data-x-text="nextShow.title"></h3>
-          <p class="show-card-venue" data-x-text="nextShow.venue + ' — ' + nextShow.address"></p>
+        <article class="show-card show-card-teaser mb-4">
+          <div>
+            <p class="show-card-date" data-x-text="formatDate(nextShow.date)"></p>
+            <h3 class="show-card-title" data-x-text="nextShow.title"></h3>
+            <p class="show-card-venue" data-x-text="nextShow.venue + ' — ' + nextShow.address"></p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <template data-x-if="nextShow.ticketUrl">
+              <a data-x-bind:href="nextShow.ticketUrl" target="_blank" rel="noopener noreferrer" class="listen-get-btn self-start">{{ i18n "tickets" }}</a>
+            </template>
+            <template data-x-if="!nextShow.ticketUrl && nextShow.free">
+              <span class="show-free-badge self-start">{{ i18n "free_entry" }}</span>
+            </template>
+            <template data-x-if="nextShow.websiteUrl">
+              <a data-x-bind:href="nextShow.websiteUrl" target="_blank" rel="noopener noreferrer" class="listen-get-btn self-start">{{ i18n "website" }}</a>
+            </template>
+          </div>
         </article>
       </template>
       <template data-x-if="!nextShow">
