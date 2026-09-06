@@ -17,6 +17,9 @@
             <template data-x-if="show.ticketUrl">
               <a data-x-bind:href="show.ticketUrl" target="_blank" rel="noopener noreferrer" class="listen-get-btn self-start">{{ i18n "tickets" }}</a>
             </template>
+            <template data-x-if="!show.ticketUrl && show.free">
+              <span class="show-free-badge self-start">{{ i18n "free_entry" }}</span>
+            </template>
             <template data-x-if="show.websiteUrl">
               <a data-x-bind:href="show.websiteUrl" target="_blank" rel="noopener noreferrer" class="listen-get-btn self-start">{{ i18n "website" }}</a>
             </template>
