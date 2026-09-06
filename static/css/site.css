@@ -294,6 +294,19 @@ footer {
   opacity: 0.55;
 }
 
+/* Free-entry indicator on a show card — visually distinct (dashed border)
+   from the .listen-get-btn links since it isn't clickable. */
+.show-free-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px dashed var(--gold);
+  color: var(--gold);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
 /* Shop carousel — hides the native scroll bar so the CSS scroll-snap track
    (js/shop-carousel.js) reads as a carousel, not a plain overflowing div.
    Scrolling/swiping itself needs no JS at all. */
