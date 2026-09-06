@@ -294,6 +294,18 @@ footer {
   opacity: 0.55;
 }
 
+/* Homepage "next show" teaser — same .show-card, but the ticket/website
+   action sits on the right on wider screens (info left, button right)
+   instead of stacking below the venue like the /shows/ grid cards. */
+@media (min-width: 640px) {
+  .show-card-teaser {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+}
+
 /* Free-entry indicator on a show card — visually distinct (dashed border)
    from the .listen-get-btn links since it isn't clickable. */
 .show-free-badge {
